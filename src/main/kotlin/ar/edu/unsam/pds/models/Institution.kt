@@ -7,8 +7,4 @@ class Institution (
     val category: String
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
-
-    //fun couseCreate() =
-    //fun couseDelete() =
-    //fun metrics() =
 }

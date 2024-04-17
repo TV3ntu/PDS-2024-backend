@@ -12,8 +12,4 @@ class Assignment (
     val price: Float
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
-
-    //fun join() =
-    //fun leave() =
-
 }

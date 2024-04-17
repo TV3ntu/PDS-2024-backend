@@ -8,7 +8,4 @@ class Couse (
     var category: String
 ) : Element {
     val id: String = UUID.randomUUID().toString()
-
-    //fun suscribe(assignment): Assignment =
-    //fun unSuscribe(assignment): Assignment =
 }
