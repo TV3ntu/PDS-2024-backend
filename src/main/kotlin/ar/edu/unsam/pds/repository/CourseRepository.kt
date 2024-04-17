@@ -1,5 +1,5 @@
 package ar.edu.unsam.pds.repository
 
-import ar.edu.unsam.pds.models.Course
+import ar.edu.unsam.pds.models.Couse
 
-object CourseRepository: Repository<Course>()
+object CourseRepository: Repository<Couse>()

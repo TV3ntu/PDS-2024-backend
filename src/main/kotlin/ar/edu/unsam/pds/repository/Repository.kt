@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.repository
 
+
 abstract class Repository<T: Element> {
 
     val colection = mutableMapOf<Int, T>()
@@ -29,7 +30,7 @@ abstract class Repository<T: Element> {
 
     open fun findByObjectId(value: String): Element {
         return colection.values.firstOrNull { it.findMe(value) }
-            ?: throw NotFoundException("No se encontró el elemento con el valor $value")
+            ?: error("No se encontró el elemento con el valor $value")
     }
 
     fun clear(){
@@ -38,7 +39,7 @@ abstract class Repository<T: Element> {
     }
 
     private fun indexExists(index: Int) {
-        colection[index] ?: throw NotFoundException("No se encontró el elemento con el índice $index")
+        colection[index] ?: error("No se encontró el elemento con el índice $index")
     }
 }
 
