@@ -3,43 +3,43 @@ package ar.edu.unsam.pds.repository
 
 abstract class Repository<T: Element> {
 
-    val colection = mutableMapOf<Int, T>()
+    private val collection = mutableMapOf<Int, T>()
     private var index = 1
 
     fun getAll(): MutableCollection<T> {
-        return colection.values
+        return collection.values
     }
 
     fun create(element: T){
-        colection[index] = element
+        collection[index] = element
         index++
     }
 
 
     fun deleteByObjectId(value: String) {
         val obj = findByObjectId(value)
-        val keyToRemove = colection.filterValues { it == obj }.keys.first()
-        colection.remove(keyToRemove)
+        val keyToRemove = collection.filterValues { it == obj }.keys.first()
+        collection.remove(keyToRemove)
     }
 
     fun update(id: String, element: T){
-        val obj = colection.values.firstOrNull { it.findMe(id) }
-        val indexToUpdate = colection.values.indexOf(obj)
-        colection[indexToUpdate] = element
+        val obj = collection.values.firstOrNull { it.findMe(id) }
+        val indexToUpdate = collection.values.indexOf(obj)
+        collection[indexToUpdate] = element
     }
 
     open fun findByObjectId(value: String): Element {
-        return colection.values.firstOrNull { it.findMe(value) }
+        return collection.values.firstOrNull { it.findMe(value) }
             ?: error("No se encontró el elemento con el valor $value")
     }
 
     fun clear(){
-        colection.clear()
+        collection.clear()
         index = 1
     }
 
     private fun indexExists(index: Int) {
-        colection[index] ?: error("No se encontró el elemento con el índice $index")
+        collection[index] ?: error("No se encontró el elemento con el índice $index")
     }
 }
 
