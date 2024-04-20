@@ -9,5 +9,6 @@ class BadRequestExceptionTest {
         val message = "Bad request"
         val exception = BadRequestException(message)
         Assertions.assertEquals(message, exception.message)
+
     }
 }
