@@ -9,8 +9,13 @@ class Course (
     var image: String
 ) : Element {
     val id: String = UUID.randomUUID().toString()
+    private val assignments = mutableSetOf<Assignment>()
 
     override fun findMe(value: String): Boolean {
         TODO("Not yet implemented")
+    }
+
+    fun getAssignments(): Set<Assignment> {
+        return assignments
     }
 }

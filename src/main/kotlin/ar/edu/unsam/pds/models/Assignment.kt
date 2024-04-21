@@ -14,7 +14,5 @@ class Assignment (
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
 
-    override fun findMe(value: String): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun findMe(value: String): Boolean = id == value
 }
