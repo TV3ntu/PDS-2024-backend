@@ -1,0 +1,23 @@
+@hostname = localhost
+@port = 8080
+@host = http://{{hostname}}:{{port}}
+
+##############################################################
+# @no-cookie-jar
+GET /api/courses HTTP/1.1
+Content-Type: application/json
+
+##############################################################
+# @no-cookie-jar
+GET /api/courses/2416e340-afef-4b33-8254-6d07fa863a75 HTTP/1.1
+Content-Type: application/json
+
+##############################################################
+# @no-cookie-jar
+GET /api/courses/batata HTTP/1.1
+Content-Type: application/json
+
+##############################################################
+# @no-cookie-jar
+GET /api/course/4ada8667-ab72-4598-891a-e4d8b9713b0d HTTP/1.1
+Content-Type: application/json
