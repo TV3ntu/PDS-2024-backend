@@ -1,7 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.models.Assignment
-import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.services.AssignmentService
 import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod.GET
 @CrossOrigin(origins = ["*"], methods = [GET])
 class AssignmentController {
     @Autowired
-    private lateinit var assignmentService: AssignmentService
+    lateinit var assignmentService: AssignmentService
 
     @GetMapping(value = ["assignments"])
     @Operation(summary = "Get all assignments")
