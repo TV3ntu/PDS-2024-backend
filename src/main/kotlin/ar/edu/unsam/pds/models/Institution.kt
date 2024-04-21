@@ -8,6 +8,16 @@ class Institution (
     var image: String
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
+    private val courses: MutableSet<Course> = mutableSetOf()
+
+    fun getCourses(): MutableSet<Course> {
+        return courses
+    }
+
+    fun addCourse(course: Course) {
+        courses.add(course)
+    }
+
     override fun findMe(value: String): Boolean {
         TODO("Not yet implemented")
     }
