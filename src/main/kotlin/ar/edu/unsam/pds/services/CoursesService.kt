@@ -7,7 +7,7 @@ import ar.edu.unsam.pds.repository.InstitutionRepository
 import org.springframework.stereotype.Service
 
 @Service
-class CoursesServices {
+class CoursesService {
     private var institutions = InstitutionRepository
     private var courses = CourseRepository
 

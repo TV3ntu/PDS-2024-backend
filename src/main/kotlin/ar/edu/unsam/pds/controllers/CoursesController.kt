@@ -1,7 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.models.Course
-import ar.edu.unsam.pds.services.CoursesServices
+import ar.edu.unsam.pds.services.CoursesService
 import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod.GET
 @CrossOrigin(origins = ["*"], methods = [GET])
 class CoursesController {
     @Autowired
-    private lateinit var courseServices: CoursesServices
+    private lateinit var courseServices: CoursesService
 
     @GetMapping(value = ["courses"])
     fun coursesAll(): List<Course> {
