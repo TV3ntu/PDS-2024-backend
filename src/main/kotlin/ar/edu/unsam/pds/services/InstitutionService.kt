@@ -3,7 +3,6 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.dto.InstitutionDto
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.InstitutionRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,6 +17,7 @@ class InstitutionService {
     }
 
     private fun buildInstitutionDto(institution: Institution): InstitutionDto {
-        return InstitutionDto(institution.name, institution.category, institution.image, institution.getCourses())
+        return InstitutionDto(institution.id, institution.name, institution.category,
+            institution.image, institution.getCourses())
     }
 }
