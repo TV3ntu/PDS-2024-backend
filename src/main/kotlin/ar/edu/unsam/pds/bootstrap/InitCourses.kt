@@ -1,9 +1,7 @@
 package ar.edu.unsam.pds.bootstrap
 
 import ar.edu.unsam.pds.models.Course
-import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.CourseRepository
-import ar.edu.unsam.pds.repository.InstitutionRepository
 import org.springframework.stereotype.Component
 import org.springframework.context.annotation.DependsOn
 

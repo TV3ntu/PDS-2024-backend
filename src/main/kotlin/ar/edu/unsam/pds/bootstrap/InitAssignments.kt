@@ -1,13 +1,10 @@
 package ar.edu.unsam.pds.bootstrap
 
 import ar.edu.unsam.pds.models.Assignment
-import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.AssignmentRepository
-import ar.edu.unsam.pds.repository.CourseRepository
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 import java.time.LocalTime
-import kotlin.io.path.createTempDirectory
 
 @Component(value = "InitAssignments.beanName")
 @DependsOn(value = ["InitCourses.beanName"])
