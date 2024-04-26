@@ -18,7 +18,5 @@ class Institution (
         courses.add(course)
     }
 
-    override fun findMe(value: String): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun findMe(value: String): Boolean = id == value
 }
