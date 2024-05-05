@@ -1,10 +1,10 @@
 package ar.edu.unsam.pds.models
 
 import ar.edu.unsam.pds.repository.Element
-import java.util.*
+import java.util.UUID
 
 class User(
-    val name : String,
+    val name: String,
     val lastName: String,
     val email: String,
     val image: String,
