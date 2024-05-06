@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import org.springframework.stereotype.Service
 
@@ -15,4 +16,7 @@ class UserService /* : UserDetailsService*/ {
         return null;
     }
 
+    fun getUserAll(): List<User> {
+        return user.getAll().toList()
+    }
 }
