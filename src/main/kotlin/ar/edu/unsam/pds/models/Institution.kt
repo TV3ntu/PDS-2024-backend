@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.repository.Element
 
 class Institution (
     val name: String,
+    val description: String,
     val category: String,
     var image: String
 ) : Element  {
