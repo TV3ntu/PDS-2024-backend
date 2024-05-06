@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService /* : UserDetailsService*/ {
-    private var user = UserRepository
+    private var users = UserRepository
 
     fun loadUserByUsername(username: String): Any?/*UserDetails*/ {
-//        return user.findByUsername(username).orElseThrow {
+//        return users.findByUsername(username).orElseThrow {
 //            UsernameNotFoundException("non-existent user")
 //        }
 
@@ -17,6 +17,6 @@ class UserService /* : UserDetailsService*/ {
     }
 
     fun getUserAll(): List<User> {
-        return user.getAll().toList()
+        return users.getAll().toList()
     }
 }
