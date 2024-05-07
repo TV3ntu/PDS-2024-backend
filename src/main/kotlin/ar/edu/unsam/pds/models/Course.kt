@@ -15,5 +15,9 @@ class Course (
         return assignments
     }
 
+    fun addAssignment(assignment: Assignment) {
+        assignments.add(assignment)
+    }
+
     override fun findMe(value: String): Boolean = id == value
 }
