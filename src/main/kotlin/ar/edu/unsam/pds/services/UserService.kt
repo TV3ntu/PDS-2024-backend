@@ -13,7 +13,7 @@ class UserService : UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails {
         return users.findByUsername(username).orElseThrow {
-            UsernameNotFoundException("non-existent user")
+            UsernameNotFoundException("usuario inexistente")
         }
     }
 

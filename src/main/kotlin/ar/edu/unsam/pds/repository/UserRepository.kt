@@ -7,13 +7,6 @@ import java.util.Optional
 object UserRepository : Repository<User>() {
     private var principals: MutableMap<String, Principal> = hashMapOf()
 
-    override fun create(element: User) {
-        error("""
-            Principal se encuentra vinculado a User
-            por favor usar UserRepository.create(password: String, user: User)
-        """)
-    }
-
     fun create(password: String, user: User) {
         super.create(user)
         principals[user.id] = Principal().apply {
