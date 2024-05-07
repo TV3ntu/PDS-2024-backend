@@ -1,24 +1,23 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("api/")
-@Validated
-@CrossOrigin(origins = ["*"], methods = [RequestMethod.GET])
+@RequestMapping("api/users")
+@CrossOrigin("*")
 class UserController {
+
     @Autowired
     lateinit var userService: UserService
 
-    @GetMapping(value = ["users"])
+    @GetMapping("/")
     @Operation(summary = "Get all users")
-    fun userAll(): ResponseEntity<List<User>> {
+    fun userAll(): ResponseEntity<List<UserResponseDto>> {
         return ResponseEntity.ok(userService.getUserAll())
     }
 
