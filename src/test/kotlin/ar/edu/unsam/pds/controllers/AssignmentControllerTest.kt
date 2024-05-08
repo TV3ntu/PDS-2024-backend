@@ -9,15 +9,12 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import java.time.LocalTime
 
 @ExtendWith(MockitoExtension::class)
 class AssignmentControllerTest {
-
     @Mock
     private lateinit var assignmentService: AssignmentService
-
     private lateinit var assignmentController: AssignmentController
 
     @BeforeEach
@@ -28,24 +25,11 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentAll`() {
-        var assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        val assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
         val assignments = listOf(assignment1)
-        `when`(assignmentService.getAssignmentAll()).thenReturn(assignments)
+        `when`(assignmentService.getAll()).thenReturn(assignments)
 
-        val responseEntity = assignmentController.assignmentAll()
-
-        assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == assignments)
-    }
-
-    @Test
-    fun `test assignmentList`() {
-        var assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-        val idCourse = "123" // Id de curso válido
-        val assignments = listOf(assignment1)
-        `when`(assignmentService.getAssignmentList(idCourse)).thenReturn(assignments)
-
-        val responseEntity = assignmentController.assignmentList(idCourse)
+        val responseEntity = assignmentController.getAll()
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == assignments)
@@ -53,12 +37,12 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentItem`() {
-        var assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        val assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
         val idAssignment = "456" // Id de asignación válido
         val assignment = assignment1
-        `when`(assignmentService.getAssignmentItem(idAssignment)).thenReturn(assignment)
+        `when`(assignmentService.getAssignment(idAssignment)).thenReturn(assignment)
 
-        val responseEntity = assignmentController.assignmentItem(idAssignment)
+        val responseEntity = assignmentController.getAssignment(idAssignment)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == assignment)

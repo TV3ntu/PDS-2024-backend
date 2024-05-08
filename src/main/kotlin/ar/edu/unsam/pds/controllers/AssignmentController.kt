@@ -12,29 +12,20 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/assignments")
 @CrossOrigin("*")
 class AssignmentController {
-
     @Autowired
     lateinit var assignmentService: AssignmentService
 
-    @GetMapping("/")
+    @GetMapping(value = ["/"])
     @Operation(summary = "Get all assignments")
-    fun assignmentAll(): ResponseEntity<List<Assignment>> {
-        return ResponseEntity.ok(assignmentService.getAssignmentAll())
+    fun getAll(): ResponseEntity<List<Assignment>> {
+        return ResponseEntity.ok(assignmentService.getAll())
     }
 
-    @GetMapping(value = ["/course/{idCourse}"])
-    @Operation(summary = "Get all assignments by course")
-    fun assignmentList(
-        @PathVariable @UUID idCourse: String
-    ): ResponseEntity<List<Assignment>> {
-        return ResponseEntity.ok(assignmentService.getAssignmentList(idCourse))
-    }
-
-    @GetMapping(value = ["/{idAssignment}"])
+    @GetMapping(value = ["{idAssignment}"])
     @Operation(summary = "Get assignment by id")
-    fun assignmentItem(
+    fun getAssignment(
         @PathVariable @UUID idAssignment: String
     ): ResponseEntity<Assignment> {
-        return ResponseEntity.ok(assignmentService.getAssignmentItem(idAssignment))
+        return ResponseEntity.ok(assignmentService.getAssignment(idAssignment))
     }
 }
