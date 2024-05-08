@@ -10,7 +10,7 @@ abstract class Repository<T: Element> {
         return collection.values
     }
 
-    fun create(element: T){
+    open fun create(element: T){
         collection[index] = element
         index++
     }
