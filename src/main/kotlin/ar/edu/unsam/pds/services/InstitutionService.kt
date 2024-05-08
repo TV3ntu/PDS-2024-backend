@@ -17,8 +17,8 @@ class InstitutionService {
     }
 
     fun getInstitutionItem(idInstitution: String): InstitutionResponseDto {
-        val institution = institutionRepository.findByObjectId(idInstitution)
-        return buildInstitutionDto(institution as Institution)
+        val institution = institutionRepository.findByObjectId(idInstitution) as Institution
+        return buildInstitutionDto(institution)
     }
 
     private fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {

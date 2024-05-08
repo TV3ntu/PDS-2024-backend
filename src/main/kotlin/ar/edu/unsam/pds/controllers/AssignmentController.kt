@@ -36,7 +36,7 @@ class AssignmentController {
     @Operation(summary = "Get assignment by id")
     fun assignmentItem(
         @PathVariable @UUID idAssignment: String
-    ): ResponseEntity<Assignment> {
+    ): ResponseEntity<AssigmentResponseDto> {
         return ResponseEntity.ok(assignmentService.getAssignmentItem(idAssignment))
     }
 }

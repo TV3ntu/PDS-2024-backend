@@ -23,19 +23,19 @@ class CoursesController {
         return ResponseEntity.ok(courseServices.getAll())
     }
 
-//    @GetMapping(value = ["/institution/{idInstitution}"])
-//    @Operation(summary = "Get all courses by institution")
-//    fun coursesList(
-//        @PathVariable @UUID idInstitution: String
-//    ): ResponseEntity<List<Course>> {
-//        return ResponseEntity.ok(courseServices.getCoursesList(idInstitution))
-//    }
+    @GetMapping(value = ["/institution/{idInstitution}"])
+    @Operation(summary = "Get all courses by institution")
+    fun coursesList(
+        @PathVariable @UUID idInstitution: String
+    ): ResponseEntity<List<Course>> {
+        return ResponseEntity.ok(courseServices.getCoursesList(idInstitution))
+    }
 
     @GetMapping(value = ["/{idCourse}"])
     @Operation(summary = "Get course by id")
     fun courseItem(
         @PathVariable @UUID idCourse: String
-    ): ResponseEntity<Course> {
+    ): ResponseEntity<CourseResponseDto> {
         return ResponseEntity.ok(courseServices.getCourseItem(idCourse))
     }
 

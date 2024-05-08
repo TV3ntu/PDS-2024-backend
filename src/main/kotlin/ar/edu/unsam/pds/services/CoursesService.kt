@@ -23,8 +23,9 @@ class CoursesService {
         return institution.getCourses().toList()
     }
 
-    fun getCourseItem(idCourse: String): Course {
-        return courseRepository.findByObjectId(idCourse) as Course
+    fun getCourseItem(idCourse: String): CourseResponseDto {
+        val course = courseRepository.findByObjectId(idCourse) as Course
+        return buildCourseDto(course)
     }
 
     private fun buildCourseDto(course: Course): CourseResponseDto {

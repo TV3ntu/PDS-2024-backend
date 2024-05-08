@@ -21,8 +21,9 @@ class AssignmentService {
 
     }
 
-    fun getAssignmentItem(idAssignment: String): Assignment {
-        return assignmentRepository.findByObjectId(idAssignment) as Assignment
+    fun getAssignmentItem(idAssignment: String): AssigmentResponseDto {
+        val assigment = assignmentRepository.findByObjectId(idAssignment) as Assignment
+        return buildAssigmentDto(assigment)
     }
 
     private fun buildAssigmentDto(assignment: Assignment): AssigmentResponseDto {
