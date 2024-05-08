@@ -28,18 +28,18 @@ class FilterChainConfiguration {
                 AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/registration/login"),
 
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/course/*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignment/*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/*"),
 
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/institution/*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/course/*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/*"),
 
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/institutions/"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/institutions/*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/institutions/"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/institutions/*"),
 
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/"),
             ).permitAll()
             .anyRequest().authenticated()
         }

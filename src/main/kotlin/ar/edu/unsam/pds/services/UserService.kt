@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
@@ -17,7 +18,13 @@ class UserService : UserDetailsService {
         }
     }
 
-    fun getUserAll(): List<User> {
-        return users.getAll().toList()
+    fun getUserAll(): List<UserResponseDto> {
+        val user = users.getAll()
+        return user.map { buildUserDto(it) }
     }
+
+    private fun buildUserDto(user: User): UserResponseDto {
+        return UserResponseDto(user.name, user.lastName, user.email, user.image)
+    }
+
 }

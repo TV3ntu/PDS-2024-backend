@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestMethod.GET
 
 @RestController
-@RequestMapping("api/")
-@Validated
-@CrossOrigin(origins = ["*"], methods = [GET])
+@RequestMapping("api/courses")
+@CrossOrigin("*")
 class CoursesController {
+
     @Autowired
     lateinit var courseServices: CoursesService
 
-    @GetMapping(value = ["courses"])
+    @GetMapping("/")
     @Operation(summary = "Get all courses")
     fun coursesAll(): ResponseEntity<List<Course>> {
         return ResponseEntity.ok(courseServices.getCoursesAll())
     }
 
-    @GetMapping(value = ["courses/institution/{idInstitution}"])
+    @GetMapping(value = ["/institution/{idInstitution}"])
     @Operation(summary = "Get all courses by institution")
     fun coursesList(
         @PathVariable @UUID idInstitution: String
@@ -32,7 +32,7 @@ class CoursesController {
         return ResponseEntity.ok(courseServices.getCoursesList(idInstitution))
     }
 
-    @GetMapping(value = ["course/{idCourse}"])
+    @GetMapping(value = ["/{idCourse}"])
     @Operation(summary = "Get course by id")
     fun courseItem(
         @PathVariable @UUID idCourse: String
