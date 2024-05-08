@@ -24,6 +24,10 @@ class FilterChainConfiguration {
                 AntPathRequestMatcher.antMatcher(HttpMethod.OPTIONS, "/**"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/media/public/*"),
 
+                // swagger @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
+                AntPathRequestMatcher.antMatcher("/v3/api-docs/**"),
+
                 // registration @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/registration/login"),
 
