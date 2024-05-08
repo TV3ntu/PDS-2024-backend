@@ -1,5 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.AssigmentResponseDto
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.services.AssignmentService
 import io.swagger.v3.oas.annotations.Operation
@@ -18,8 +20,8 @@ class AssignmentController {
 
     @GetMapping("/")
     @Operation(summary = "Get all assignments")
-    fun assignmentAll(): ResponseEntity<List<Assignment>> {
-        return ResponseEntity.ok(assignmentService.getAssignmentAll())
+    fun assignmentAll(): ResponseEntity<List<AssigmentResponseDto>> {
+        return ResponseEntity.ok(assignmentService.getAll())
     }
 
     @GetMapping(value = ["/course/{idCourse}"])

@@ -26,9 +26,9 @@ class CoursesControllerTest {
     fun `test coursesAll`() {
         val course1 = Course("title 1", "description", "category", "")
         val courses = listOf(course1)
-        `when`(courseServices.getCoursesAll()).thenReturn(courses)
+        `when`(courseServices.getAll())
 
-        val responseEntity = coursesController.coursesAll()
+        val responseEntity = coursesController.getAll()
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == courses)
