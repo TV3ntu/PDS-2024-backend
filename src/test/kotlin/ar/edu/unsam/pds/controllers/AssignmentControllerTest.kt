@@ -9,7 +9,6 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import java.time.LocalTime
 
 @ExtendWith(MockitoExtension::class)
@@ -30,7 +29,7 @@ class AssignmentControllerTest {
     fun `test assignmentAll`() {
         var assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
         val assignments = listOf(assignment1)
-        `when`(assignmentService.getAssignmentAll()).thenReturn(assignments)
+        `when`(assignmentService.getAll())
 
         val responseEntity = assignmentController.assignmentAll()
 
