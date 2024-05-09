@@ -1,27 +1,23 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.repository.AssignmentRepository
-import ar.edu.unsam.pds.repository.CourseRepository
+import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
 
 @Service
-class AssignmentService {
-    private val assignments = AssignmentRepository
-    private val courses = CourseRepository
-    fun getAssignmentAll(): List<Assignment> {
-        return assignments.getAll().toList()
+class AssignmentService(
+    private val assignmentRepository: AssignmentRepository
+) {
 
+    fun getAll(): List<AssignmentResponseDto> {
+        val assignments = assignmentRepository.getAll()
+        return assignments.map { Mapper.buildAssignmentDto(it) }
     }
 
-    fun getAssignmentList(idCourse: String): List<Assignment> {
-        val course = courses.findByObjectId(idCourse) as ar.edu.unsam.pds.models.Course
-        return course.getAssignments().toList()
-
-    }
-
-    fun getAssignmentItem(idAssignment: String): Assignment {
-        return assignments.findByObjectId(idAssignment) as Assignment
-
+    fun getAssignment(idAssignment: String): AssignmentResponseDto {
+        val assignments = assignmentRepository.findById(idAssignment)
+        return Mapper.buildAssignmentDto(assignments as Assignment)
     }
 }

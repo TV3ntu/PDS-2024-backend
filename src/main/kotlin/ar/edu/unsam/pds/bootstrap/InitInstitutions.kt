@@ -2,11 +2,12 @@ package ar.edu.unsam.pds.bootstrap
 
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component(value = "InitInstitutions.beanName")
 class InitInstitutions : BootstrapGeneric("Institutions") {
-    private val institutions = InstitutionRepository
+    @Autowired private lateinit var institutions: InstitutionRepository
 
     override fun doAfterPropertiesSet() {
         institutions.create(

@@ -1,45 +1,39 @@
 package ar.edu.unsam.pds.repository
 
+import org.springframework.stereotype.Repository
+import java.util.Optional
 
+@Repository
 abstract class Repository<T: Element> {
 
-    private val collection = mutableMapOf<Int, T>()
-    private var index = 1
+    private val collection = mutableListOf<T>()
 
     fun getAll(): MutableCollection<T> {
-        return collection.values
+        return collection
     }
 
-    fun create(element: T){
-        collection[index] = element
-        index++
+    open fun create(element: T){
+        collection.add(element)
     }
 
 
-    fun deleteByObjectId(value: String) {
-        val obj = findByObjectId(value)
-        val keyToRemove = collection.filterValues { it == obj }.keys.first()
-        collection.remove(keyToRemove)
+    fun delete(value: String) {
+        val obj = findById(value)
+        collection.remove(obj)
     }
 
     fun update(id: String, element: T){
-        val obj = collection.values.firstOrNull { it.findMe(id) }
-        val indexToUpdate = collection.values.indexOf(obj)
+        val obj = collection.firstOrNull { it.findMe(id) }
+        val indexToUpdate = collection.indexOf(obj)
         collection[indexToUpdate] = element
     }
 
-    open fun findByObjectId(value: String): Element {
-        return collection.values.firstOrNull { it.findMe(value) }
-            ?: error("No se encontró el elemento con el valor $value")
+    fun findById(value: String): T? {
+        return collection.find { it.findMe(value) }
     }
 
     fun clear(){
         collection.clear()
-        index = 1
-    }
-
-    private fun indexExists(index: Int) {
-        collection[index] ?: error("No se encontró el elemento con el índice $index")
     }
 }
 

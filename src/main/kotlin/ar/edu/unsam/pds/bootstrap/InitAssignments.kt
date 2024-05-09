@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 import java.time.LocalTime
@@ -11,8 +12,8 @@ import java.time.LocalTime
 @Component(value = "InitAssignments.beanName")
 @DependsOn(value = ["InitCourses.beanName"])
 class InitAssignments : BootstrapGeneric("Assignments") {
-    private val institutions = InstitutionRepository
-    private val assignments = AssignmentRepository
+    @Autowired private lateinit var institutions: InstitutionRepository
+    @Autowired private lateinit var assignments: AssignmentRepository
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

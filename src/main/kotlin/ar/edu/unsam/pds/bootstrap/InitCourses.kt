@@ -4,14 +4,15 @@ import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 
 @Component(value = "InitCourses.beanName")
 @DependsOn(value = ["InitInstitutions.beanName"])
 class InitCourses : BootstrapGeneric("Courses") {
-    private val institutions = InstitutionRepository
-    private val courses = CourseRepository
+    @Autowired private lateinit var institutions: InstitutionRepository
+    @Autowired private lateinit var courses: CourseRepository
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

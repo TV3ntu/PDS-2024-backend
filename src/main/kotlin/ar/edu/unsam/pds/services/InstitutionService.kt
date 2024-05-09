@@ -1,28 +1,29 @@
 package ar.edu.unsam.pds.services
 
-import ar.edu.unsam.pds.dto.InstitutionDto
+import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
+import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
 
 @Service
-class InstitutionService {
+class InstitutionService(
+    private val institutionRepository: InstitutionRepository
+) {
 
-    private var institutionRepository = InstitutionRepository
-
-    fun getAll(): List<InstitutionDto> {
+    fun getAll(): List<InstitutionResponseDto> {
         val institutions = institutionRepository.getAll()
-
-        return institutions.map { buildInstitutionDto(it) }
+        return institutions.map { Mapper.buildInstitutionDto(it) }
     }
 
-    fun getInstitutionItem(idInstitution: String): InstitutionDto {
-        val institution = institutionRepository.findByObjectId(idInstitution)
-        return buildInstitutionDto(institution as Institution)
+    fun getInstitution(idInstitution: String): InstitutionResponseDto {
+        val institution = institutionRepository.findById(idInstitution)
+        return Mapper.buildInstitutionDto(institution as Institution)
     }
 
-    private fun buildInstitutionDto(institution: Institution): InstitutionDto {
-        return InstitutionDto(institution.id, institution.name, institution.description, institution.category,
-            institution.image, institution.getCourses())
+    fun getCoursesOfInstitution(idInstitution: String): List<Course> {
+        val institution = institutionRepository.findById(idInstitution) as Institution
+        return institution.getCourses().toList()
     }
 }
