@@ -6,9 +6,13 @@ import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 
 data class LoginForm(
-    @field: NotEmpty @field: NotBlank @field: Email
+    @NotEmpty(message = "El campo email no debe estar vacio")
+    @NotBlank(message = "El campo email no debe estar en blanco")
+    @Email
     val email: String,
 
-    @field: NotEmpty @field: NotBlank @field: Size(max = 128)
+    @NotEmpty(message = "El campo password no debe estar vacio")
+    @NotBlank(message = "El campo password no debe estar en blanco")
+    @Size(max = 128, message = "el password no debe superar los 128 caracteres")
     val password: String
 )

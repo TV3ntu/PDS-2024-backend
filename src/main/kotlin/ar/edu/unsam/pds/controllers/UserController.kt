@@ -33,21 +33,7 @@ class UserController {
         @RequestBody @Valid user: LoginForm,
         request: HttpServletRequest
     ): ResponseEntity<UserResponseDto> {
-        try {
-            request.login(user.email, user.password)
-        } catch (e: ServletException) {
-            throw NotFoundException("Usuario y/o contraseña invalidos.")
-        }
-
-        val principal = (request.userPrincipal as Authentication).principal as Principal
-        val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
-
-        return ResponseEntity.ok(UserResponseDto(
-            principalUser.name,
-            principalUser.lastName,
-            principalUser.email,
-            principalUser.image
-        ))
+        return ResponseEntity.ok(userService.login(user, request))
     }
 
     @PostMapping("logout")
