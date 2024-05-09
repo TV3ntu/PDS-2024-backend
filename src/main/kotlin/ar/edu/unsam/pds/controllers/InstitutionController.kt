@@ -16,19 +16,21 @@ class InstitutionController {
     @Autowired
     lateinit var institutionService: InstitutionService
 
-    @GetMapping(value = ["/"])
+    @GetMapping("/")
+    @Operation(summary = "Get all institutions")
     fun getAll(): ResponseEntity<List<InstitutionResponseDto>> {
         return ResponseEntity.ok(institutionService.getAll())
     }
 
-    @GetMapping(value = ["{idInstitution}"])
+    @GetMapping("{idInstitution}")
+    @Operation(summary = "Get institution by id")
     fun getInstitution(
         @PathVariable @UUID idInstitution: String
     ): ResponseEntity<InstitutionResponseDto> {
         return ResponseEntity.ok(institutionService.getInstitution(idInstitution))
     }
 
-    @GetMapping(value = ["{idInstitution}/courses"])
+    @GetMapping("{idInstitution}/courses")
     @Operation(summary = "Get all courses by institution")
     fun getCoursesOfInstitution(
         @PathVariable @UUID idInstitution: String

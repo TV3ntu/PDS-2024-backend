@@ -1,7 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Assignment
-import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.services.CoursesService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,8 +26,9 @@ class CoursesControllerTest {
 
     @Test
     fun `test get all courses`() {
-        val course1 = Course("title 1", "description", "category", "")
-        val courses = listOf(course1)
+        val course = CourseResponseDto("123", "title 1", "description", "category", "")
+        val courses = listOf(course)
+
         `when`(courseServices.getAll()).thenReturn(courses)
 
         val responseEntity = coursesController.getAll()
@@ -38,12 +39,10 @@ class CoursesControllerTest {
 
     @Test
     fun `test get a particular course`() {
-        val course1 = Course("title 1", "description", "category", "")
-        val idCourse = "123" // Valid course ID
-        val course = course1
-        `when`(courseServices.getCourse(idCourse)).thenReturn(course)
+        val course = CourseResponseDto("123","title 1", "description", "category", "")
+        `when`(courseServices.getCourse("123")).thenReturn(course)
 
-        val responseEntity = coursesController.getCourse(idCourse)
+        val responseEntity = coursesController.getCourse("123")
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == course)

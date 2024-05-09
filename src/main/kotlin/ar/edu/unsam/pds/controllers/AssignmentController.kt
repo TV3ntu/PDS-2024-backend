@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.services.AssignmentService
 import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
@@ -15,17 +15,17 @@ class AssignmentController {
     @Autowired
     lateinit var assignmentService: AssignmentService
 
-    @GetMapping(value = ["/"])
+    @GetMapping("/")
     @Operation(summary = "Get all assignments")
-    fun getAll(): ResponseEntity<List<Assignment>> {
+    fun getAll(): ResponseEntity<List<AssignmentResponseDto>> {
         return ResponseEntity.ok(assignmentService.getAll())
     }
 
-    @GetMapping(value = ["{idAssignment}"])
+    @GetMapping("{idAssignment}")
     @Operation(summary = "Get assignment by id")
     fun getAssignment(
         @PathVariable @UUID idAssignment: String
-    ): ResponseEntity<Assignment> {
+    ): ResponseEntity<AssignmentResponseDto> {
         return ResponseEntity.ok(assignmentService.getAssignment(idAssignment))
     }
 }

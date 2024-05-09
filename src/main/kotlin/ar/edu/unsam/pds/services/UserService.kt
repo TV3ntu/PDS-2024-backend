@@ -24,6 +24,11 @@ class UserService : UserDetailsService {
     }
 
     private fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(user.name, user.lastName, user.email, user.image)
+        return UserResponseDto(
+            user.name,
+            user.lastName,
+            user.email,
+            user.image
+        )
     }
 }

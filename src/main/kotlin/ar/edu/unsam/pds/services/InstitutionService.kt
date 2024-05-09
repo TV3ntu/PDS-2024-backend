@@ -15,14 +15,14 @@ class InstitutionService {
         return institutions.map { buildInstitutionDto(it) }
     }
 
-    fun getCoursesOfInstitution(idInstitution: String): List<Course> {
-        val institution = institutionRepository.findByObjectId(idInstitution) as Institution
-        return institution.getCourses().toList()
-    }
-
     fun getInstitution(idInstitution: String): InstitutionResponseDto {
         val institution = institutionRepository.findByObjectId(idInstitution)
         return buildInstitutionDto(institution as Institution)
+    }
+
+    fun getCoursesOfInstitution(idInstitution: String): List<Course> {
+        val institution = institutionRepository.findByObjectId(idInstitution) as Institution
+        return institution.getCourses().toList()
     }
 
     private fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {

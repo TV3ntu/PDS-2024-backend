@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.services.AssignmentService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,8 +25,9 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentAll`() {
-        val assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-        val assignments = listOf(assignment1)
+        val assignment = AssignmentResponseDto("123", LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        val assignments = listOf(assignment)
+
         `when`(assignmentService.getAll()).thenReturn(assignments)
 
         val responseEntity = assignmentController.getAll()
@@ -37,12 +38,10 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentItem`() {
-        val assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-        val idAssignment = "456" // Id de asignación válido
-        val assignment = assignment1
-        `when`(assignmentService.getAssignment(idAssignment)).thenReturn(assignment)
+        val assignment = AssignmentResponseDto("123", LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        `when`(assignmentService.getAssignment("123")).thenReturn(assignment)
 
-        val responseEntity = assignmentController.getAssignment(idAssignment)
+        val responseEntity = assignmentController.getAssignment("123")
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == assignment)
