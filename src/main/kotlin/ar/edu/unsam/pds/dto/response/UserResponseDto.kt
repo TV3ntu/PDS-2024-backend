@@ -4,8 +4,7 @@ data class UserResponseDto(
     val name: String,
     val lastName: String,
     val email: String,
-    val image: String,
-    val id: String
+    val image: String
 ) {
 }
 
@@ -14,4 +13,5 @@ data class UserDetailDto(
     val lastName: String,
     val email: String,
     val image: String
-)
+) {
+}

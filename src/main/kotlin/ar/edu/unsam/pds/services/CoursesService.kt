@@ -1,35 +1,29 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Course
-import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.CourseRepository
-import ar.edu.unsam.pds.repository.InstitutionRepository
+import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
 
 @Service
-class CoursesService {
-    private var institutionRepository = InstitutionRepository
-    private var courseRepository = CourseRepository
+class CoursesService(
+    private val courseRepository: CourseRepository
+) {
 
     fun getAll(): List<CourseResponseDto> {
         val courses = courseRepository.getAll()
-
-        return courses.map { buildCourseDto(it) }
+        return courses.map { Mapper.buildCourseDto(it) }
     }
 
-    fun getCoursesList(idInstitution: String): List<Course> {
-        val institution = institutionRepository.findByObjectId(idInstitution) as Institution
-        return institution.getCourses().toList()
+    fun getCourse(idCourse: String): CourseResponseDto {
+        val course = courseRepository.findById(idCourse) as Course
+        return Mapper.buildCourseDto(course)
     }
 
-    fun getCourseItem(idCourse: String): CourseResponseDto {
-        val course = courseRepository.findByObjectId(idCourse) as Course
-        return buildCourseDto(course)
+    fun getAssignmentOfCourse(idCourse: String): List<Assignment> {
+        val course = courseRepository.findById(idCourse) as Course
+        return course.getAssignments().toList()
     }
-
-    private fun buildCourseDto(course: Course): CourseResponseDto {
-        return CourseResponseDto(course.id, course.title, course.description, course.category, course.image)
-    }
-
 }

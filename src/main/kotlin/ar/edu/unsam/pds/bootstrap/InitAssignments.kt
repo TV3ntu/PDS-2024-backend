@@ -2,13 +2,18 @@ package ar.edu.unsam.pds.bootstrap
 
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.repository.AssignmentRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 import java.time.LocalTime
 
 @Component(value = "InitAssignments.beanName")
 @DependsOn(value = ["InitCourses.beanName"])
-class InitAssignments : BootstrapGeneric("Assignments") {
+class InitAssignments() : BootstrapGeneric("Assignments") {
+
+    @Autowired
+    lateinit var assignmentRepository: AssignmentRepository
+
     override fun doAfterPropertiesSet() {
         var funcionalAdolescente1 = Assignment( LocalTime.of(8, 0), LocalTime.of(10, 0), mutableListOf("Martes", "Jueves"), 10, true, 100)
         var funcionalAdolescente2 = Assignment(LocalTime.of(15, 0), LocalTime.of(17, 0), mutableListOf("Martes", "Jueves"), 10, true, 100)
@@ -23,7 +28,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         var natacionLibre4 = Assignment(LocalTime.of(18, 0), LocalTime.of(20, 0), mutableListOf("Sábado"), 5, true, 200)
         var natacionLibre5 = Assignment(LocalTime.of(21, 0), LocalTime.of(23, 0), mutableListOf("Sábado"), 5, true, 200)
 
-        AssignmentRepository.apply {
+        assignmentRepository.apply {
             create(funcionalAdolescente1)
             create(funcionalAdolescente2)
             create(funcionalAdolescente3)
