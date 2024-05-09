@@ -46,6 +46,7 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.session:spring-session-core")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 dependencyManagement {
