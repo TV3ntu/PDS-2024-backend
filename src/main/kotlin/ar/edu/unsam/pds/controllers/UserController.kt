@@ -4,7 +4,6 @@ import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
-import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -16,19 +15,19 @@ import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/users")
 @CrossOrigin("*")
 class UserController {
     @Autowired
     lateinit var userService: UserService
 
-    @GetMapping("users/")
+    @GetMapping("/")
     @Operation(summary = "Get all users")
     fun getAll(): ResponseEntity<List<UserResponseDto>> {
         return ResponseEntity.ok(userService.getUserAll())
     }
 
-    @PostMapping("registration/login")
+    @PostMapping("login")
     fun login(
         @RequestBody user: LoginForm,
         request: HttpServletRequest
@@ -50,7 +49,7 @@ class UserController {
         ))
     }
 
-    @PostMapping("registration/logout")
+    @PostMapping("logout")
     fun logout(
         request: HttpServletRequest
     ): ResponseEntity<String> {

@@ -29,7 +29,7 @@ class FilterChainConfiguration {
                 AntPathRequestMatcher.antMatcher("/v3/api-docs/**"),
 
                 // registration @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/registration/login"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/users/login"),
 
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/institutions/"),
