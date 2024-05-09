@@ -9,6 +9,7 @@ import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -29,24 +30,10 @@ class UserController {
 
     @PostMapping("login")
     fun login(
-        @RequestBody user: LoginForm,
+        @RequestBody @Valid user: LoginForm,
         request: HttpServletRequest
     ): ResponseEntity<UserResponseDto> {
-        try {
-            request.login(user.email, user.password)
-        } catch (e: ServletException) {
-            throw NotFoundException("Usuario y/o contraseña invalidos.")
-        }
-
-        val principal = (request.userPrincipal as Authentication).principal as Principal
-        val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
-
-        return ResponseEntity.ok(UserResponseDto(
-            principalUser.name,
-            principalUser.lastName,
-            principalUser.email,
-            principalUser.image
-        ))
+        return ResponseEntity.ok(userService.login(user, request))
     }
 
     @PostMapping("logout")
