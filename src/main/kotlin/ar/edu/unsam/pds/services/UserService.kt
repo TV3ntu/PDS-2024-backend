@@ -1,34 +1,23 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
+import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
-class UserService : UserDetailsService {
-    private var userRepository = UserRepository
-
+class UserService(private val userRepository: UserRepository) : UserDetailsService {
     override fun loadUserByUsername(email: String): UserDetails {
         return userRepository.findByUsername(email).orElseThrow {
-            UsernameNotFoundException("usuario inexistente")
+            UsernameNotFoundException("El usuario no existe.")
         }
     }
 
     fun getUserAll(): List<UserResponseDto> {
         val user = userRepository.getAll()
-        return user.map { buildUserDto(it) }
-    }
-
-    private fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(
-            user.name,
-            user.lastName,
-            user.email,
-            user.image
-        )
+        return user.map { Mapper.buildUserDto(it) }
     }
 }
