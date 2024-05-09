@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.models.Course
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
+import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.services.CoursesService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -9,6 +10,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
+import java.time.LocalTime
 
 @ExtendWith(MockitoExtension::class)
 class CoursesControllerTest {
@@ -23,10 +25,11 @@ class CoursesControllerTest {
     }
 
     @Test
-    fun `test coursesAll`() {
-        val course1 = Course("title 1", "description", "category", "")
-        val courses = listOf(course1)
-        `when`(courseServices.getAll())
+    fun `test get all courses`() {
+        val course = CourseResponseDto("123", "title 1", "description", "category", "")
+        val courses = listOf(course)
+
+        `when`(courseServices.getAll()).thenReturn(courses)
 
         val responseEntity = coursesController.getAll()
 
@@ -35,28 +38,25 @@ class CoursesControllerTest {
     }
 
     @Test
-    fun `test coursesList`() {
-        val course1 = Course("title 1", "description", "category", "")
-        val idInstitution = "123" // Valid institution ID
-        val courses = listOf(course1)
-        `when`(courseServices.getCoursesList(idInstitution)).thenReturn(courses)
+    fun `test get a particular course`() {
+        val course = CourseResponseDto("123","title 1", "description", "category", "")
+        `when`(courseServices.getCourse("123")).thenReturn(course)
 
-        val responseEntity = coursesController.coursesList(idInstitution)
-
-        assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == courses)
-    }
-
-    @Test
-    fun `test courseItem`() {
-        val course1 = Course("title 1", "description", "category", "")
-        val idCourse = "123" // Valid course ID
-        val course = course1
-        `when`(courseServices.getCourseItem(idCourse)).thenReturn(course)
-
-        val responseEntity = coursesController.courseItem(idCourse)
+        val responseEntity = coursesController.getCourse("123")
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == course)
+    }
+
+    @Test
+    fun `test get all the assignments from an course`() {
+        val assignment = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        val assignments = listOf(assignment)
+        `when`(courseServices.getAssignmentOfCourse("123")).thenReturn(assignments)
+
+        val responseEntity = coursesController.getAssignmentOfCourse("123")
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == assignments)
     }
 }

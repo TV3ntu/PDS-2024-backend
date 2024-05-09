@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/users")
 @CrossOrigin("*")
 class UserController {
-
     @Autowired
     lateinit var userService: UserService
 
     @GetMapping("/")
     @Operation(summary = "Get all users")
-    fun userAll(): ResponseEntity<List<UserResponseDto>> {
+    fun getAll(): ResponseEntity<List<UserResponseDto>> {
         return ResponseEntity.ok(userService.getUserAll())
     }
-
 }

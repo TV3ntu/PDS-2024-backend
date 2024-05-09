@@ -10,21 +10,25 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService : UserDetailsService {
-    private var users = UserRepository
+    private var userRepository = UserRepository
 
     override fun loadUserByUsername(username: String): UserDetails {
-        return users.findByUsername(username).orElseThrow {
+        return userRepository.findByUsername(username).orElseThrow {
             UsernameNotFoundException("usuario inexistente")
         }
     }
 
     fun getUserAll(): List<UserResponseDto> {
-        val user = users.getAll()
+        val user = userRepository.getAll()
         return user.map { buildUserDto(it) }
     }
 
     private fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(user.name, user.lastName, user.email, user.image)
+        return UserResponseDto(
+            user.name,
+            user.lastName,
+            user.email,
+            user.image
+        )
     }
-
 }

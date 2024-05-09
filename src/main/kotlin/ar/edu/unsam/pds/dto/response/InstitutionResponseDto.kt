@@ -9,5 +9,4 @@ data class InstitutionResponseDto(
     val category: String,
     val image: String,
     val courses: Set<Course>
-) {
-}
+)

@@ -24,20 +24,24 @@ class FilterChainConfiguration {
                 AntPathRequestMatcher.antMatcher(HttpMethod.OPTIONS, "/**"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/media/public/*"),
 
+                // swagger @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
+                AntPathRequestMatcher.antMatcher("/v3/api-docs/**"),
+
                 // registration @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/registration/login"),
 
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/course/*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/*"),
-
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/institution/*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/*"),
-
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/institutions/"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/institutions/*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/institutions/*/courses"),
+
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/courses/*/assignments"),
+
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/*"),
 
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/"),
             ).permitAll()

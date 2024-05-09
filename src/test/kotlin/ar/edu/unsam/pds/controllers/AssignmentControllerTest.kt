@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.services.AssignmentService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,10 +13,8 @@ import java.time.LocalTime
 
 @ExtendWith(MockitoExtension::class)
 class AssignmentControllerTest {
-
     @Mock
     private lateinit var assignmentService: AssignmentService
-
     private lateinit var assignmentController: AssignmentController
 
     @BeforeEach
@@ -27,24 +25,12 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentAll`() {
-        var assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-        val assignments = listOf(assignment1)
-        `when`(assignmentService.getAll())
+        val assignment = AssignmentResponseDto("123", LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        val assignments = listOf(assignment)
 
-        val responseEntity = assignmentController.assignmentAll()
+        `when`(assignmentService.getAll()).thenReturn(assignments)
 
-        assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == assignments)
-    }
-
-    @Test
-    fun `test assignmentList`() {
-        var assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-        val idCourse = "123" // Id de curso válido
-        val assignments = listOf(assignment1)
-        `when`(assignmentService.getAssignmentList(idCourse)).thenReturn(assignments)
-
-        val responseEntity = assignmentController.assignmentList(idCourse)
+        val responseEntity = assignmentController.getAll()
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == assignments)
@@ -52,12 +38,10 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentItem`() {
-        var assignment1 = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-        val idAssignment = "456" // Id de asignación válido
-        val assignment = assignment1
-        `when`(assignmentService.getAssignmentItem(idAssignment)).thenReturn(assignment)
+        val assignment = AssignmentResponseDto("123", LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        `when`(assignmentService.getAssignment("123")).thenReturn(assignment)
 
-        val responseEntity = assignmentController.assignmentItem(idAssignment)
+        val responseEntity = assignmentController.getAssignment("123")
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == assignment)
