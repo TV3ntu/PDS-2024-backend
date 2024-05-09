@@ -41,7 +41,8 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
             principalUser.name,
             principalUser.lastName,
             principalUser.email,
-            principalUser.image
+            principalUser.image,
+            principalUser.id
         )
     }
 

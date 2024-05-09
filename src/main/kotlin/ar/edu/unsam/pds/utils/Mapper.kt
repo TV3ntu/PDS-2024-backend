@@ -11,7 +11,7 @@ import ar.edu.unsam.pds.models.User
 
 object Mapper {
     fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(user.name, user.lastName, user.email, user.image)
+        return UserResponseDto(user.name, user.lastName, user.email, user.image, user.id)
     }
 
     fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {
