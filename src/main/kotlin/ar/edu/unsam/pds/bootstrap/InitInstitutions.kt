@@ -13,7 +13,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
         institutions.create(
             Institution(
                 "Sport Club",
-                "club de futbol",
+                "cadena de gimnasios",
                 "Funcional",
                 "https://www.sportclub.com.ar/assets/logo-nav-bad008ff.png"
             )
