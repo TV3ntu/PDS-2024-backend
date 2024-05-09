@@ -26,7 +26,7 @@ class InstitutionControllerTest {
     @Test
     fun `test get all institutions`() {
         val institutions = listOf(
-            InstitutionResponseDto("id","name", "description", "category", "image", setOf<Course>())
+            InstitutionResponseDto("id","name", "description", "category", "image")
         )
 
         `when`(institutionService.getAll()).thenReturn(institutions)
@@ -39,7 +39,7 @@ class InstitutionControllerTest {
 
     @Test
     fun `test get a particular institution`() {
-        val institution = InstitutionResponseDto("123","name", "description", "category", "image", setOf<Course>())
+        val institution = InstitutionResponseDto("123","name", "description", "category", "image")
         `when`(institutionService.getInstitution("123")).thenReturn(institution)
 
         val responseEntity = institutionController.getInstitution("123")

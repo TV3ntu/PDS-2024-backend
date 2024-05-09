@@ -4,7 +4,8 @@ import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.security.models.Principal
 import java.util.Optional
 
-object UserRepository : Repository<User>() {
+@org.springframework.stereotype.Repository
+class UserRepository : Repository<User>() {
     private var principals: MutableMap<String, Principal> = hashMapOf()
 
     fun create(password: String, user: User) {
