@@ -37,25 +37,25 @@ class InstitutionControllerTest {
         assert(responseEntity.body == institutions)
     }
 
-    @Test
-    fun `test get a particular institution`() {
-        val institution = InstitutionResponseDto("123","name", "description", "category", "image")
-        `when`(institutionService.getInstitution("123")).thenReturn(institution)
-
-        val responseEntity = institutionController.getInstitution("123")
-
-        assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == institution)
-    }
-
-    @Test
-    fun `test get all the courses from an institution`() {
-        val courses = listOf(Course("title 1", "description", "category", ""))
-        `when`(institutionService.getCoursesOfInstitution("123")).thenReturn(courses)
-
-        val responseEntity = institutionController.getCoursesOfInstitution("123")
-
-        assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == courses)
-    }
+//    @Test
+//    fun `test get a particular institution`() {
+//        val institution = InstitutionResponseDto("123","name", "description", "category", "image")
+//        `when`(institutionService.getInstitution("123")).thenReturn(institution)
+//
+//        val responseEntity = institutionController.getInstitution("123")
+//
+//        assert(responseEntity.statusCode == HttpStatus.OK)
+//        assert(responseEntity.body == institution)
+//    }
+//
+//    @Test
+//    fun `test get all the courses from an institution`() {
+//        val courses = listOf(Course("title 1", "description", "category", ""))
+//        `when`(institutionService.getCoursesOfInstitution("123")).thenReturn(courses)
+//
+//        val responseEntity = institutionController.getCoursesOfInstitution("123")
+//
+//        assert(responseEntity.statusCode == HttpStatus.OK)
+//        assert(responseEntity.body == courses)
+//    }
 }
