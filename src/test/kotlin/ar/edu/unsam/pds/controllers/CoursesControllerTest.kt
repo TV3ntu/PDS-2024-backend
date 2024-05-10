@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.services.CoursesService
@@ -39,7 +40,7 @@ class CoursesControllerTest {
 
     @Test
     fun `test get a particular course`() {
-        val course = CourseResponseDto("123","title 1", "description", "category", "")
+        val course = CourseDetailResponseDto("123","title 1", "description", "category", "", mutableListOf())
         `when`(courseServices.getCourse("123")).thenReturn(course)
 
         val responseEntity = coursesController.getCourse("123")
