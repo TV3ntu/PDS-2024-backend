@@ -32,18 +32,18 @@ class FilterChainConfiguration {
                 antMatcher(POST, "/api/users/login"),
 
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                antMatcher(GET, "/api/institutions/"),
+                antMatcher(GET, "/api/institutions"),
                 antMatcher(GET, "/api/institutions/*"),
                 antMatcher(GET, "/api/institutions/*/courses"),
 
-                antMatcher(GET, "/api/courses/"),
+                antMatcher(GET, "/api/courses"),
                 antMatcher(GET, "/api/courses/*"),
                 antMatcher(GET, "/api/courses/*/assignments"),
 
-                antMatcher(GET, "/api/assignments/"),
+                antMatcher(GET, "/api/assignments"),
                 antMatcher(GET, "/api/assignments/*"),
 
-                antMatcher(GET, "/api/users/"),
+                antMatcher(GET, "/api/users"),
             ).permitAll()
             .anyRequest().authenticated()
         }

@@ -22,7 +22,7 @@ class UserController {
     @Autowired
     lateinit var userService: UserService
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "Get all users")
     fun getAll(): ResponseEntity<List<UserResponseDto>> {
         return ResponseEntity.ok(userService.getUserAll())

@@ -15,7 +15,7 @@ class AssignmentController {
     @Autowired
     lateinit var assignmentService: AssignmentService
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "Get all assignments")
     fun getAll(): ResponseEntity<List<AssignmentResponseDto>> {
         return ResponseEntity.ok(assignmentService.getAll())
