@@ -8,13 +8,41 @@ import ar.edu.unsam.pds.models.User
 
 object Mapper {
     fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(user.name, user.lastName, user.email, user.image)
+        return UserResponseDto(
+            user.name,
+            user.lastName,
+            user.email,
+            user.image,
+            user.id
+        )
     }
 
     fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {
-        return InstitutionResponseDto(institution.id, institution.name, institution.description, institution.category,
-            institution.image)
+        return InstitutionResponseDto(
+            institution.id,
+            institution.name,
+            institution.description,
+            institution.category,
+            institution.image
+        )
     }
+
+    fun buildInstitutionDetailDto(institution: Institution): InstitutionDetailResponseDto {
+        return InstitutionDetailResponseDto(
+            institution.id,
+            institution.name,
+            institution.description,
+            institution.category,
+            institution.image,
+            institution.courses
+        )
+    }
+
+//    fun buildInstitutionListDto(institution: MutableSet<Course>): List<InstitutionResponseDto> {
+//        return institution.map {
+//            buildInstitutionDto(Course)
+//        }
+//    }
 
     fun buildCourseDto(course: Course): CourseResponseDto {
         return CourseResponseDto(
@@ -33,9 +61,16 @@ object Mapper {
             course.description,
             course.category,
             course.image,
-            course.getAssignments().toList()
+            course.assignments
         )
     }
+
+
+//    fun courseInstitutionDto(course: Course): CourseAssignmentsResponseDto {
+//        return CourseAssignmentsResponseDto(
+//            course.assignments
+//        )
+//    }
 
 
     fun buildAssignmentDto(assignment: Assignment): AssignmentResponseDto {

@@ -1,5 +1,7 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.dto.response.CourseAssignmentsResponseDto
+
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
@@ -24,9 +26,8 @@ class CoursesService(
     }
 
 
-
-    fun getAssignmentOfCourse(idCourse: String): List<Assignment> {
-        val course = courseRepository.findById(idCourse) as Course
-        return course.getAssignments().toList()
-    }
+//    fun getAssignmentOfCourse(idCourse: String): CourseAssignmentsResponseDto {
+//        val course = courseRepository.findById(idCourse) as Course
+//        return Mapper.courseInstitutionDto(course)
+//    }
 }

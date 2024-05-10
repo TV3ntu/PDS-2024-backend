@@ -1,12 +1,14 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
+import org.hibernate.validator.constraints.UUID
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
@@ -43,4 +45,31 @@ class UserController {
         request.logout()
         return ResponseEntity.ok("{\"message\": \"Se ha deslogeado correctamente.\"}")
     }
+    @GetMapping("/{idUser}")
+    @Operation(summary = "Get user id")
+    fun userItem(
+        @PathVariable @UUID idUser: String
+    ): ResponseEntity<UserResponseDto> {
+        return ResponseEntity.ok(userService.getUserItem(idUser))
+    }
+
+//    @GetMapping("/{idUser}/detail")
+//    @Operation(summary = "Obtiene el detalle de un usuario")
+//    fun getDetail(
+//        @PathVariable @UUID idUser: String
+//    ): ResponseEntity<UserDetailResponseDto> {
+//        val user = userService.getDetail(idUser)
+//        return ResponseEntity.ok().body(user)
+//    }
+
+    @PatchMapping("/{idUser}")
+    @Operation(summary = "Actualiza el detalle de un usuario")
+    fun updateDetail(
+        @PathVariable @UUID idUser: String, @RequestBody user: UserResponseDto
+    ): ResponseEntity<UserResponseDto> {
+        val originalUser = userService.updateDetail(idUser, user)
+        return ResponseEntity.ok().body(originalUser)
+    }
+
+
 }
