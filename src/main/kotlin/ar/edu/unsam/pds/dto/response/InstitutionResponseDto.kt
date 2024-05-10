@@ -7,3 +7,12 @@ data class InstitutionResponseDto(
     val category: String,
     val image: String,
 )
+
+data class InstitutionDetailResponseDto(
+    val id: String,
+    val name: String,
+    val description: String,
+    val category: String,
+    val image: String,
+    val courses: List<CourseResponseDto>
+)
