@@ -8,13 +8,24 @@ import ar.edu.unsam.pds.models.User
 
 object Mapper {
     fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(user.name, user.lastName, user.email, user.image)
+        return UserResponseDto(user.id,user.name, user.lastName, user.email, user.image)
     }
 
     fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {
         return InstitutionResponseDto(institution.id, institution.name, institution.description, institution.category,
             institution.image)
     }
+    fun buildInstitutionDetailDto(institution: Institution): InstitutionDetailResponseDto {
+        return InstitutionDetailResponseDto(
+                institution.id,
+                institution.name,
+                institution.description,
+                institution.category,
+                institution.image,
+                institution.getCourses().map { buildCourseDto(it) }
+        )
+    }
+
 
     fun buildCourseDto(course: Course): CourseResponseDto {
         return CourseResponseDto(
