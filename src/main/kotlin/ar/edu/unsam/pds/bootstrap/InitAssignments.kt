@@ -7,6 +7,7 @@ import ar.edu.unsam.pds.repository.InstitutionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Component(value = "InitAssignments.beanName")
@@ -21,9 +22,8 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val course11 = this.findByNameAndCourseTitle("Sport Club", "Entrenamiento Funcional")
 
         val assignment111 = Assignment(
-            LocalTime.of(8, 0),
-            LocalTime.of(10, 0),
-            mutableListOf("Martes", "Jueves"),
+            LocalDateTime.of(2024,5,13,9,0,0),
+            LocalDateTime.of(2024,5,13,10,0,0),
             10,
             true,
             100
