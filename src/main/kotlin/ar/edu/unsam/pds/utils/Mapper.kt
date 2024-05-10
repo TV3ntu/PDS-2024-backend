@@ -17,15 +17,6 @@ object Mapper {
         )
     }
 
-    fun userDetailDto(user: User): UserDetailDto {
-        return UserDetailDto(
-            user.name,
-            user.lastName,
-            user.email,
-            user.image
-        )
-    }
-
     fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {
         return InstitutionResponseDto(
             institution.id,
@@ -36,11 +27,22 @@ object Mapper {
         )
     }
 
-    fun institutionCoursesDto(institution: Institution): InstitutionCoursesResponseDto {
-        return InstitutionCoursesResponseDto(
+    fun buildInstitutionDetailDto(institution: Institution): InstitutionDetailResponseDto {
+        return InstitutionDetailResponseDto(
+            institution.id,
+            institution.name,
+            institution.description,
+            institution.category,
+            institution.image,
             institution.courses
         )
     }
+
+//    fun buildInstitutionListDto(institution: MutableSet<Course>): List<InstitutionResponseDto> {
+//        return institution.map {
+//            buildInstitutionDto(Course)
+//        }
+//    }
 
     fun buildCourseDto(course: Course): CourseResponseDto {
         return CourseResponseDto(
@@ -52,11 +54,23 @@ object Mapper {
         )
     }
 
-    fun courseInstitutionDto(course: Course): CourseAssignmentsResponseDto {
-        return CourseAssignmentsResponseDto(
+    fun buildCourseDetailDto(course: Course): CourseDetailResponseDto {
+        return CourseDetailResponseDto(
+            course.id,
+            course.title,
+            course.description,
+            course.category,
+            course.image,
             course.assignments
         )
     }
+
+
+//    fun courseInstitutionDto(course: Course): CourseAssignmentsResponseDto {
+//        return CourseAssignmentsResponseDto(
+//            course.assignments
+//        )
+//    }
 
     fun buildAssignmentDto(assignment: Assignment): AssignmentResponseDto {
         return AssignmentResponseDto(
