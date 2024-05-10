@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.services.CoursesService
@@ -26,7 +27,7 @@ class CoursesController {
     @Operation(summary = "Get course by id")
     fun getCourse(
         @PathVariable @UUID idCourse: String
-    ): ResponseEntity<CourseResponseDto> {
+    ): ResponseEntity<CourseDetailResponseDto> {
         return ResponseEntity.ok(courseServices.getCourse(idCourse))
     }
 

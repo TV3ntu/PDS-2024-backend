@@ -1,9 +1,6 @@
 package ar.edu.unsam.pds.utils
 
-import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
-import ar.edu.unsam.pds.dto.response.CourseResponseDto
-import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
-import ar.edu.unsam.pds.dto.response.UserResponseDto
+import ar.edu.unsam.pds.dto.response.*
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
@@ -28,6 +25,18 @@ object Mapper {
             course.image
         )
     }
+
+    fun buildCourseDetailDto(course: Course): CourseDetailResponseDto {
+        return CourseDetailResponseDto(
+            course.id,
+            course.title,
+            course.description,
+            course.category,
+            course.image,
+            course.getAssignments().toList()
+        )
+    }
+
 
     fun buildAssignmentDto(assignment: Assignment): AssignmentResponseDto {
         return AssignmentResponseDto(
