@@ -9,11 +9,7 @@ class Institution (
     var image: String
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
-    private val courses: MutableSet<Course> = mutableSetOf()
-
-    fun getCourses(): MutableSet<Course> {
-        return courses
-    }
+    val courses: MutableSet<Course> = mutableSetOf()
 
     fun addCourse(course: Course) {
         courses.add(course)

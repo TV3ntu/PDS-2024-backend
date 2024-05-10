@@ -44,6 +44,9 @@ class FilterChainConfiguration {
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/assignments/*"),
 
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/*"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/*/detail"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.PATCH, "/api/users/*/detail"),
             ).permitAll()
             .anyRequest().authenticated()
         }
