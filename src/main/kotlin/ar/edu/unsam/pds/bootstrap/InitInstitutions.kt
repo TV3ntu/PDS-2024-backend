@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component
 
 @Component(value = "InitInstitutions.beanName")
 class InitInstitutions : BootstrapGeneric("Institutions") {
-    @Autowired private lateinit var institutions: InstitutionRepository
+    @Autowired private lateinit var institutionRepository: InstitutionRepository
 
     override fun doAfterPropertiesSet() {
-        institutions.create(
+        institutionRepository.create(
             Institution(
                 "Sport Club",
                 "cadena de gimnasios",
@@ -19,7 +19,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
             )
         )
 
-        institutions.create(
+        institutionRepository.create(
             Institution(
                 "Punto Fit",
                 "Club de Yoga",
@@ -28,7 +28,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
             )
         )
 
-        institutions.create(
+        institutionRepository.create(
             Institution(
                 "Club Tres de Febrero",
                 "Club de Natacion",

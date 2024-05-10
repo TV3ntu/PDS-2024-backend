@@ -12,8 +12,8 @@ import java.time.LocalTime
 @Component(value = "InitAssignments.beanName")
 @DependsOn(value = ["InitCourses.beanName"])
 class InitAssignments : BootstrapGeneric("Assignments") {
-    @Autowired private lateinit var institutions: InstitutionRepository
-    @Autowired private lateinit var assignments: AssignmentRepository
+    @Autowired private lateinit var institutionRepository: InstitutionRepository
+    @Autowired private lateinit var assignmentRepository: AssignmentRepository
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -30,7 +30,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course11?.addAssignment(assignment111)
-        assignments.create(assignment111)
+        assignmentRepository.create(assignment111)
 
         val assignment112 = Assignment(
             LocalTime.of(15, 0),
@@ -42,7 +42,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course11?.addAssignment(assignment112)
-        assignments.create(assignment112)
+        assignmentRepository.create(assignment112)
 
         val assignment113 = Assignment(
             LocalTime.of(20, 0),
@@ -54,7 +54,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course11?.addAssignment(assignment113)
-        assignments.create(assignment113)
+        assignmentRepository.create(assignment113)
 
         // Sport Club + Nutrición y Salud ##############################################################################
         val course12 = this.findByNameAndCourseTitle("Sport Club", "Nutrición y Salud")
@@ -69,7 +69,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course12?.addAssignment(assignment121)
-        assignments.create(assignment121)
+        assignmentRepository.create(assignment121)
 
         val assignment122 = Assignment(
             LocalTime.of(13, 0),
@@ -81,7 +81,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course12?.addAssignment(assignment122)
-        assignments.create(assignment122)
+        assignmentRepository.create(assignment122)
 
         val assignment123 = Assignment(
             LocalTime.of(17, 0),
@@ -93,7 +93,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course12?.addAssignment(assignment123)
-        assignments.create(assignment123)
+        assignmentRepository.create(assignment123)
 
         // Sport Club + Entrenamiento de Resistencia y Cardio ##########################################################
         val course13 = this.findByNameAndCourseTitle("Sport Club", "Entrenamiento de Resistencia y Cardio")
@@ -108,7 +108,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course13?.addAssignment(assignment131)
-        assignments.create(assignment131)
+        assignmentRepository.create(assignment131)
 
         val assignment132 = Assignment(
             LocalTime.of(16, 0),
@@ -120,7 +120,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course13?.addAssignment(assignment132)
-        assignments.create(assignment132)
+        assignmentRepository.create(assignment132)
 
         val assignment133 = Assignment(
             LocalTime.of(18, 0),
@@ -132,7 +132,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course13?.addAssignment(assignment133)
-        assignments.create(assignment133)
+        assignmentRepository.create(assignment133)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         // Punto Fit + Introducción al Yoga ############################################################################
@@ -148,7 +148,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course21?.addAssignment(assignment211)
-        assignments.create(assignment211)
+        assignmentRepository.create(assignment211)
 
         val course212 = Assignment(
             LocalTime.of(12, 0),
@@ -160,7 +160,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course21?.addAssignment(course212)
-        assignments.create(course212)
+        assignmentRepository.create(course212)
 
         val assignment213 = Assignment(
             LocalTime.of(18, 0),
@@ -172,7 +172,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course21?.addAssignment(assignment213)
-        assignments.create(assignment213)
+        assignmentRepository.create(assignment213)
 
         // Punto Fit + Introducción al Yoga ############################################################################
         val course22 = this.findByNameAndCourseTitle("Punto Fit", "Yoga Terapéutico")
@@ -187,7 +187,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course22?.addAssignment(assignmen221)
-        assignments.create(assignmen221)
+        assignmentRepository.create(assignmen221)
 
         val assignmen222 = Assignment(
             LocalTime.of(12, 0),
@@ -199,7 +199,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course22?.addAssignment(assignmen222)
-        assignments.create(assignmen222)
+        assignmentRepository.create(assignmen222)
 
         val assignmen223 = Assignment(
             LocalTime.of(18, 0),
@@ -211,7 +211,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course22?.addAssignment(assignmen223)
-        assignments.create(assignmen223)
+        assignmentRepository.create(assignmen223)
 
         // Punto Fit + Introducción al Yoga ############################################################################
         val course23 = this.findByNameAndCourseTitle("Punto Fit", "Yoga Terapéutico")
@@ -226,7 +226,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course23?.addAssignment(assignmen231)
-        assignments.create(assignmen231)
+        assignmentRepository.create(assignmen231)
 
         val assignmen232 = Assignment(
             LocalTime.of(12, 0),
@@ -238,7 +238,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course23?.addAssignment(assignmen232)
-        assignments.create(assignmen232)
+        assignmentRepository.create(assignmen232)
 
         val assignmen233 = Assignment(
             LocalTime.of(18, 0),
@@ -250,7 +250,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course23?.addAssignment(assignmen233)
-        assignments.create(assignmen233)
+        assignmentRepository.create(assignmen233)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         // Club Tres de Febrero + Natacion Libre #######################################################################
@@ -266,7 +266,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course31?.addAssignment(assignmen311)
-        assignments.create(assignmen311)
+        assignmentRepository.create(assignmen311)
 
         val assignmen312 = Assignment(
             LocalTime.of(11, 0),
@@ -278,7 +278,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course31?.addAssignment(assignmen312)
-        assignments.create(assignmen312)
+        assignmentRepository.create(assignmen312)
 
         val assignmen313 = Assignment(
             LocalTime.of(15, 0),
@@ -290,7 +290,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course31?.addAssignment(assignmen313)
-        assignments.create(assignmen313)
+        assignmentRepository.create(assignmen313)
 
         // Club Tres de Febrero + Natacion Libre #######################################################################
         val course32 = this.findByNameAndCourseTitle("Club Tres de Febrero", "Natación Avanzada")
@@ -305,7 +305,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course32?.addAssignment(assignmen321)
-        assignments.create(assignmen321)
+        assignmentRepository.create(assignmen321)
 
         val assignmen322 = Assignment(
             LocalTime.of(11, 0),
@@ -317,7 +317,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course32?.addAssignment(assignmen322)
-        assignments.create(assignmen322)
+        assignmentRepository.create(assignmen322)
 
         val assignmen323 = Assignment(
             LocalTime.of(15, 0),
@@ -329,7 +329,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course32?.addAssignment(assignmen323)
-        assignments.create(assignmen323)
+        assignmentRepository.create(assignmen323)
 
         // Club Tres de Febrero + Natación para Bebés y Niños Pequeños##################################################
         val course33 = this.findByNameAndCourseTitle("Club Tres de Febrero", "Natación para Bebés y Niños Pequeños")
@@ -344,7 +344,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course33?.addAssignment(assignmen331)
-        assignments.create(assignmen331)
+        assignmentRepository.create(assignmen331)
 
         val assignmen332 = Assignment(
             LocalTime.of(11, 0),
@@ -356,7 +356,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course33?.addAssignment(assignmen332)
-        assignments.create(assignmen332)
+        assignmentRepository.create(assignmen332)
 
         val assignmen333 = Assignment(
             LocalTime.of(15, 0),
@@ -368,11 +368,11 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         )
 
         course33?.addAssignment(assignmen333)
-        assignments.create(assignmen333)
+        assignmentRepository.create(assignmen333)
     }
 
     fun findByNameAndCourseTitle(name: String, title: String): Course? {
-        val course = institutions.getAll().find { it.name == name }.let { institution ->
+        val course = institutionRepository.getAll().find { it.name == name }.let { institution ->
             institution?.getCourses().let { courses ->
                 courses?.find { it.title == title }
             }
