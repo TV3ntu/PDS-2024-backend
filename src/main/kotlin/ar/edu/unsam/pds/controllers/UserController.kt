@@ -2,17 +2,12 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.exceptions.InternalServerError
-import ar.edu.unsam.pds.exceptions.NotFoundException
-import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
-import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -25,7 +20,7 @@ class UserController {
     @GetMapping("")
     @Operation(summary = "Get all users")
     fun getAll(): ResponseEntity<List<UserResponseDto>> {
-        return ResponseEntity.ok(userService.getUserAll())
+        return ResponseEntity.ok(userService.getAllUsers())
     }
 
     @PostMapping("login")
@@ -42,5 +37,13 @@ class UserController {
     ): ResponseEntity<String> {
         request.logout()
         return ResponseEntity.ok("{\"message\": \"Se ha deslogeado correctamente.\"}")
+    }
+
+    @GetMapping("{id}")
+    @Operation(summary = "Get user by id")
+    fun getUser(
+        @PathVariable id: String
+    ): ResponseEntity<UserResponseDto> {
+        return ResponseEntity.ok(userService.getUser(id))
     }
 }

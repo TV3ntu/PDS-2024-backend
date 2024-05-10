@@ -3,7 +3,8 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
-import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.exceptions.InvalidPasswordException
+import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.utils.Mapper
@@ -27,13 +28,14 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         try {
             request.login(user.email, user.password)
         } catch (e: ServletException) {
-            throw NotFoundException("Usuario y/o contraseña invalidos.")
+            throw InvalidPasswordException("Usuario y/o contraseña invalidos.")
         }
 
         val principal = (request.userPrincipal as Authentication).principal as Principal
         val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
 
         return UserResponseDto(
+            principalUser.id,
             principalUser.name,
             principalUser.lastName,
             principalUser.email,
@@ -41,8 +43,13 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         )
     }
 
-    fun getUserAll(): List<UserResponseDto> {
+    fun getAllUsers(): List<UserResponseDto> {
         val user = userRepository.getAll()
         return user.map { Mapper.buildUserDto(it) }
+    }
+
+    fun getUser(id: String): UserResponseDto {
+        val user = userRepository.findById(id) as User
+        return Mapper.buildUserDto(user)
     }
 }
