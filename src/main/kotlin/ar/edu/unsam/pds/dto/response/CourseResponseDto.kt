@@ -10,6 +10,13 @@ data class CourseResponseDto(
     var image: String
 )
 
-data class CourseAssignmentsResponseDto(
-    val assignments : MutableSet<Assignment>
+
+data class CourseDetailResponseDto(
+    val id: String,
+    val title: String,
+    val description: String,
+    var category: String,
+    var image: String,
+    var assignments: List<Assignment>
+
 )

@@ -6,20 +6,35 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component(value = "InitInstitutions.beanName")
-class InitInstitutions() : BootstrapGeneric("Institutions") {
-
-    @Autowired
-    lateinit var institutionRepository: InstitutionRepository
+class InitInstitutions : BootstrapGeneric("Institutions") {
+    @Autowired private lateinit var institutionRepository: InstitutionRepository
 
     override fun doAfterPropertiesSet() {
-        val institution1 = Institution("Sport Club", "club de futbol", "Funcional", "https://www.sportclub.com.ar/assets/logo-nav-bad008ff.png")
-        val institution2 = Institution("Punto Fit", "club de yoga", "Yoga", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIU23JHmnjOPv7N3csEVpxeseaTLOEHJg300Y4DJQvOw&s")
-        val institution3 = Institution("Club Tres de Febrero", "club de futbol", "Natacion", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu98a-RFTDCxeiT2I3QYJz4ZPIPTqdr6e9-mkumkCiFw&s")
+        institutionRepository.create(
+            Institution(
+                "Sport Club",
+                "cadena de gimnasios",
+                "Funcional",
+                "https://www.sportclub.com.ar/assets/logo-nav-bad008ff.png"
+            )
+        )
 
-        institutionRepository.apply {
-            create(institution1)
-            create(institution2)
-            create(institution3)
-        }
+        institutionRepository.create(
+            Institution(
+                "Punto Fit",
+                "Club de Yoga",
+                "Yoga",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIU23JHmnjOPv7N3csEVpxeseaTLOEHJg300Y4DJQvOw&s"
+            )
+        )
+
+        institutionRepository.create(
+            Institution(
+                "Club Tres de Febrero",
+                "Club de Natacion",
+                "Natacion",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu98a-RFTDCxeiT2I3QYJz4ZPIPTqdr6e9-mkumkCiFw&s"
+            )
+        )
     }
 }

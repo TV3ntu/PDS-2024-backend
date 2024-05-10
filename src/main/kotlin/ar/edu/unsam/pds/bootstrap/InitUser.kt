@@ -7,12 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component(value = "InitUsers.beanName")
-class InitUser() : BootstrapGeneric("users") {
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
-
-    @Autowired
-    private lateinit var userRepository: UserRepository
+class InitUser : BootstrapGeneric("users") {
+    @Autowired private lateinit var passwordEncoder: PasswordEncoder
+    @Autowired private lateinit var userRepository: UserRepository
 
     override fun doAfterPropertiesSet() {
         // region user = Adan @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

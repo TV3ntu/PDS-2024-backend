@@ -16,7 +16,7 @@ class InstitutionController {
     @Autowired
     lateinit var institutionService: InstitutionService
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "Get all institutions")
     fun getAll(): ResponseEntity<List<InstitutionResponseDto>> {
         return ResponseEntity.ok(institutionService.getAll())

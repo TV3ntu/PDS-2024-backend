@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.services.CoursesService
@@ -37,6 +38,7 @@ class CoursesControllerTest {
         assert(responseEntity.body == courses)
     }
 
+
 //    @Test
 //    fun `test get a particular course`() {
 //        val course = CourseResponseDto("123","title 1", "description", "category", "")
@@ -59,4 +61,5 @@ class CoursesControllerTest {
 //        assert(responseEntity.statusCode == HttpStatus.OK)
 //        assert(responseEntity.body == assignments)
 //    }
+
 }

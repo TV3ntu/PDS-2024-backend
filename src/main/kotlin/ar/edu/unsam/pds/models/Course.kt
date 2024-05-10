@@ -11,5 +11,9 @@ class Course (
     val id: String = UUID.randomUUID().toString()
     val assignments = mutableSetOf<Assignment>()
 
+    fun addAssignment(assignment: Assignment) {
+        assignments.add(assignment)
+    }
+
     override fun findMe(value: String): Boolean = id == value
 }

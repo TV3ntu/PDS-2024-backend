@@ -18,7 +18,7 @@ class CoursesController {
     @Autowired
     lateinit var courseServices: CoursesService
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "Get all courses")
     fun getAll(): ResponseEntity<List<CourseResponseDto>> {
         return ResponseEntity.ok(courseServices.getAll())
