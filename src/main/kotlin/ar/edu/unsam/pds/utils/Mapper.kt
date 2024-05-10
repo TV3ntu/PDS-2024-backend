@@ -43,7 +43,7 @@ object Mapper {
             assignment.id,
             assignment.startTime,
             assignment.endTime,
-            assignment.day,
+            assignment.date,
             assignment.quotas,
             assignment.isActive,
             assignment.price

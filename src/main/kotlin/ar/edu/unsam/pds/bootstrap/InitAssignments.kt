@@ -7,6 +7,7 @@ import ar.edu.unsam.pds.repository.InstitutionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -22,8 +23,9 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val course11 = this.findByNameAndCourseTitle("Sport Club", "Entrenamiento Funcional")
 
         val assignment111 = Assignment(
-            LocalDateTime.of(2024,5,13,9,0,0),
-            LocalDateTime.of(2024,5,13,10,0,0),
+            LocalTime.of(15, 0),
+            LocalTime.of(16, 0),
+            LocalDate.of(2024, 5, 13),
             10,
             true,
             100
@@ -35,7 +37,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment112 = Assignment(
             LocalTime.of(15, 0),
             LocalTime.of(17, 0),
-            mutableListOf("Martes", "Jueves"),
+            LocalDate.of(2024, 5, 17),
             10,
             true,
             100
@@ -47,7 +49,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment113 = Assignment(
             LocalTime.of(20, 0),
             LocalTime.of(22, 0),
-            mutableListOf("Martes", "Jueves"),
+            LocalDate.of(2024, 5, 16),
             10,
             true,
             100
@@ -62,7 +64,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment121 = Assignment(
             LocalTime.of(8, 0),
             LocalTime.of(9, 0),
-            mutableListOf("Lunes", "Miércoles", "Viernes"),
+            LocalDate.of(2024, 5, 15),
             10,
             true,
             100
@@ -74,7 +76,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment122 = Assignment(
             LocalTime.of(13, 0),
             LocalTime.of(16, 0),
-            mutableListOf("Lunes", "Miércoles", "Viernes"),
+            LocalDate.of(2024, 5, 14),
             10,
             true,
             100
@@ -86,7 +88,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment123 = Assignment(
             LocalTime.of(17, 0),
             LocalTime.of(19, 0),
-            mutableListOf("Lunes", "Miércoles", "Viernes"),
+            LocalDate.of(2024, 5, 18),
             10,
             true,
             100
@@ -101,7 +103,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment131 = Assignment(
             LocalTime.of(9, 0),
             LocalTime.of(10, 0),
-            mutableListOf("Lunes", "Martes", "Viernes"),
+            LocalDate.of(2024, 5, 19),
             10,
             true,
             100
@@ -113,7 +115,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment132 = Assignment(
             LocalTime.of(16, 0),
             LocalTime.of(17, 0),
-            mutableListOf("Lunes", "Martes", "Viernes"),
+            LocalDate.of(2024, 5, 20),
             10,
             true,
             100
@@ -125,7 +127,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment133 = Assignment(
             LocalTime.of(18, 0),
             LocalTime.of(20, 0),
-            mutableListOf("Lunes", "Martes", "Viernes"),
+            LocalDate.of(2024, 5, 21),
             10,
             true,
             100
@@ -141,7 +143,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment211 = Assignment(
             LocalTime.of(10, 0),
             LocalTime.of(11, 0),
-            mutableListOf("Lunes"),
+            LocalDate.of(2024, 5, 22),
             15,
             true,
             200
@@ -153,7 +155,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val course212 = Assignment(
             LocalTime.of(12, 0),
             LocalTime.of(14, 0),
-            mutableListOf("Jueves"),
+            LocalDate.of(2024, 5, 23),
             15,
             true,
             200
@@ -165,7 +167,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignment213 = Assignment(
             LocalTime.of(18, 0),
             LocalTime.of(19, 0),
-            mutableListOf("Jueves"),
+            LocalDate.of(2024, 5, 24),
             15,
             true,
             200
@@ -180,7 +182,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen221 = Assignment(
             LocalTime.of(10, 0),
             LocalTime.of(11, 0),
-            mutableListOf("Lunes"),
+            LocalDate.of(2024, 5, 24),
             15,
             true,
             200
@@ -192,7 +194,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen222 = Assignment(
             LocalTime.of(12, 0),
             LocalTime.of(14, 0),
-            mutableListOf("Jueves"),
+            LocalDate.of(2024, 5, 24),
             15,
             true,
             200
@@ -204,7 +206,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen223 = Assignment(
             LocalTime.of(18, 0),
             LocalTime.of(19, 0),
-            mutableListOf("Jueves"),
+            LocalDate.of(2024, 5, 24),
             15,
             true,
             200
@@ -219,7 +221,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen231 = Assignment(
             LocalTime.of(10, 0),
             LocalTime.of(11, 0),
-            mutableListOf("Lunes"),
+            LocalDate.of(2024, 5, 25),
             15,
             true,
             200
@@ -231,7 +233,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen232 = Assignment(
             LocalTime.of(12, 0),
             LocalTime.of(14, 0),
-            mutableListOf("Martes"),
+            LocalDate.of(2024, 5, 26),
             15,
             true,
             200
@@ -243,7 +245,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen233 = Assignment(
             LocalTime.of(18, 0),
             LocalTime.of(19, 0),
-            mutableListOf("Miercoles"),
+            LocalDate.of(2024, 5, 27),
             15,
             true,
             200
@@ -259,7 +261,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen311 = Assignment(
             LocalTime.of(8, 0),
             LocalTime.of(10, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 28),
             5,
             true,
             200
@@ -271,7 +273,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen312 = Assignment(
             LocalTime.of(11, 0),
             LocalTime.of(13, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 29),
             5,
             true,
             200
@@ -283,7 +285,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen313 = Assignment(
             LocalTime.of(15, 0),
             LocalTime.of(17, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 30),
             5,
             true,
             200
@@ -298,7 +300,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen321 = Assignment(
             LocalTime.of(8, 0),
             LocalTime.of(10, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 31),
             5,
             true,
             200
@@ -310,7 +312,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen322 = Assignment(
             LocalTime.of(11, 0),
             LocalTime.of(13, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 23),
             5,
             true,
             200
@@ -322,7 +324,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen323 = Assignment(
             LocalTime.of(15, 0),
             LocalTime.of(17, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 22),
             5,
             true,
             200
@@ -337,7 +339,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen331 = Assignment(
             LocalTime.of(8, 0),
             LocalTime.of(10, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 21),
             5,
             true,
             200
@@ -349,7 +351,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen332 = Assignment(
             LocalTime.of(11, 0),
             LocalTime.of(13, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 20),
             5,
             true,
             200
@@ -361,7 +363,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
         val assignmen333 = Assignment(
             LocalTime.of(15, 0),
             LocalTime.of(17, 0),
-            mutableListOf("Sábado"),
+            LocalDate.of(2024, 5, 19),
             5,
             true,
             200
