@@ -33,17 +33,9 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         } catch (e: ServletException) {
             throw NotFoundException("Usuario y/o contraseña invalidos.")
         }
-
         val principal = (request.userPrincipal as Authentication).principal as Principal
         val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
-
-        return UserResponseDto(
-            principalUser.name,
-            principalUser.lastName,
-            principalUser.email,
-            principalUser.image,
-            principalUser.id
-        )
+        return Mapper.buildUserDto(principalUser)
     }
 
     fun getUserAll(): List<UserResponseDto> {
@@ -53,30 +45,19 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
 
     fun getUserItem(idUser: String): UserResponseDto {
         val user = userRepository.findById(idUser) as User
-        return buildUserDto(user)
+        return Mapper.buildUserDto(user)
     }
 
     fun getDetail(idUser: String): UserDetailDto {
         val user = userRepository.findById(idUser) as User
-        return UserDetailDto(
-            name = user.name,
-            lastName = user.lastName,
-            email = user.email,
-            image = user.image
-        )
+        return Mapper.userDetailDto(user)
     }
 
     fun updateDetail(idUser: String, userDetail: UserDetailDto): UserDetailDto {
         val user = userRepository.findById(idUser) as User
-    val updatedUser = patchUser(user, userDetail)
-
+        val updatedUser = patchUser(user, userDetail)
         userRepository.update(idUser, updatedUser)
-        return UserDetailDto(
-            name = user.name,
-            lastName = user.lastName,
-            email = user.email,
-            image = user.image
-        )
+        return Mapper.userDetailDto(user)
     }
 
     private fun patchUser(user: User, userDetail: UserDetailDto): User {
@@ -85,10 +66,6 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         userDetail.email.let { user.email = it }
         userDetail.image.let { user.image = it }
         return user
-    }
-
-    private fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(user.name, user.lastName, user.email, user.image, user.id)
     }
 
 }

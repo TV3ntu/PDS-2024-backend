@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.CourseAssignmentsResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.services.CoursesService
@@ -34,7 +35,7 @@ class CoursesController {
     @Operation(summary = "Get all assignments by course")
     fun getAssignmentOfCourse(
         @PathVariable @UUID idCourse: String
-    ): ResponseEntity<List<Assignment>> {
+    ): ResponseEntity<CourseAssignmentsResponseDto> {
         return ResponseEntity.ok(courseServices.getAssignmentOfCourse(idCourse))
     }
 }

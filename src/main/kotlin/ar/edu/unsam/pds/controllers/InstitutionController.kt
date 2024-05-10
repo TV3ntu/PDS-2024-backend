@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.InstitutionCoursesResponseDto
 import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.services.InstitutionService
@@ -34,7 +35,7 @@ class InstitutionController {
     @Operation(summary = "Get all courses by institution")
     fun getCoursesOfInstitution(
         @PathVariable @UUID idInstitution: String
-    ): ResponseEntity<List<Course>> {
+    ): ResponseEntity<InstitutionCoursesResponseDto> {
         return ResponseEntity.ok(institutionService.getCoursesOfInstitution(idInstitution))
     }
 }
