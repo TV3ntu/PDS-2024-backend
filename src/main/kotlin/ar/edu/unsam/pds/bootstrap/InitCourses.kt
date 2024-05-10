@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component
 @Component(value = "InitCourses.beanName")
 @DependsOn(value = ["InitInstitutions.beanName"])
 class InitCourses : BootstrapGeneric("Courses") {
-    @Autowired private lateinit var institutions: InstitutionRepository
-    @Autowired private lateinit var courses: CourseRepository
+    @Autowired private lateinit var institutionRepository: InstitutionRepository
+    @Autowired private lateinit var courseRepository: CourseRepository
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -29,7 +29,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         sportClub?.addCourse(course11)
-        courses.create(course11)
+        courseRepository.create(course11)
 
         val course12 = Course(
             "Nutrición y Salud",
@@ -44,7 +44,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         sportClub?.addCourse(course12)
-        courses.create(course12)
+        courseRepository.create(course12)
 
         val course13 = Course(
             "Entrenamiento de Resistencia y Cardio",
@@ -59,7 +59,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         sportClub?.addCourse(course13)
-        courses.create(course13)
+        courseRepository.create(course13)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         val puntoFit = this.findByName("Punto Fit")
@@ -76,7 +76,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         puntoFit?.addCourse(course21)
-        courses.create(course21)
+        courseRepository.create(course21)
 
         val course22 = Course(
             "Yoga Terapéutico",
@@ -90,7 +90,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         puntoFit?.addCourse(course22)
-        courses.create(course22)
+        courseRepository.create(course22)
 
         val course23 = Course(
             "Yoga Avanzado",
@@ -104,7 +104,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         puntoFit?.addCourse(course23)
-        courses.create(course23)
+        courseRepository.create(course23)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         val clubTresDeFebrero = this.findByName("Club Tres de Febrero")
@@ -121,7 +121,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         clubTresDeFebrero?.addCourse(course31)
-        courses.create(course31)
+        courseRepository.create(course31)
 
         val course32 = Course(
             "Natación Avanzada",
@@ -135,7 +135,7 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         clubTresDeFebrero?.addCourse(course32)
-        courses.create(course32)
+        courseRepository.create(course32)
 
         val course33 = Course(
             "Natación para Bebés y Niños Pequeños",
@@ -149,10 +149,10 @@ class InitCourses : BootstrapGeneric("Courses") {
         )
 
         clubTresDeFebrero?.addCourse(course33)
-        courses.create(course33)
+        courseRepository.create(course33)
     }
 
     fun findByName(name: String): Institution? {
-        return institutions.getAll().find { it.name == name }
+        return institutionRepository.getAll().find { it.name == name }
     }
 }

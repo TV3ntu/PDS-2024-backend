@@ -2,7 +2,6 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.response.InstitutionDetailResponseDto
 import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
-import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.services.InstitutionService
 import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
@@ -31,11 +30,12 @@ class InstitutionController {
         return ResponseEntity.ok(institutionService.getInstitution(idInstitution))
     }
 
-    @GetMapping("{idInstitution}/courses")
-    @Operation(summary = "Get all courses by institution")
-    fun getCoursesOfInstitution(
-        @PathVariable @UUID idInstitution: String
-    ): ResponseEntity<List<Course>> {
-        return ResponseEntity.ok(institutionService.getCoursesOfInstitution(idInstitution))
-    }
+//    @GetMapping("{idInstitution}/courses")
+//    @Operation(summary = "Get all courses by institution")
+//    fun getCourses(
+//        @PathVariable @UUID idInstitution: String
+//    ): ResponseEntity<List<InstitutionResponseDto>> {
+//        val courses = institutionService.getCourses(idInstitution)
+//        return ResponseEntity.ok().body(courses)
+//    }
 }

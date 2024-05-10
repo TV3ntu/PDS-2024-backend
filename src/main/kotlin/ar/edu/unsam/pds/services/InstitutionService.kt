@@ -2,7 +2,6 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.response.InstitutionDetailResponseDto
 import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
-import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.utils.Mapper
@@ -23,8 +22,8 @@ class InstitutionService(
         return Mapper.buildInstitutionDetailDto(institution as Institution)
     }
 
-    fun getCoursesOfInstitution(idInstitution: String): List<Course> {
-        val institution = institutionRepository.findById(idInstitution) as Institution
-        return institution.getCourses().toList()
-    }
+//    fun getCourses(idInstitution: String): List<InstitutionResponseDto> {
+//        val institution = institutionRepository.findById(idInstitution) as Institution
+//        return Mapper.buildInstitutionListDto(institution.courses)
+//    }
 }
