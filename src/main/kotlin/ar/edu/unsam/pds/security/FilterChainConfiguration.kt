@@ -2,11 +2,13 @@ package ar.edu.unsam.pds.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpMethod.*
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 
 @Configuration
@@ -45,10 +47,10 @@ class FilterChainConfiguration {
 
 
                 antMatcher(GET, "/api/users"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/*/detail"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.PATCH, "/api/users/*/detail"),
+                antMatcher(GET, "/api/users/"),
+                antMatcher(GET, "/api/users/*"),
+                antMatcher(GET, "/api/users/*/detail"),
+                antMatcher(PATCH, "/api/users/*/detail"),
             ).permitAll()
             .anyRequest().authenticated()
         }

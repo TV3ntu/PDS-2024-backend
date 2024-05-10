@@ -1,6 +1,5 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.dto.response.CourseAssignmentsResponseDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Assignment

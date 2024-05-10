@@ -1,9 +1,6 @@
 package ar.edu.unsam.pds.services
 
-import ar.edu.unsam.pds.dto.response.CourseAssignmentsResponseDto
-
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
-import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository

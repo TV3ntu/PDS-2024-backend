@@ -8,7 +8,6 @@ import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.exceptions.InvalidPasswordException
-import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.utils.Mapper
