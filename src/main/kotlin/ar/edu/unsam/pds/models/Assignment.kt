@@ -1,12 +1,13 @@
 package ar.edu.unsam.pds.models
-import java.time.LocalDateTime
 import java.util.UUID
 import ar.edu.unsam.pds.repository.Element
+import java.time.LocalDate
 import java.time.LocalTime
 
 class Assignment (
-    val startTime: LocalDateTime,
-    val endTime: LocalDateTime,
+    val startTime: LocalTime,
+    val endTime: LocalTime,
+    val date: LocalDate,
     val quotas: Int,
     var isActive: Boolean,
     val price: Int
@@ -16,6 +17,6 @@ class Assignment (
     override fun findMe(value: String): Boolean = id == value
 
     fun dayOfWeek():String{
-        return startTime.dayOfWeek.toString()
+        return date.dayOfWeek.toString()
     }
 }
