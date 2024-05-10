@@ -1,7 +1,7 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
-import ar.edu.unsam.pds.dto.response.UserDetailDto
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
@@ -48,19 +48,14 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         return Mapper.buildUserDto(user)
     }
 
-    fun getDetail(idUser: String): UserDetailDto {
-        val user = userRepository.findById(idUser) as User
-        return Mapper.userDetailDto(user)
-    }
-
-    fun updateDetail(idUser: String, userDetail: UserDetailDto): UserDetailDto {
+    fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
         val user = userRepository.findById(idUser) as User
         val updatedUser = patchUser(user, userDetail)
         userRepository.update(idUser, updatedUser)
-        return Mapper.userDetailDto(user)
+        return Mapper.buildUserDto(user)
     }
 
-    private fun patchUser(user: User, userDetail: UserDetailDto): User {
+    private fun patchUser(user: User, userDetail: UserResponseDto): User {
         userDetail.name.let { user.name = it }
         userDetail.lastName.let { user.lastName = it }
         userDetail.email.let { user.email = it }

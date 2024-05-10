@@ -1,7 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.dto.response.UserDetailDto
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
@@ -53,20 +53,20 @@ class UserController {
         return ResponseEntity.ok(userService.getUserItem(idUser))
     }
 
-    @GetMapping("/{idUser}/detail")
-    @Operation(summary = "Obtiene el detalle de un usuario")
-    fun getDetail(
-        @PathVariable @UUID idUser: String
-    ): ResponseEntity<UserDetailDto> {
-        val user = userService.getDetail(idUser)
-        return ResponseEntity.ok().body(user)
-    }
+//    @GetMapping("/{idUser}/detail")
+//    @Operation(summary = "Obtiene el detalle de un usuario")
+//    fun getDetail(
+//        @PathVariable @UUID idUser: String
+//    ): ResponseEntity<UserDetailResponseDto> {
+//        val user = userService.getDetail(idUser)
+//        return ResponseEntity.ok().body(user)
+//    }
 
-    @PatchMapping("/{idUser}/detail")
+    @PatchMapping("/{idUser}")
     @Operation(summary = "Actualiza el detalle de un usuario")
     fun updateDetail(
-        @PathVariable @UUID idUser: String, @RequestBody user: UserDetailDto
-    ): ResponseEntity<UserDetailDto> {
+        @PathVariable @UUID idUser: String, @RequestBody user: UserResponseDto
+    ): ResponseEntity<UserResponseDto> {
         val originalUser = userService.updateDetail(idUser, user)
         return ResponseEntity.ok().body(originalUser)
     }
