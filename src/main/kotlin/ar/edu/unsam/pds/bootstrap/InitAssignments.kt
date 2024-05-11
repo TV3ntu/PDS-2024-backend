@@ -373,7 +373,7 @@ class InitAssignments : BootstrapGeneric("Assignments") {
 
     fun findByNameAndCourseTitle(name: String, title: String): Course? {
         val course = institutionRepository.getAll().find { it.name == name }.let { institution ->
-            institution?.getCourses().let { courses ->
+            institution?.courses.let { courses ->
                 courses?.find { it.title == title }
             }
         }
