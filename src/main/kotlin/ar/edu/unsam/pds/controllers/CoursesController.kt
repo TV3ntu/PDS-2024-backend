@@ -1,9 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
-import ar.edu.unsam.pds.dto.response.CourseAssignmentsResponseDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
-import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.services.CoursesService
 import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
