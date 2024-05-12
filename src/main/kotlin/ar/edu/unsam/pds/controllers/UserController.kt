@@ -1,20 +1,14 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
-import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.exceptions.InternalServerError
-import ar.edu.unsam.pds.exceptions.NotFoundException
-import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
-import org.hibernate.validator.constraints.UUID
-import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
+import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -41,10 +35,11 @@ class UserController {
     @PostMapping("logout")
     fun logout(
         request: HttpServletRequest
-    ): ResponseEntity<String> {
+    ): ResponseEntity<Map<String, String>> {
         request.logout()
-        return ResponseEntity.ok("{\"message\": \"Se ha deslogeado correctamente.\"}")
+        return ResponseEntity.ok(mapOf("message" to "Se ha deslogeado correctamente."))
     }
+
     @GetMapping("/{idUser}")
     @Operation(summary = "Get user id")
     fun userItem(
@@ -54,7 +49,7 @@ class UserController {
     }
 
 //    @GetMapping("/{idUser}/detail")
-//    @Operation(summary = "Obtiene el detalle de un usuario")
+//    @Operation(summary = "Get the details of a user")
 //    fun getDetail(
 //        @PathVariable @UUID idUser: String
 //    ): ResponseEntity<UserDetailResponseDto> {
@@ -63,13 +58,11 @@ class UserController {
 //    }
 
     @PatchMapping("/{idUser}")
-    @Operation(summary = "Actualiza el detalle de un usuario")
+    @Operation(summary = "Update a user's details")
     fun updateDetail(
         @PathVariable @UUID idUser: String, @RequestBody user: UserResponseDto
     ): ResponseEntity<UserResponseDto> {
         val originalUser = userService.updateDetail(idUser, user)
         return ResponseEntity.ok().body(originalUser)
     }
-
-
 }

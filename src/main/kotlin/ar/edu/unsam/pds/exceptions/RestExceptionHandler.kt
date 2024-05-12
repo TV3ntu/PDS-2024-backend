@@ -1,22 +1,18 @@
 package ar.edu.unsam.pds.exceptions
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.http.*
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
+import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
-import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.net.URI
-
-class BadRequestException(message: String) : RuntimeException(message)
-class InternalServerError(message: String) : RuntimeException(message)
-class InvalidPasswordException(message: String) : RuntimeException(message)
-class NotFoundException(message: String) : RuntimeException(message)
-class PermissionDeniedException(message: String) : RuntimeException(message)
-class ValidationException(message: String) : RuntimeException(message)
+import java.time.LocalDateTime
 
 @RestControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
@@ -25,55 +21,56 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         headers: HttpHeaders,
         status: HttpStatusCode,
         request: WebRequest
-    ): ResponseEntity<Any>? {
+    ): ResponseEntity<Any> {
         val errors: MutableMap<String, String> = mutableMapOf()
-        val httpStatus = HttpStatus.NOT_FOUND
 
         exception.bindingResult.fieldErrors.forEach {
             errors[it.field] = it.defaultMessage!!.toString()
         }
 
-        return ResponseEntity.status(httpStatus).body(
-            ProblemDetail.forStatus(httpStatus).apply {
-                type = URI.create("")
-                title = "constraint violation exception"
-                detail = ObjectMapper().writeValueAsString(errors).toString()
-            }
-        )
+        return buildResponse(status, headers, errors, request)
+    }
+
+    override fun handleHttpMessageNotReadable(
+        exception: HttpMessageNotReadableException,
+        headers: HttpHeaders,
+        status: HttpStatusCode,
+        request: WebRequest
+    ): ResponseEntity<Any>? {
+        val message = retouchMessage(exception.message, request)
+
+        return buildResponse(status, headers, message, request)
     }
 
     @ExceptionHandler(value = [UsernameNotFoundException::class])
-    fun handleUsernameNotFoundException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.BAD_REQUEST, exception.message, exception)
+    fun handleUsernameNotFoundException(response: HttpServletResponse) {
+        response.sendError(HttpStatus.BAD_REQUEST.value())
     }
 
-    @ExceptionHandler(value = [BadRequestException::class])
-    fun handleBadRequestException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.BAD_REQUEST, exception.message, exception)
+    private fun buildResponse(
+        status: HttpStatusCode,
+        headers: HttpHeaders,
+        message: Any,
+        request: WebRequest
+    ): ResponseEntity<Any> {
+        val body: MutableMap<String, Any> = mutableMapOf()
+
+        body["timestamp"] = LocalDateTime.now()
+        body["status"] = status.value()
+        body["error"] = HttpStatus.valueOf(status.value()).name
+        body["message"] = message
+        body["path"] = request.getDescription(false).replace("uri=", "")
+
+        return ResponseEntity(body, headers, status)
     }
 
-    @ExceptionHandler(value = [InternalServerError::class])
-    fun handleInternalServerError(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.message, exception)
-    }
+    private fun retouchMessage(
+        message: String?,
+        request: WebRequest
+    ): String {
+        val className = message?.substringAfter("[")?.substringBefore("]") ?: ""
+        val url = request.getDescription(false).replace("uri=", "")
 
-    @ExceptionHandler(value = [InvalidPasswordException::class])
-    fun handleInvalidPasswordException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.UNAUTHORIZED, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [NotFoundException::class])
-    fun handleNotFoundException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.NOT_FOUND, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [PermissionDeniedException::class])
-    fun handlePermissionDeniedException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.FORBIDDEN, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [ValidationException::class])
-    fun handleValidationException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.CONFLICT, exception.message, exception)
+        return message?.replace(className, url) ?: ""
     }
 }

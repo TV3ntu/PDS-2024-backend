@@ -1,14 +1,14 @@
 package ar.edu.unsam.pds.security
 
+import jakarta.servlet.DispatcherType.ASYNC
+import jakarta.servlet.DispatcherType.ERROR
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpMethod.*
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 
 @Configuration
@@ -19,6 +19,11 @@ class FilterChainConfiguration {
         http.addFilterAfter(MyTempCorsFilter(), DigestAuthenticationFilter::class.java)
 
         http.authorizeHttpRequests { authorize -> authorize
+            // #########################################################################################################
+            // # dispatcher for exceptions                                                                             #
+            // #########################################################################################################
+            .dispatcherTypeMatchers(ERROR, ASYNC).permitAll()
+
             // #########################################################################################################
             // # all user                                                                                              #
             // #########################################################################################################
@@ -47,9 +52,9 @@ class FilterChainConfiguration {
 
 
                 antMatcher(GET, "/api/users"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/users/*"),
-                AntPathRequestMatcher.antMatcher(HttpMethod.PATCH, "/api/users/*"),
+                antMatcher(GET, "/api/users/"),
+                antMatcher(GET, "/api/users/*"),
+                antMatcher(PATCH, "/api/users/*"),
             ).permitAll()
             .anyRequest().authenticated()
         }
