@@ -26,7 +26,8 @@ class RestExceptionHandler {
 
     @ExceptionHandler(value = [HttpMessageNotReadableException::class])
     fun customHandleHttpMessageNotReadable(
-        exception: HttpMessageNotReadableException, request: WebRequest
+        exception: HttpMessageNotReadableException,
+        request: WebRequest
     ): ResponseEntity<BodyResponse> {
         val status = HttpStatus.BAD_REQUEST
         val message = "Mensaje http no legible"
@@ -36,8 +37,9 @@ class RestExceptionHandler {
 
     @ExceptionHandler(value = [UsernameNotFoundException::class])
     fun handleUsernameNotFoundException(
-        exception: UsernameNotFoundException, request: WebRequest
-    ): ResponseEntity<Any> {
+        exception: UsernameNotFoundException,
+        request: WebRequest
+    ): ResponseEntity<BodyResponse> {
         val status = HttpStatus.BAD_REQUEST
         val body = BodyResponse(status, request, exception.message)
         return ResponseEntity(body, status)
