@@ -1,79 +1,47 @@
 package ar.edu.unsam.pds.exceptions
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.http.*
+import ar.edu.unsam.pds.dto.exceptions.BodyResponse
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
-import org.springframework.web.server.ResponseStatusException
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.net.URI
-
-class BadRequestException(message: String) : RuntimeException(message)
-class InternalServerError(message: String) : RuntimeException(message)
-class InvalidPasswordException(message: String) : RuntimeException(message)
-class NotFoundException(message: String) : RuntimeException(message)
-class PermissionDeniedException(message: String) : RuntimeException(message)
-class ValidationException(message: String) : RuntimeException(message)
 
 @RestControllerAdvice
-class RestExceptionHandler : ResponseEntityExceptionHandler() {
-    override fun handleMethodArgumentNotValid(
+class RestExceptionHandler {
+    @ExceptionHandler(value = [MethodArgumentNotValidException::class])
+    fun customHandleMethodArgumentNotValid(
         exception: MethodArgumentNotValidException,
-        headers: HttpHeaders,
-        status: HttpStatusCode,
         request: WebRequest
-    ): ResponseEntity<Any>? {
-        val errors: MutableMap<String, String> = mutableMapOf()
-        val httpStatus = HttpStatus.NOT_FOUND
-
-        exception.bindingResult.fieldErrors.forEach {
-            errors[it.field] = it.defaultMessage!!.toString()
+    ): ResponseEntity<Map<String, String>> {
+        val errors = exception.bindingResult.fieldErrors.associate {
+            it.field to it.defaultMessage!!
         }
 
-        return ResponseEntity.status(httpStatus).body(
-            ProblemDetail.forStatus(httpStatus).apply {
-                type = URI.create("")
-                title = "constraint violation exception"
-                detail = ObjectMapper().writeValueAsString(errors).toString()
-            }
-        )
+        return ResponseEntity(errors, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(value = [HttpMessageNotReadableException::class])
+    fun customHandleHttpMessageNotReadable(
+        exception: HttpMessageNotReadableException,
+        request: WebRequest
+    ): ResponseEntity<BodyResponse> {
+        val status = HttpStatus.BAD_REQUEST
+        val message = "Mensaje http no legible"
+        val body = BodyResponse(status, request, message)
+        return ResponseEntity(body, status)
     }
 
     @ExceptionHandler(value = [UsernameNotFoundException::class])
-    fun handleUsernameNotFoundException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.BAD_REQUEST, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [BadRequestException::class])
-    fun handleBadRequestException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.BAD_REQUEST, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [InternalServerError::class])
-    fun handleInternalServerError(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [InvalidPasswordException::class])
-    fun handleInvalidPasswordException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.UNAUTHORIZED, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [NotFoundException::class])
-    fun handleNotFoundException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.NOT_FOUND, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [PermissionDeniedException::class])
-    fun handlePermissionDeniedException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.FORBIDDEN, exception.message, exception)
-    }
-
-    @ExceptionHandler(value = [ValidationException::class])
-    fun handleValidationException(exception: RuntimeException, request: WebRequest): ResponseStatusException {
-        return ResponseStatusException(HttpStatus.CONFLICT, exception.message, exception)
+    fun handleUsernameNotFoundException(
+        exception: UsernameNotFoundException,
+        request: WebRequest
+    ): ResponseEntity<BodyResponse> {
+        val status = HttpStatus.BAD_REQUEST
+        val body = BodyResponse(status, request, exception.message)
+        return ResponseEntity(body, status)
     }
 }
