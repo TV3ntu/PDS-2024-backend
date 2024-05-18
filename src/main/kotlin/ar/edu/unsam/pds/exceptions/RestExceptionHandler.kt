@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.exceptions
 
-import jakarta.servlet.http.HttpServletResponse
+import ar.edu.unsam.pds.dto.exceptions.BodyResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.time.LocalDateTime
 
 @RestControllerAdvice
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
@@ -22,13 +21,11 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         status: HttpStatusCode,
         request: WebRequest
     ): ResponseEntity<Any> {
-        val errors: MutableMap<String, String> = mutableMapOf()
-
-        exception.bindingResult.fieldErrors.forEach {
-            errors[it.field] = it.defaultMessage!!.toString()
+        val errors = exception.bindingResult.fieldErrors.associate {
+            it.field to it.defaultMessage!!
         }
 
-        return buildResponse(status, headers, errors, request)
+        return ResponseEntity(errors, headers, status)
     }
 
     override fun handleHttpMessageNotReadable(
@@ -36,41 +33,19 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         headers: HttpHeaders,
         status: HttpStatusCode,
         request: WebRequest
-    ): ResponseEntity<Any>? {
-        val message = retouchMessage(exception.message, request)
-
-        return buildResponse(status, headers, message, request)
-    }
-
-    @ExceptionHandler(value = [UsernameNotFoundException::class])
-    fun handleUsernameNotFoundException(response: HttpServletResponse) {
-        response.sendError(HttpStatus.BAD_REQUEST.value())
-    }
-
-    private fun buildResponse(
-        status: HttpStatusCode,
-        headers: HttpHeaders,
-        message: Any,
-        request: WebRequest
     ): ResponseEntity<Any> {
-        val body: MutableMap<String, Any> = mutableMapOf()
-
-        body["timestamp"] = LocalDateTime.now()
-        body["status"] = status.value()
-        body["error"] = HttpStatus.valueOf(status.value()).name
-        body["message"] = message
-        body["path"] = request.getDescription(false).replace("uri=", "")
-
+        val message = "Mensaje http no legible"
+        val body = BodyResponse(status, request, message)
         return ResponseEntity(body, headers, status)
     }
 
-    private fun retouchMessage(
-        message: String?,
+    @ExceptionHandler(value = [UsernameNotFoundException::class])
+    fun handleUsernameNotFoundException(
+        exception: UsernameNotFoundException,
         request: WebRequest
-    ): String {
-        val className = message?.substringAfter("[")?.substringBefore("]") ?: ""
-        val url = request.getDescription(false).replace("uri=", "")
-
-        return message?.replace(className, url) ?: ""
+    ): ResponseEntity<Any> {
+        val status = HttpStatus.BAD_REQUEST
+        val body = BodyResponse(status, request, exception.message)
+        return ResponseEntity(body, HttpHeaders(), status)
     }
 }
