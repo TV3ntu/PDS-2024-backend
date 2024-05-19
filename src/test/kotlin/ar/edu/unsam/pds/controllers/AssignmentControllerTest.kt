@@ -25,8 +25,17 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentAll`() {
-        val assignment = AssignmentResponseDto("123", LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-        val assignments = listOf(assignment)
+        val assignments = listOf(
+            AssignmentResponseDto(
+                id = "123",
+                startTime = LocalTime.now(),
+                endTime = LocalTime.now(),
+                day = mutableListOf("Monday", "Wednesday"),
+                quotas = 10,
+                isActive = true,
+                price = 100
+            )
+        )
 
         `when`(assignmentService.getAll()).thenReturn(assignments)
 
@@ -38,7 +47,15 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentItem`() {
-        val assignment = AssignmentResponseDto("123", LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
+        val assignment = AssignmentResponseDto(
+            id = "123",
+            startTime = LocalTime.now(),
+            endTime = LocalTime.now(),
+            day = mutableListOf("Monday", "Wednesday"),
+            quotas = 10,
+            isActive = true,
+            price = 100
+        )
         `when`(assignmentService.getAssignment("123")).thenReturn(assignment)
 
         val responseEntity = assignmentController.getAssignment("123")
