@@ -1,7 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.response.InstitutionDetailResponseDto
 import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
-import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.services.InstitutionService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,7 +26,13 @@ class InstitutionControllerTest {
     @Test
     fun `test get all institutions`() {
         val institutions = listOf(
-            InstitutionResponseDto("id","name", "description", "category", "image")
+            InstitutionResponseDto(
+                id = "id",
+                name = "name",
+                description = "description",
+                category = "category",
+                image = "image"
+            )
         )
 
         `when`(institutionService.getAll()).thenReturn(institutions)
@@ -37,17 +43,25 @@ class InstitutionControllerTest {
         assert(responseEntity.body == institutions)
     }
 
-//    @Test
-//    fun `test get a particular institution`() {
-//        val institution = InstitutionResponseDto("123","name", "description", "category", "image")
-//        `when`(institutionService.getInstitution("123")).thenReturn(institution)
-//
-//        val responseEntity = institutionController.getInstitution("123")
-//
-//        assert(responseEntity.statusCode == HttpStatus.OK)
-//        assert(responseEntity.body == institution)
-//    }
-//
+    @Test
+    fun `test get a particular institution`() {
+        val institution = InstitutionDetailResponseDto(
+            id = "123",
+            name = "name",
+            description = "description",
+            category = "category",
+            image = "image",
+            courses = mutableSetOf()
+        )
+
+        `when`(institutionService.getInstitution("123")).thenReturn(institution)
+
+        val responseEntity = institutionController.getInstitution("123")
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == institution)
+    }
+
 //    @Test
 //    fun `test get all the courses from an institution`() {
 //        val courses = listOf(Course("title 1", "description", "category", ""))
