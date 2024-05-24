@@ -6,7 +6,6 @@ import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.User
-import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.utils.Mapper
@@ -17,10 +16,12 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 @Service
-class UserService(private val userRepository: UserRepository) : UserDetailsService {
+class UserService(
+    private val userRepository: UserRepository
+) : UserDetailsService {
+
     override fun loadUserByUsername(email: String): UserDetails {
         return userRepository.findByUsername(email).orElseThrow {
             UsernameNotFoundException("El usuario no existe.")
@@ -33,8 +34,10 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         } catch (e: ServletException) {
             throw NotFoundException("Usuario y/o contraseña invalidos.")
         }
+
         val principal = (request.userPrincipal as Authentication).principal as Principal
         val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
+
         return Mapper.buildUserDto(principalUser)
     }
 
@@ -55,12 +58,14 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         return Mapper.buildUserDto(user)
     }
 
-    private fun findUserById(idUser: String): User {
-        return userRepository.findById(idUser).orElseThrow { NotFoundException("Usuario no encontrado") }
-    }
-
-    fun getSubscribedCourses(idUser: String): List<CourseResponseDto>? {
+    fun getSubscribedCourses(idUser: String): List<CourseResponseDto> {
         val user = findUserById(idUser)
         return user.subscribedCourses().map { Mapper.buildCourseDto(it) }
+    }
+
+    private fun findUserById(idUser: String): User {
+        return userRepository.findById(idUser).orElseThrow {
+            NotFoundException("Usuario no encontrado")
+        }
     }
 }

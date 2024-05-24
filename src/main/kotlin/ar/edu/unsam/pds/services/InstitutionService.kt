@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.response.InstitutionDetailResponseDto
 import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
+import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.utils.Mapper
@@ -18,12 +19,13 @@ class InstitutionService(
     }
 
     fun getInstitution(idInstitution: String): InstitutionDetailResponseDto {
-        val institution = institutionRepository.findById(idInstitution)
-        return Mapper.buildInstitutionDetailDto(institution as Institution)
+        val institution = findInstitutionById(idInstitution)
+        return Mapper.buildInstitutionDetailDto(institution)
     }
 
-//    fun getCourses(idInstitution: String): List<InstitutionResponseDto> {
-//        val institution = institutionRepository.findById(idInstitution) as Institution
-//        return Mapper.buildInstitutionListDto(institution.courses)
-//    }
+    private fun findInstitutionById(idInstitution: String): Institution {
+        return institutionRepository.findById(idInstitution).orElseThrow {
+            NotFoundException("Institucion no encontrada")
+        }
+    }
 }

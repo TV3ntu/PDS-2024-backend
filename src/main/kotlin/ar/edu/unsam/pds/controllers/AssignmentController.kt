@@ -5,6 +5,7 @@ import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.services.AssignmentService
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -32,15 +33,22 @@ class AssignmentController {
     }
 
     @PostMapping("/subscribe")
-    @Operation(summary = "A user subscribes to a assigment")
-    fun subscribeToAssigment(@RequestBody subscribeRequestDto: SubscribeRequestDto): ResponseEntity<SubscribeResponseDto>{
-        return ResponseEntity.ok(assignmentService.subscribe(subscribeRequestDto.idUser, subscribeRequestDto.idAssignment))
+    @Operation(summary = "A user subscribes to a assignment")
+    fun subscribeToAssignment(
+        @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto
+    ): ResponseEntity<SubscribeResponseDto> {
+        val idUser = subscribeRequestDto.idUser
+        val idAssignment = subscribeRequestDto.idAssignment
+        return ResponseEntity.ok(assignmentService.subscribe(idUser, idAssignment))
     }
 
-    @PatchMapping("/subscribe")
-    @Operation(summary = "A user unsubscribes to a assigment")
-    fun unsubscribeToAssigment(@RequestBody subscribeRequestDto: SubscribeRequestDto): ResponseEntity<SubscribeResponseDto>{
-        return ResponseEntity.ok(assignmentService.unsubscribe(subscribeRequestDto.idUser, subscribeRequestDto.idAssignment))
+    @PatchMapping("/unsubscribe")
+    @Operation(summary = "A user unsubscribes to a assignment")
+    fun unsubscribeToAssignment(
+        @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto
+    ): ResponseEntity<SubscribeResponseDto> {
+        val idUser = subscribeRequestDto.idUser
+        val idAssignment = subscribeRequestDto.idAssignment
+        return ResponseEntity.ok(assignmentService.unsubscribe(idUser, idAssignment))
     }
-
 }

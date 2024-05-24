@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.models
 import ar.edu.unsam.pds.exceptions.ValidationException
 import java.util.UUID
 import ar.edu.unsam.pds.repository.Element
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalTime
 
 class Assignment (
@@ -13,7 +14,8 @@ class Assignment (
     val price: Int,
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
-    
+
+    @JsonIgnore
     lateinit var course: Course
 
     fun quantityAvailable() = quotas - subscribedUsers.size
@@ -23,7 +25,7 @@ class Assignment (
     fun attachCourse(course: Course) {
         this.course = course
     }
-    
+
     val subscribedUsers = mutableSetOf<User>()
 
 

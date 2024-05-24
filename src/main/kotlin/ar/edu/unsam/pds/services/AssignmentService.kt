@@ -22,8 +22,8 @@ class AssignmentService(
     }
 
     fun getAssignment(idAssignment: String): AssignmentResponseDto {
-        val assignments = assignmentRepository.findById(idAssignment)
-        return Mapper.buildAssignmentDto(assignments as Assignment)
+        val assignments = findAssignmentById(idAssignment)
+        return Mapper.buildAssignmentDto(assignments)
     }
 
     fun subscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
@@ -49,10 +49,14 @@ class AssignmentService(
     }
 
     private fun findUserById(idUser: String): User {
-        return userRepository.findById(idUser).orElseThrow { NotFoundException("Usuario no encontrado") }
+        return userRepository.findById(idUser).orElseThrow {
+            NotFoundException("Usuario no encontrado")
+        }
     }
 
     private fun findAssignmentById(idAssigment: String): Assignment {
-        return assignmentRepository.findById(idAssigment).orElseThrow { NotFoundException("Clase no encontrada") }
+        return assignmentRepository.findById(idAssigment).orElseThrow {
+            NotFoundException("Clase no encontrada")
+        }
     }
 }
