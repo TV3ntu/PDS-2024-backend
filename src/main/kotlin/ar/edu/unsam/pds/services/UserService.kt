@@ -57,23 +57,7 @@ class UserService(private val userRepository: UserRepository,
         return Mapper.buildUserDto(user)
     }
 
-    fun subscribeToAssigment(idUser: String, idAssignment: String): SubscribeResponseDto {
-        val user = findUserById(idUser)
-        val assigment = findAssigmentById(idAssignment)
-
-        user.addAssignment(assigment)
-        assigment.addSubscribedUser(user)
-        //TODO: Agregar update cuando pongamos persistencia
-
-        return Mapper.subscribeResponse(idUser, idAssignment)
-    }
-
     private fun findUserById(idUser: String): User {
         return userRepository.findById(idUser).orElseThrow { NotFoundException("Usuario no encontrado") }
     }
-
-    private fun findAssigmentById(idAssigment: String): Assignment {
-        return assignmentRepository.findById(idAssigment).orElseThrow { NotFoundException("Clase no encontrada") }
-    }
-
 }

@@ -1,6 +1,8 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
+import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.services.AssignmentService
 import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
@@ -27,5 +29,11 @@ class AssignmentController {
         @PathVariable @UUID idAssignment: String
     ): ResponseEntity<AssignmentResponseDto> {
         return ResponseEntity.ok(assignmentService.getAssignment(idAssignment))
+    }
+
+    @PostMapping("/subscribe")
+    @Operation(summary = "A user subscribes to a assigment")
+    fun subscribeToAssigment(@RequestBody subscribeRequestDto: SubscribeRequestDto): ResponseEntity<SubscribeResponseDto>{
+        return ResponseEntity.ok(assignmentService.subscribe(subscribeRequestDto.idUser, subscribeRequestDto.idAssignment))
     }
 }
