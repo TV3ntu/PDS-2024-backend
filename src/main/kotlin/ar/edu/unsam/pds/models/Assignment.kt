@@ -16,7 +16,7 @@ class Assignment (
     
     lateinit var course: Course
 
-    fun QuantityAvailable() = quotas - subscribedUsers.size
+    fun quantityAvailable() = quotas - subscribedUsers.size
 
     override fun findMe(value: String): Boolean = id == value
 
