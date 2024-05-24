@@ -44,4 +44,15 @@ class RestExceptionHandler {
         val body = BodyResponse(status, request, exception.message)
         return ResponseEntity(body, status)
     }
+
+    @ExceptionHandler(value = [NotFoundException::class])
+    fun notFound(exception: NotFoundException, request: WebRequest): BodyResponse{
+        return BodyResponse(HttpStatus.NOT_FOUND, request, exception.message)
+    }
+
+    @ExceptionHandler(value = [ValidationException::class])
+    fun validation(exception: ValidationException, request: WebRequest): BodyResponse{
+        return BodyResponse(HttpStatus.CONFLICT, request, exception.message)
+    }
+
 }

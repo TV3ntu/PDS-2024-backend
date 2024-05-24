@@ -5,6 +5,7 @@ import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.models.User
+import java.time.LocalDate
 
 object Mapper {
     fun buildUserDto(user: User): UserResponseDto {
@@ -83,5 +84,17 @@ object Mapper {
             assignment.isActive,
             assignment.price
         )
+    }
+
+    fun patchUser(user: User, userDetail: UserResponseDto): User {
+        userDetail.name.let { user.name = it }
+        userDetail.lastName.let { user.lastName = it }
+        userDetail.email.let { user.email = it }
+        userDetail.image.let { user.image = it }
+        return user
+    }
+
+    fun subscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
+        return SubscribeResponseDto(idUser, idAssignment, "Suscripción exitosa", LocalDate.now())
     }
 }
