@@ -10,14 +10,22 @@ class Assignment (
     var day: MutableList<String>,
     var quotas: Int,
     var isActive: Boolean,
-    val price: Int
+    val price: Int,
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
-    val subscribedUsers = mutableSetOf<User>()
+    
+    lateinit var course: Course
 
-    fun QuantityAvailable() = quotas - subscribedUsers.size
+    fun quantityAvailable() = quotas - subscribedUsers.size
 
     override fun findMe(value: String): Boolean = id == value
+
+    fun attachCourse(course: Course) {
+        this.course = course
+    }
+    
+    val subscribedUsers = mutableSetOf<User>()
+
 
     fun addSubscribedUser(user: User){
         if(quotas > subscribedUsers.size){
@@ -34,5 +42,4 @@ class Assignment (
             subscribedUsers.remove(user)
         }
     }
-
 }
