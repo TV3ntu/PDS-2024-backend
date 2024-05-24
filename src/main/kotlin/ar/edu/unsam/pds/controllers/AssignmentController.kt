@@ -36,4 +36,11 @@ class AssignmentController {
     fun subscribeToAssigment(@RequestBody subscribeRequestDto: SubscribeRequestDto): ResponseEntity<SubscribeResponseDto>{
         return ResponseEntity.ok(assignmentService.subscribe(subscribeRequestDto.idUser, subscribeRequestDto.idAssignment))
     }
+
+    @PatchMapping("/subscribe")
+    @Operation(summary = "A user unsubscribes to a assigment")
+    fun unsubscribeToAssigment(@RequestBody subscribeRequestDto: SubscribeRequestDto): ResponseEntity<SubscribeResponseDto>{
+        return ResponseEntity.ok(assignmentService.unsubscribe(subscribeRequestDto.idUser, subscribeRequestDto.idAssignment))
+    }
+
 }
