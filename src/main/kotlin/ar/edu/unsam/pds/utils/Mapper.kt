@@ -98,4 +98,8 @@ object Mapper {
     fun subscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
         return SubscribeResponseDto(idUser, idAssignment, "Suscripción exitosa", LocalDate.now())
     }
+
+    fun unsubscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
+        return SubscribeResponseDto(idUser, idAssignment, "Desuscripción exitosa", LocalDate.now())
+    }
 }
