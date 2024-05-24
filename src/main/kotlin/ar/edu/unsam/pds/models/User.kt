@@ -17,8 +17,7 @@ class User(
 
     fun subscribedCourses(): Set<Course> {
         return assignmentsList.map { it.course }.toSet()
-    
-    override fun findMe(value: String): Boolean = id == value
+    }
 
     fun addAssignment(assignment: Assignment){
         assignmentsList.add(assignment)
