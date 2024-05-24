@@ -2,4 +2,10 @@ package ar.edu.unsam.pds.dto.request
 
 import org.hibernate.validator.constraints.UUID
 
-data class SubscribeRequestDto(@UUID val idUser: String, @UUID val idAssignment: String)
+data class SubscribeRequestDto(
+    @field: UUID(message = "Debe ser un UUID válido")
+    val idUser: String,
+
+    @field: UUID(message = "Debe ser un UUID válido")
+    val idAssignment: String
+)

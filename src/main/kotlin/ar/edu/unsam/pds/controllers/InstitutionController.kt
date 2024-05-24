@@ -29,13 +29,4 @@ class InstitutionController {
     ): ResponseEntity<InstitutionDetailResponseDto> {
         return ResponseEntity.ok(institutionService.getInstitution(idInstitution))
     }
-
-//    @GetMapping("{idInstitution}/courses")
-//    @Operation(summary = "Get all courses by institution")
-//    fun getCourses(
-//        @PathVariable @UUID idInstitution: String
-//    ): ResponseEntity<List<InstitutionResponseDto>> {
-//        val courses = institutionService.getCourses(idInstitution)
-//        return ResponseEntity.ok().body(courses)
-//    }
 }
