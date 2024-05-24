@@ -60,9 +60,7 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
     }
 
     fun getSubscribedCourses(idUser: String): List<CourseResponseDto>? {
-        return userRepository.findById(idUser).subscribedCourses()
-            .takeIf { it.isNotEmpty() }
-            ?.map { Mapper.buildCourseDto(it) }
-            ?: throw NotFoundException("El usuario no tiene cursos inscriptos.")
+        val user = findUserById(idUser)
+        return user.subscribedCourses().map { Mapper.buildCourseDto(it) }
     }
 }
