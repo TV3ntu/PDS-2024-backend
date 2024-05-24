@@ -81,6 +81,7 @@ object Mapper {
             assignment.endTime,
             assignment.day,
             assignment.quotas,
+            assignment.QuantityAvailable(),
             assignment.isActive,
             assignment.price
         )
