@@ -10,9 +10,15 @@ class Assignment (
     var day: MutableList<String>,
     val quotas: Int,
     var isActive: Boolean,
-    val price: Int
+    val price: Int,
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
+    lateinit var course: Course
+
 
     override fun findMe(value: String): Boolean = id == value
+
+    fun attachCourse(course: Course) {
+        this.course = course
+    }
 }

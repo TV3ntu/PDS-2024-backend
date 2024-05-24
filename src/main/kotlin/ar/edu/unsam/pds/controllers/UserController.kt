@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -64,5 +65,13 @@ class UserController {
     ): ResponseEntity<UserResponseDto> {
         val originalUser = userService.updateDetail(idUser, user)
         return ResponseEntity.ok().body(originalUser)
+    }
+
+    @GetMapping("/{idUser}/courses")
+    @Operation(summary = "Get the user's subscribed courses")
+    fun getSubscribedCourses(
+        @PathVariable @UUID idUser: String
+    ): ResponseEntity<List<CourseResponseDto>> {
+        return ResponseEntity.ok(userService.getSubscribedCourses(idUser))
     }
 }

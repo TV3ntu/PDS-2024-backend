@@ -1,11 +1,10 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
-import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
-import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserService(private val userRepository: UserRepository) : UserDetailsService {
@@ -61,6 +59,13 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
         userDetail.email.let { user.email = it }
         userDetail.image.let { user.image = it }
         return user
+    }
+
+    fun getSubscribedCourses(idUser: String): List<CourseResponseDto>? {
+        return userRepository.findById(idUser).subscribedCourses()
+            .takeIf { it.isNotEmpty() }
+            ?.map { Mapper.buildCourseDto(it) }
+            ?: throw NotFoundException("El usuario no tiene cursos inscriptos.")
     }
 
 }

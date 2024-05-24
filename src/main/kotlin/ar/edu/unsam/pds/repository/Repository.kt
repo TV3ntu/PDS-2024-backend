@@ -28,8 +28,8 @@ abstract class Repository<T: Element> {
         collection[indexToUpdate] = element
     }
 
-    fun findById(value: String): T? {
-        return collection.find { it.findMe(value) }
+    fun findById(value: String): T {
+        return collection.find { it.findMe(value) } ?: throw NoSuchElementException("No se encontraron elementos con ese valor")
     }
 
     fun clear(){
