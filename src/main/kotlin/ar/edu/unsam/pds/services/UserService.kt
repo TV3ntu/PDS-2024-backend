@@ -1,11 +1,9 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
-import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
-import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.UserRepository
@@ -21,8 +19,7 @@ import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class UserService(private val userRepository: UserRepository,
-                  private val assignmentRepository: AssignmentRepository) : UserDetailsService {
+class UserService(private val userRepository: UserRepository) : UserDetailsService {
     override fun loadUserByUsername(email: String): UserDetails {
         return userRepository.findByUsername(email).orElseThrow {
             UsernameNotFoundException("El usuario no existe.")
