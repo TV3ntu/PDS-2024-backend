@@ -6,6 +6,7 @@ import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.utils.Mapper
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class UserService(private val userRepository: UserRepository) : UserDetailsService {
@@ -42,23 +44,19 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
     }
 
     fun getUserItem(idUser: String): UserResponseDto {
-        val user = userRepository.findById(idUser) as User
+        val user = findUserById(idUser)
         return Mapper.buildUserDto(user)
     }
 
     fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
-        val user = userRepository.findById(idUser) as User
-        val updatedUser = patchUser(user, userDetail)
+        val user = findUserById(idUser)
+        val updatedUser = Mapper.patchUser(user, userDetail)
         userRepository.update(idUser, updatedUser)
         return Mapper.buildUserDto(user)
     }
 
-    private fun patchUser(user: User, userDetail: UserResponseDto): User {
-        userDetail.name.let { user.name = it }
-        userDetail.lastName.let { user.lastName = it }
-        userDetail.email.let { user.email = it }
-        userDetail.image.let { user.image = it }
-        return user
+    private fun findUserById(idUser: String): User {
+        return userRepository.findById(idUser).orElseThrow { NotFoundException("Usuario no encontrado") }
     }
 
     fun getSubscribedCourses(idUser: String): List<CourseResponseDto>? {
@@ -67,5 +65,4 @@ class UserService(private val userRepository: UserRepository) : UserDetailsServi
             ?.map { Mapper.buildCourseDto(it) }
             ?: throw NotFoundException("El usuario no tiene cursos inscriptos.")
     }
-
 }
