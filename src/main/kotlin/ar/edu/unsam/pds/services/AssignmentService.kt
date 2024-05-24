@@ -22,8 +22,8 @@ class AssignmentService(
     }
 
     fun getAssignment(idAssignment: String): AssignmentResponseDto {
-        val assignment = findAssignment(idAssignment)
-        return Mapper.buildAssignmentDto(assignment)
+        val assignments = findAssignment(idAssignment)
+        return Mapper.buildAssignmentDto(assignments)
     }
 
     fun subscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
@@ -37,14 +37,25 @@ class AssignmentService(
         return Mapper.subscribeResponse(idUser, idAssignment)
     }
 
+    fun unsubscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
+        val assignment = findAssignment(idAssignment)
+        val user = findUser(idUser)
+
+        user.removeAssignment(assignment)
+        assignment.removeSubscribedUser(user)
+        //TODO: Agregar update cuando pongamos persistencia
+
+        return Mapper.unsubscribeResponse(idUser, idAssignment)
+    }
+
     private fun findUser(idUser: String): User {
         return userRepository.findById(idUser).orElseThrow {
             NotFoundException("Usuario no encontrado")
         }
     }
 
-    private fun findAssignment(idAssignment: String): Assignment {
-        return assignmentRepository.findById(idAssignment).orElseThrow {
+    private fun findAssignment(idAssigment: String): Assignment {
+        return assignmentRepository.findById(idAssigment).orElseThrow {
             NotFoundException("Clase no encontrada")
         }
     }

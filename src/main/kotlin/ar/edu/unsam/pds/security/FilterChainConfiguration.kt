@@ -50,6 +50,7 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/assignments"),
                 antMatcher(GET, "/api/assignments/*"),
                 antMatcher(POST, "/api/assignments/subscribe"),
+                antMatcher(PATCH, "/api/assignments/unsubscribe"),
 
                 antMatcher(GET, "/api/users"),
                 antMatcher(GET, "/api/users/"),

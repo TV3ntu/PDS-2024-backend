@@ -8,6 +8,7 @@ data class AssignmentResponseDto(
     val endTime: LocalTime,
     var day: MutableList<String>,
     val quotas: Int,
+    var quantityAvailable: Int,
     var isActive: Boolean,
     val price: Int
 )

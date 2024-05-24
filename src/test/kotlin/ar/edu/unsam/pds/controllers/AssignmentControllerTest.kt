@@ -32,6 +32,7 @@ class AssignmentControllerTest {
                 endTime = LocalTime.now(),
                 day = mutableListOf("Monday", "Wednesday"),
                 quotas = 10,
+                quantityAvailable = 10,
                 isActive = true,
                 price = 100
             )
@@ -53,6 +54,7 @@ class AssignmentControllerTest {
             endTime = LocalTime.now(),
             day = mutableListOf("Monday", "Wednesday"),
             quotas = 10,
+            quantityAvailable = 10,
             isActive = true,
             price = 100
         )

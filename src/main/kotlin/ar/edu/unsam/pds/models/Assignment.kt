@@ -8,12 +8,14 @@ class Assignment (
     val startTime: LocalTime,
     val endTime: LocalTime,
     var day: MutableList<String>,
-    val quotas: Int,
+    var quotas: Int,
     var isActive: Boolean,
     val price: Int
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
     val subscribedUsers = mutableSetOf<User>()
+
+    fun QuantityAvailable() = quotas - subscribedUsers.size
 
     override fun findMe(value: String): Boolean = id == value
 
@@ -22,6 +24,14 @@ class Assignment (
             subscribedUsers.add(user)
         } else {
             throw ValidationException("No hay cupos disponibles")
+        }
+    }
+
+    fun removeSubscribedUser(user: User) {
+        if (!subscribedUsers.contains(user)) {
+            throw ValidationException("El usuario no está subscripto")
+        } else {
+            subscribedUsers.remove(user)
         }
     }
 
