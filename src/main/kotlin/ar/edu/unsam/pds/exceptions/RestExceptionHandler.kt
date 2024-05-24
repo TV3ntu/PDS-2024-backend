@@ -50,4 +50,9 @@ class RestExceptionHandler {
         return BodyResponse(HttpStatus.NOT_FOUND, request, exception.message)
     }
 
+    @ExceptionHandler(value = [ValidationException::class])
+    fun notFound(exception: ValidationException, request: WebRequest): BodyResponse{
+        return BodyResponse(HttpStatus.CONFLICT, request, exception.message)
+    }
+
 }
