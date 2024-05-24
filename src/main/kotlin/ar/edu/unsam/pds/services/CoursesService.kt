@@ -17,7 +17,10 @@ class CoursesService(
     }
 
     fun getCourse(idCourse: String): CourseDetailResponseDto {
-        val course = courseRepository.findById(idCourse).orElseThrow { NotFoundException("Curso no encontrado") }
-        return Mapper.buildCourseDetailDto(course)
+        return courseRepository.findById(idCourse).map {
+            return@map Mapper.buildCourseDetailDto(it)
+        }.orElseThrow {
+            NotFoundException("Curso no encontrado")
+        }
     }
 }
