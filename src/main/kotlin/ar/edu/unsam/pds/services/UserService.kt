@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.utils.Mapper
@@ -45,19 +46,19 @@ class UserService(
     }
 
     fun getUserItem(idUser: String): UserResponseDto {
-        return userRepository.findById(idUser).map {
-            return@map Mapper.buildUserDto(it)
-        }.orElseThrow {
-            NotFoundException("Usuario no encontrado")
-        }
+        val user = findUser(idUser)
+        return Mapper.buildUserDto(user)
     }
 
     fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
-        return userRepository.findById(idUser).map {
-            val updatedUser = Mapper.patchUser(it, userDetail)
-            userRepository.update(idUser, updatedUser)
-            return@map Mapper.buildUserDto(it)
-        }.orElseThrow {
+        val user = findUser(idUser)
+        val updatedUser = Mapper.patchUser(user, userDetail)
+        userRepository.update(idUser, updatedUser)
+        return Mapper.buildUserDto(user)
+    }
+
+    private fun findUser(idUser: String): User {
+        return userRepository.findById(idUser).orElseThrow {
             NotFoundException("Usuario no encontrado")
         }
     }

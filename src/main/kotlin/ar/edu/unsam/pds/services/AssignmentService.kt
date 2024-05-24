@@ -3,6 +3,8 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.utils.Mapper
@@ -20,25 +22,30 @@ class AssignmentService(
     }
 
     fun getAssignment(idAssignment: String): AssignmentResponseDto {
-        return assignmentRepository.findById(idAssignment).map {
-            return@map Mapper.buildAssignmentDto(it)
-        }.orElseThrow {
-            NotFoundException("Clase no encontrada")
-        }
+        val assignment = findAssignment(idAssignment)
+        return Mapper.buildAssignmentDto(assignment)
     }
 
     fun subscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
-        val assignment = assignmentRepository.findById(idAssignment).orElseThrow {
-            NotFoundException("Clase no encontrada")
-        }
-        val user = userRepository.findById(idUser).orElseThrow {
-            NotFoundException("Usuario no encontrado")
-        }
+        val assignment = findAssignment(idAssignment)
+        val user = findUser(idUser)
 
         assignment.addSubscribedUser(user)
         user.addAssignment(assignment)
         //TODO: Agregar update cuando pongamos persistencia
 
         return Mapper.subscribeResponse(idUser, idAssignment)
+    }
+
+    private fun findUser(idUser: String): User {
+        return userRepository.findById(idUser).orElseThrow {
+            NotFoundException("Usuario no encontrado")
+        }
+    }
+
+    private fun findAssignment(idAssignment: String): Assignment {
+        return assignmentRepository.findById(idAssignment).orElseThrow {
+            NotFoundException("Clase no encontrada")
+        }
     }
 }
