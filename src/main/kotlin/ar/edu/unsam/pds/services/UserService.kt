@@ -47,23 +47,23 @@ class UserService(
     }
 
     fun getUserItem(idUser: String): UserResponseDto {
-        val user = findUser(idUser)
+        val user = findUserById(idUser)
         return Mapper.buildUserDto(user)
     }
 
     fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
-        val user = findUser(idUser)
+        val user = findUserById(idUser)
         val updatedUser = Mapper.patchUser(user, userDetail)
         userRepository.update(idUser, updatedUser)
         return Mapper.buildUserDto(user)
     }
 
     fun getSubscribedCourses(idUser: String): List<CourseResponseDto> {
-        val user = findUser(idUser)
+        val user = findUserById(idUser)
         return user.subscribedCourses().map { Mapper.buildCourseDto(it) }
     }
 
-    private fun findUser(idUser: String): User {
+    private fun findUserById(idUser: String): User {
         return userRepository.findById(idUser).orElseThrow {
             NotFoundException("Usuario no encontrado")
         }

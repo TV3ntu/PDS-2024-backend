@@ -19,11 +19,11 @@ class CoursesService(
     }
 
     fun getCourse(idCourse: String): CourseDetailResponseDto {
-        val course = findCourse(idCourse)
+        val course = findCourseById(idCourse)
         return Mapper.buildCourseDetailDto(course)
     }
 
-    private fun findCourse(idCourse: String): Course {
+    private fun findCourseById(idCourse: String): Course {
         return courseRepository.findById(idCourse).orElseThrow {
             NotFoundException("Curso no encontrado")
         }

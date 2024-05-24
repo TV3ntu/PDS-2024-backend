@@ -19,11 +19,11 @@ class InstitutionService(
     }
 
     fun getInstitution(idInstitution: String): InstitutionDetailResponseDto {
-        val institution = findInstitution(idInstitution)
+        val institution = findInstitutionById(idInstitution)
         return Mapper.buildInstitutionDetailDto(institution)
     }
 
-    private fun findInstitution(idInstitution: String): Institution {
+    private fun findInstitutionById(idInstitution: String): Institution {
         return institutionRepository.findById(idInstitution).orElseThrow {
             NotFoundException("Institucion no encontrada")
         }

@@ -37,9 +37,9 @@ class AssignmentController {
     fun subscribeToAssignment(
         @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto
     ): ResponseEntity<SubscribeResponseDto> {
-        val user = subscribeRequestDto.idUser
-        val assignment = subscribeRequestDto.idAssignment
-        return ResponseEntity.ok(assignmentService.subscribe(user, assignment))
+        val idUser = subscribeRequestDto.idUser
+        val idAssignment = subscribeRequestDto.idAssignment
+        return ResponseEntity.ok(assignmentService.subscribe(idUser, idAssignment))
     }
 
     @PatchMapping("/unsubscribe")
@@ -47,8 +47,8 @@ class AssignmentController {
     fun unsubscribeToAssignment(
         @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto
     ): ResponseEntity<SubscribeResponseDto> {
-        val user = subscribeRequestDto.idUser
-        val assignment = subscribeRequestDto.idAssignment
-        return ResponseEntity.ok(assignmentService.unsubscribe(user, assignment))
+        val idUser = subscribeRequestDto.idUser
+        val idAssignment = subscribeRequestDto.idAssignment
+        return ResponseEntity.ok(assignmentService.unsubscribe(idUser, idAssignment))
     }
 }

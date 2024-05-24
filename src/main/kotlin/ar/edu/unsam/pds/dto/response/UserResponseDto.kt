@@ -22,7 +22,8 @@ data class UserResponseDto(
     @field: Email(message = "Debe ser una dirección de correo electrónico con formato correcto")
     val email: String,
 
-    @field: Size(max = 128, message = "El image no debe superar los 128 caracteres")
+    // máximo de internet explorer, por compatibilidad, el más largo del más corto
+    @field: Size(max = 2083, message = "El image no debe superar los 128 caracteres")
     val image: String,
 
     @field: UUID(message = "Debe ser un UUID válido")
