@@ -27,4 +27,12 @@ class Assignment (
         }
     }
 
+    fun removeSubscribedUser(user: User) {
+        if (!subscribedUsers.contains(user)) {
+            throw ValidationException("El usuario no está subscripto")
+        } else {
+            subscribedUsers.remove(user)
+        }
+    }
+
 }
