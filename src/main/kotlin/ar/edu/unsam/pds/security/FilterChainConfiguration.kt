@@ -56,6 +56,7 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/"),
                 antMatcher(GET, "/api/users/*"),
                 antMatcher(PATCH, "/api/users/*"),
+                antMatcher(GET, "/api/users/*/courses"),
             ).permitAll()
             .anyRequest().authenticated()
         }

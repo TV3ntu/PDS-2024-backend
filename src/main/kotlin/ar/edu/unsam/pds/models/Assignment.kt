@@ -1,26 +1,35 @@
 package ar.edu.unsam.pds.models
+
 import ar.edu.unsam.pds.exceptions.ValidationException
 import java.util.UUID
 import ar.edu.unsam.pds.repository.Element
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalTime
 
-class Assignment (
+class Assignment(
     val startTime: LocalTime,
     val endTime: LocalTime,
     var day: MutableList<String>,
     var quotas: Int,
     var isActive: Boolean,
-    val price: Int
-) : Element  {
+    val price: Int,
+) : Element {
     val id: String = UUID.randomUUID().toString()
-    val subscribedUsers = mutableSetOf<User>()
+    private val subscribedUsers = mutableSetOf<User>()
 
-    fun QuantityAvailable() = quotas - subscribedUsers.size
+    @JsonIgnore
+    lateinit var course: Course
 
-    override fun findMe(value: String): Boolean = id == value
+    fun quantityAvailable(): Int {
+        return quotas - subscribedUsers.size
+    }
 
-    fun addSubscribedUser(user: User){
-        if(quotas > subscribedUsers.size){
+    fun attachCourse(course: Course) {
+        this.course = course
+    }
+
+    fun addSubscribedUser(user: User) {
+        if (quotas > subscribedUsers.size) {
             subscribedUsers.add(user)
         } else {
             throw ValidationException("No hay cupos disponibles")
@@ -35,4 +44,5 @@ class Assignment (
         }
     }
 
+    override fun findMe(value: String): Boolean = id == value
 }

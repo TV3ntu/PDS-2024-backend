@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
@@ -55,6 +56,11 @@ class UserService(
         val updatedUser = Mapper.patchUser(user, userDetail)
         userRepository.update(idUser, updatedUser)
         return Mapper.buildUserDto(user)
+    }
+
+    fun getSubscribedCourses(idUser: String): List<CourseResponseDto> {
+        val user = findUser(idUser)
+        return user.subscribedCourses().map { Mapper.buildCourseDto(it) }
     }
 
     private fun findUser(idUser: String): User {
