@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -65,4 +66,12 @@ class UserController {
         val originalUser = userService.updateDetail(idUser, user)
         return ResponseEntity.ok().body(originalUser)
     }
+
+    @PostMapping("/{idUser}/subscribe/{idAssignment}")
+    @Operation(summary = "A user subscribes to a assigment")
+    fun subscribeToAssigment(@PathVariable @UUID idUser: String,
+                 @PathVariable @UUID idAssignment: String): ResponseEntity<SubscribeResponseDto>{
+        return ResponseEntity.ok(userService.subscribeToAssigment(idUser, idAssignment))
+    }
+
 }

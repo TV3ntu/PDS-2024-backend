@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.repository
 
+import ar.edu.unsam.pds.exceptions.NotFoundException
 import org.springframework.stereotype.Repository
 import java.util.Optional
 
@@ -18,7 +19,7 @@ abstract class Repository<T: Element> {
 
 
     fun delete(value: String) {
-        val obj = findById(value)
+        val obj = findById(value).orElseThrow { NotFoundException("Usuario no encontrado") }
         collection.remove(obj)
     }
 
@@ -28,8 +29,9 @@ abstract class Repository<T: Element> {
         collection[indexToUpdate] = element
     }
 
-    fun findById(value: String): T? {
-        return collection.find { it.findMe(value) }
+    fun findById(value: String): Optional<T> {
+        val user = collection.find { it.findMe(value) }
+        return Optional.ofNullable(user)
     }
 
     fun clear(){

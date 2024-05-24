@@ -12,7 +12,7 @@ class InternalServerError(message: String) : RuntimeException(message)
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 class InvalidPasswordException(message: String) : RuntimeException(message)
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseStatus(HttpStatus.NOT_FOUND)
 class NotFoundException(message: String) : RuntimeException(message)
 
 @ResponseStatus(HttpStatus.FORBIDDEN)

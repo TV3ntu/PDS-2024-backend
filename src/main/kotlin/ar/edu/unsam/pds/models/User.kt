@@ -10,6 +10,11 @@ class User(
     var image: String,
 ) : Element {
     val id: String = UUID.randomUUID().toString()
+    val assignmentsList = mutableSetOf<Assignment>()
 
     override fun findMe(value: String): Boolean = id == value
+
+    fun addAssignment(assignment: Assignment){
+        assignmentsList.add(assignment)
+    }
 }
