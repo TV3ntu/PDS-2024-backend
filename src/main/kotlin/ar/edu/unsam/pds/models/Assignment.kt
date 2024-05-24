@@ -8,7 +8,7 @@ class Assignment (
     val startTime: LocalTime,
     val endTime: LocalTime,
     var day: MutableList<String>,
-    val quotas: Int,
+    var quotas: Int,
     var isActive: Boolean,
     val price: Int,
 ) : Element  {
@@ -16,7 +16,8 @@ class Assignment (
     
     lateinit var course: Course
 
-  
+    fun QuantityAvailable() = quotas - subscribedUsers.size
+
     override fun findMe(value: String): Boolean = id == value
 
     fun attachCourse(course: Course) {
@@ -31,6 +32,14 @@ class Assignment (
             subscribedUsers.add(user)
         } else {
             throw ValidationException("No hay cupos disponibles")
+        }
+    }
+
+    fun removeSubscribedUser(user: User) {
+        if (!subscribedUsers.contains(user)) {
+            throw ValidationException("El usuario no está subscripto")
+        } else {
+            subscribedUsers.remove(user)
         }
     }
 }
