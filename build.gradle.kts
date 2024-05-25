@@ -43,9 +43,14 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
+    // persistencia
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("com.h2database:h2")
+
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.session:spring-session-core")
+    //	implementation("org.springframework.session:spring-session-jdbc") //
     testImplementation("org.springframework.security:spring-security-test")
 }
 
