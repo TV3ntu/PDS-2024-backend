@@ -1,11 +1,8 @@
 package ar.edu.unsam.pds.utils
 
 import ar.edu.unsam.pds.dto.response.*
+import ar.edu.unsam.pds.models.*
 
-import ar.edu.unsam.pds.models.Assignment
-import ar.edu.unsam.pds.models.Course
-import ar.edu.unsam.pds.models.Institution
-import ar.edu.unsam.pds.models.User
 import java.time.LocalDate
 
 object Mapper {

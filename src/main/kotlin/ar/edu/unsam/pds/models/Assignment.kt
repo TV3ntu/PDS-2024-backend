@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.models
 
+import ar.edu.unsam.pds.exceptions.ValidationException
 import java.util.UUID
 import ar.edu.unsam.pds.repository.Element
 
@@ -12,7 +13,6 @@ class Assignment(
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
 
-    @JsonIgnore
     lateinit var course: Course
 
     fun quantityAvailable() = quotas - subscribedUsers.size
