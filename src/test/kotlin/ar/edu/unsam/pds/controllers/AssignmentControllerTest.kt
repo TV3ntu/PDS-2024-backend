@@ -32,8 +32,9 @@ class AssignmentControllerTest {
                 endTime = LocalTime.now(),
                 day = mutableListOf("Monday", "Wednesday"),
                 quotas = 10,
+                quantityAvailable = 100,
                 isActive = true,
-                price = 100
+                price = 100,
             )
         )
 
@@ -53,8 +54,9 @@ class AssignmentControllerTest {
             endTime = LocalTime.now(),
             day = mutableListOf("Monday", "Wednesday"),
             quotas = 10,
+            quantityAvailable = 100,
             isActive = true,
-            price = 100
+            price = 100,
         )
         `when`(assignmentService.getAssignment("123")).thenReturn(assignment)
 

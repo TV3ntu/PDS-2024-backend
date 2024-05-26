@@ -13,6 +13,7 @@ class Course (
 
     fun addAssignment(assignment: Assignment) {
         assignments.add(assignment)
+        assignment.attachCourse(this)
     }
 
     override fun findMe(value: String): Boolean = id == value

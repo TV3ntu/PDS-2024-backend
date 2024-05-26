@@ -1,7 +1,6 @@
 package ar.edu.unsam.pds.repository
 
 import ar.edu.unsam.pds.models.Course
-import org.springframework.data.domain.PageRequest
 
 @org.springframework.stereotype.Repository
 class CourseRepository : Repository<Course>() {

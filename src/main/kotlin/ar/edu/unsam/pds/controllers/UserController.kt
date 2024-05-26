@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -48,21 +49,21 @@ class UserController {
         return ResponseEntity.ok(userService.getUserItem(idUser))
     }
 
-//    @GetMapping("/{idUser}/detail")
-//    @Operation(summary = "Get the details of a user")
-//    fun getDetail(
-//        @PathVariable @UUID idUser: String
-//    ): ResponseEntity<UserDetailResponseDto> {
-//        val user = userService.getDetail(idUser)
-//        return ResponseEntity.ok().body(user)
-//    }
-
     @PatchMapping("/{idUser}")
     @Operation(summary = "Update a user's details")
     fun updateDetail(
-        @PathVariable @UUID idUser: String, @RequestBody user: UserResponseDto
+        @PathVariable @UUID idUser: String,
+        @RequestBody @Valid user: UserResponseDto
     ): ResponseEntity<UserResponseDto> {
         val originalUser = userService.updateDetail(idUser, user)
         return ResponseEntity.ok().body(originalUser)
+    }
+
+    @GetMapping("/{idUser}/courses")
+    @Operation(summary = "Get the user's subscribed courses")
+    fun getSubscribedCourses(
+        @PathVariable @UUID idUser: String
+    ): ResponseEntity<List<CourseResponseDto>> {
+        return ResponseEntity.ok(userService.getSubscribedCourses(idUser))
     }
 }

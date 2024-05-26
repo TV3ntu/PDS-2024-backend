@@ -1,7 +1,12 @@
 package ar.edu.unsam.pds.utils
 
 import ar.edu.unsam.pds.dto.response.*
-import ar.edu.unsam.pds.models.*
+
+import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.models.Course
+import ar.edu.unsam.pds.models.Institution
+import ar.edu.unsam.pds.models.User
+import java.time.LocalDate
 
 object Mapper {
     fun buildUserDto(user: User): UserResponseDto {
@@ -60,6 +65,7 @@ object Mapper {
         return AssignmentResponseDto(
             assignment.id,
             assignment.quotas,
+            assignment.quantityAvailable(),
             assignment.isActive,
             assignment.price,
             buildScheduleDto(assignment.schedule)
@@ -77,5 +83,21 @@ object Mapper {
             schedule.recurrenceWeeks,
             schedule.generateSchedule()
         )
+    }
+
+    fun patchUser(user: User, userDetail: UserResponseDto): User {
+        userDetail.name.let { user.name = it }
+        userDetail.lastName.let { user.lastName = it }
+        userDetail.email.let { user.email = it }
+        userDetail.image.let { user.image = it }
+        return user
+    }
+
+    fun subscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
+        return SubscribeResponseDto(idUser, idAssignment, "Suscripción exitosa", LocalDate.now())
+    }
+
+    fun unsubscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
+        return SubscribeResponseDto(idUser, idAssignment, "Desuscripción exitosa", LocalDate.now())
     }
 }
