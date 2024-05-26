@@ -88,7 +88,7 @@ object Mapper {
             schedule.endTime,
             schedule.startDate,
             schedule.endDate,
-            schedule.recurrenceWeeks,
+            schedule.recurrenceWeeks.name,
             schedule.generateSchedule()
         )
     }

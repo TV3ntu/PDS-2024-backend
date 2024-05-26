@@ -18,19 +18,12 @@ class Schedule(
     val id: String = java.util.UUID.randomUUID().toString()
     override fun findMe(value: String): Boolean = id == value
     fun generateSchedule(): List<String> {
-        val schedule = mutableListOf<String>()
-
-        for (day in days) {
-            // Ajustar la fecha de inicio al próximo o mismo día de la semana especificado
-            var currentDate = startDate.with(TemporalAdjusters.nextOrSame(day))
-
-            while (!currentDate.isAfter(endDate)) {
-                schedule.add(currentDate.toString())
-                // Incrementar la fecha actual por el número de semanas especificado
-                currentDate = currentDate.plusWeeks(recurrenceWeeks.value)
-            }
+        return days.flatMap { day ->
+            generateSequence(startDate.with(TemporalAdjusters.nextOrSame(day))) { currentDate ->
+                currentDate.plusWeeks(recurrenceWeeks.value)
+                    .takeIf { it.isBefore(endDate) || it.isEqual(endDate) }
+            }.map { it.toString() }.toList()
         }
-        return schedule
     }
 }
 

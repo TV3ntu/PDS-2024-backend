@@ -10,6 +10,6 @@ data class ScheduleResponseDto (
     val endTime: LocalTime,
     val startDate: LocalDate,
     val endDate: LocalDate,
-    val recurrenceWeeks: Long,
+    val recurrenceWeeks: String,
     val listDates: List<String>
 )
