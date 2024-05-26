@@ -1,7 +1,18 @@
 package ar.edu.unsam.pds.utils
 
-import ar.edu.unsam.pds.dto.response.*
-import ar.edu.unsam.pds.models.*
+import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
+import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
+import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
+import ar.edu.unsam.pds.dto.response.UserResponseDto
+import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
+import ar.edu.unsam.pds.dto.response.InstitutionDetailResponseDto
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
+import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
+import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.models.Course
+import ar.edu.unsam.pds.models.Institution
+import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.models.Schedule
 
 import java.time.LocalDate
 
