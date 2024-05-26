@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
+import ar.edu.unsam.pds.models.RecurrenceWeeks
 import ar.edu.unsam.pds.services.AssignmentService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -34,7 +35,7 @@ class AssignmentControllerTest {
             endTime = LocalTime.now(),
             startDate = LocalDate.now(),
             endDate = LocalDate.now(),
-            recurrenceWeeks = 1,
+            recurrenceWeeks = RecurrenceWeeks.WEEKLY.name,
             listDates = listOf(LocalDate.now().toString())
         )
         val assignments = listOf(
@@ -64,7 +65,7 @@ class AssignmentControllerTest {
             endTime = LocalTime.now(),
             startDate = LocalDate.now(),
             endDate = LocalDate.now(),
-            recurrenceWeeks = 1,
+            recurrenceWeeks = RecurrenceWeeks.WEEKLY.name,
             listDates = listOf(LocalDate.now().toString())
         )
         val assignment = AssignmentResponseDto(
