@@ -1,21 +1,18 @@
 package ar.edu.unsam.pds.models
+
 import ar.edu.unsam.pds.exceptions.ValidationException
 import java.util.UUID
 import ar.edu.unsam.pds.repository.Element
-import com.fasterxml.jackson.annotation.JsonIgnore
-import java.time.LocalTime
 
-class Assignment (
-    val startTime: LocalTime,
-    val endTime: LocalTime,
-    var day: MutableList<String>,
-    var quotas: Int,
+class Assignment(
+    val quotas: Int,
     var isActive: Boolean,
-    val price: Int,
+    val price: Double,
+    var schedule: Schedule
+
 ) : Element  {
     val id: String = UUID.randomUUID().toString()
 
-    @JsonIgnore
     lateinit var course: Course
 
     fun quantityAvailable() = quotas - subscribedUsers.size
