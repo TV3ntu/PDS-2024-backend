@@ -44,7 +44,7 @@ class AssignmentControllerTest {
                 quantityAvailable = 100,
                 isActive = true,
                 price = 100.0,
-                scheduleResponseDto = schedule
+                schedule = schedule
             )
         )
 
@@ -73,7 +73,7 @@ class AssignmentControllerTest {
             quantityAvailable = 100,
             isActive = true,
             price = 100.0,
-            scheduleResponseDto = schedule
+            schedule = schedule
         )
         `when`(assignmentService.getAssignment("123")).thenReturn(assignment)
 
