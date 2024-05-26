@@ -18,7 +18,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             listOf(DayOfWeek.MONDAY),
             LocalTime.of(19, 0),
             LocalTime.of(20, 0),
-            LocalDate.of(2021, 3, 1),
+            LocalDate.of(2023, 3, 1),
             LocalDate.of(2024, 10, 30),
             1,
         )
@@ -29,7 +29,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             listOf(DayOfWeek.TUESDAY),
             LocalTime.of(19, 0),
             LocalTime.of(21, 0),
-            LocalDate.of(2021, 3, 1),
+            LocalDate.of(2023, 3, 1),
             LocalDate.of(2024, 12, 30),
             2,
         )
@@ -40,7 +40,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY),
             LocalTime.of(12, 0),
             LocalTime.of(14, 0),
-            LocalDate.of(2021, 3, 1),
+            LocalDate.of(2023, 3, 1),
             LocalDate.of(2025, 6, 30),
             3,
         )
@@ -51,7 +51,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             listOf(DayOfWeek.THURSDAY),
             LocalTime.of(12, 0),
             LocalTime.of(14, 0),
-            LocalDate.of(2021, 3, 1),
+            LocalDate.of(2023, 3, 1),
             LocalDate.of(2025, 3, 30),
             4,
         )
