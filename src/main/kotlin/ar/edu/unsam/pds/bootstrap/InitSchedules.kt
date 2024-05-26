@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.bootstrap
 
+import ar.edu.unsam.pds.models.RecurrenceWeeks
 import ar.edu.unsam.pds.models.Schedule
 import ar.edu.unsam.pds.repository.ScheduleRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +21,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             LocalTime.of(20, 0),
             LocalDate.of(2023, 3, 1),
             LocalDate.of(2024, 10, 30),
-            1,
+            RecurrenceWeeks.WEEKLY,
         )
         scheduleRepository.create(schedule1)
 
@@ -31,7 +32,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             LocalTime.of(21, 0),
             LocalDate.of(2023, 3, 1),
             LocalDate.of(2024, 12, 30),
-            2,
+            RecurrenceWeeks.BIWEEKLY,
         )
         scheduleRepository.create(schedule2)
 
@@ -42,7 +43,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             LocalTime.of(14, 0),
             LocalDate.of(2023, 3, 1),
             LocalDate.of(2025, 6, 30),
-            3,
+            RecurrenceWeeks.MONTHLY,
         )
         scheduleRepository.create(schedule3)
 
@@ -53,7 +54,7 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             LocalTime.of(14, 0),
             LocalDate.of(2023, 3, 1),
             LocalDate.of(2025, 3, 30),
-            4,
+            RecurrenceWeeks.MONTHLY,
         )
         scheduleRepository.create(schedule4)
     }
