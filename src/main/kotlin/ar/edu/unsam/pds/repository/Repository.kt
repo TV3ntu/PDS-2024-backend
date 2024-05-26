@@ -35,6 +35,10 @@ abstract class Repository<T: Element> {
     fun clear(){
         collection.clear()
     }
+
+    fun findRandomItem(): T? {
+        return collection.randomOrNull()
+    }
 }
 
 interface Element {

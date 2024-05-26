@@ -1,10 +1,7 @@
 package ar.edu.unsam.pds.utils
 
 import ar.edu.unsam.pds.dto.response.*
-import ar.edu.unsam.pds.models.Assignment
-import ar.edu.unsam.pds.models.Course
-import ar.edu.unsam.pds.models.Institution
-import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.models.*
 
 object Mapper {
     fun buildUserDto(user: User): UserResponseDto {
@@ -38,12 +35,6 @@ object Mapper {
         )
     }
 
-//    fun buildInstitutionListDto(institution: MutableSet<Course>): List<InstitutionResponseDto> {
-//        return institution.map {
-//            buildInstitutionDto(Course)
-//        }
-//    }
-
     fun buildCourseDto(course: Course): CourseResponseDto {
         return CourseResponseDto(
             course.id,
@@ -65,23 +56,26 @@ object Mapper {
         )
     }
 
-
-//    fun courseInstitutionDto(course: Course): CourseAssignmentsResponseDto {
-//        return CourseAssignmentsResponseDto(
-//            course.assignments
-//        )
-//    }
-
-
     fun buildAssignmentDto(assignment: Assignment): AssignmentResponseDto {
         return AssignmentResponseDto(
             assignment.id,
-            assignment.startTime,
-            assignment.endTime,
-            assignment.day,
             assignment.quotas,
             assignment.isActive,
-            assignment.price
+            assignment.price,
+            buildScheduleDto(assignment.schedule)
+
+            )
+    }
+
+    fun buildScheduleDto(schedule: Schedule): ScheduleResponseDto {
+        return ScheduleResponseDto(
+            schedule.days,
+            schedule.startTime,
+            schedule.endTime,
+            schedule.startDate,
+            schedule.endDate,
+            schedule.recurrenceWeeks,
+            schedule.generateSchedule()
         )
     }
 }
