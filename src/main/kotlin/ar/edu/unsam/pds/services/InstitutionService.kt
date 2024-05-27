@@ -13,8 +13,8 @@ class InstitutionService(
     private val institutionRepository: InstitutionRepository
 ) {
 
-    fun getAll(): List<InstitutionResponseDto> {
-        val institutions = institutionRepository.getAll()
+    fun getAll(query: String): List<InstitutionResponseDto> {
+        val institutions = institutionRepository.getAllBy(query)
         return institutions.map { Mapper.buildInstitutionDto(it) }
     }
 

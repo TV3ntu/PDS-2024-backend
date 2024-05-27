@@ -35,9 +35,9 @@ class InstitutionControllerTest {
             )
         )
 
-        `when`(institutionService.getAll()).thenReturn(institutions)
+        `when`(institutionService.getAll("")).thenReturn(institutions)
 
-        val responseEntity = institutionController.getAll()
+        val responseEntity = institutionController.getAll(null)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == institutions)
@@ -61,15 +61,4 @@ class InstitutionControllerTest {
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == institution)
     }
-
-//    @Test
-//    fun `test get all the courses from an institution`() {
-//        val courses = listOf(Course("title 1", "description", "category", ""))
-//        `when`(institutionService.getCoursesOfInstitution("123")).thenReturn(courses)
-//
-//        val responseEntity = institutionController.getCoursesOfInstitution("123")
-//
-//        assert(responseEntity.statusCode == HttpStatus.OK)
-//        assert(responseEntity.body == courses)
-//    }
 }
