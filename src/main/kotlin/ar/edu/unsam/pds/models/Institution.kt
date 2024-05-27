@@ -1,19 +1,29 @@
 package ar.edu.unsam.pds.models
 import java.util.UUID
-import ar.edu.unsam.pds.repository.Element
+import jakarta.persistence.*
 
+@Entity
 class Institution (
+    @Column(length = 30)
     val name: String,
+    @Column
     val description: String,
+    @Column
     val category: String,
+    @Column
     var image: String
-) : Element  {
-    val id: String = UUID.randomUUID().toString()
+)   {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    lateinit var id : UUID
+
+    @OneToMany(fetch=FetchType.EAGER, cascade = [CascadeType.ALL])
+    @JoinColumn(name="id_user", referencedColumnName = "id")
     val courses: MutableSet<Course> = mutableSetOf()
 
     fun addCourse(course: Course) {
         courses.add(course)
     }
 
-    override fun findMe(value: String): Boolean = id == value
+    fun findMe(value: UUID): Boolean = id.equals(value)
 }
