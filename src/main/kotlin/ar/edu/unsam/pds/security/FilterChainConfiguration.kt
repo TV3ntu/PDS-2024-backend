@@ -40,24 +40,22 @@ class FilterChainConfiguration {
                 antMatcher(POST, "/api/users/login"),
 
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                antMatcher(GET, "/api/institutions"),
-                antMatcher(GET, "/api/institutions/*"),
-                antMatcher(GET, "/api/institutions/*/courses"),
+                antMatcher(GET, "/api/institutions"), /*ok*/
+                antMatcher(GET, "/api/institutions/*"), /*ok*/
 
-                antMatcher(GET, "/api/courses"),
-                antMatcher(GET, "/api/courses/*"),
-                antMatcher(GET, "/api/courses/*/assignments"),
+                antMatcher(GET, "/api/courses"), /*ok*/
+                antMatcher(GET, "/api/courses/*"), /*ok*/
 
-                antMatcher(GET, "/api/assignments"),
-                antMatcher(GET, "/api/assignments/*"),
-                antMatcher(POST, "/api/assignments/subscribe"),
-                antMatcher(PATCH, "/api/assignments/unsubscribe"),
+                antMatcher(GET, "/api/assignments"), /*ok*/
+                antMatcher(GET, "/api/assignments/*"), /*ok*/
 
-                antMatcher(GET, "/api/users"),
-                antMatcher(GET, "/api/users/"),
-                antMatcher(GET, "/api/users/*"),
-                antMatcher(PATCH, "/api/users/*"),
-                antMatcher(GET, "/api/users/*/courses"),
+                antMatcher(POST, "/api/assignments/subscribe"), /*ok*/
+                antMatcher(PATCH, "/api/assignments/unsubscribe"), /*ok*/
+
+                antMatcher(GET, "/api/users"), /*ok*/
+                antMatcher(GET, "/api/users/*"), /*ok*/
+                antMatcher(PATCH, "/api/users/*"), /*ok*/
+                antMatcher(GET, "/api/users/*/courses"), /*ok*/
             ).permitAll()
 
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

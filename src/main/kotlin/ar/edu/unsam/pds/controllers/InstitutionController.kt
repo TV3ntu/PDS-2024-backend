@@ -18,8 +18,10 @@ class InstitutionController {
 
     @GetMapping("")
     @Operation(summary = "Get all institutions")
-    fun getAll(): ResponseEntity<List<InstitutionResponseDto>> {
-        return ResponseEntity.ok(institutionService.getAll())
+    fun getAll(
+        @RequestParam(required = false) query: String?
+    ): ResponseEntity<List<InstitutionResponseDto>> {
+        return ResponseEntity.ok(institutionService.getAll(query ?: ""))
     }
 
     @GetMapping("{idInstitution}")

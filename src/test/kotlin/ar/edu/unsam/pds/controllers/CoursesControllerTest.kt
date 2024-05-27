@@ -9,9 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 
 @ExtendWith(MockitoExtension::class)
@@ -62,16 +59,4 @@ class CoursesControllerTest {
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == course)
     }
-
-//    @Test
-//    fun `test get all the assignments from an course`() {
-//        val assignment = Assignment(LocalTime.now(), LocalTime.now(), mutableListOf("Monday", "Wednesday"), 10, true, 100)
-//        val assignments = listOf(assignment)
-//        `when`(courseServices.getAssignmentOfCourse("123")).thenReturn(assignments)
-//
-//        val responseEntity = coursesController.getAssignmentOfCourse("123")
-//
-//        assert(responseEntity.statusCode == HttpStatus.OK)
-//        assert(responseEntity.body == assignments)
-//    }
 }
