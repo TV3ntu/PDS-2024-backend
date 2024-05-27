@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.security
 
 import jakarta.servlet.DispatcherType.ASYNC
 import jakarta.servlet.DispatcherType.ERROR
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod.*
@@ -58,6 +59,13 @@ class FilterChainConfiguration {
                 antMatcher(PATCH, "/api/users/*"),
                 antMatcher(GET, "/api/users/*/courses"),
             ).permitAll()
+
+            // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            .requestMatchers(
+                PathRequest.toH2Console()
+            ).permitAll()
+
+            // the rest of the endpoints @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .anyRequest().authenticated()
         }
 
