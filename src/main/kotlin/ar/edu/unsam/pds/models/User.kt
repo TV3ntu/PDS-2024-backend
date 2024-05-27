@@ -1,20 +1,30 @@
 package ar.edu.unsam.pds.models
 
-import ar.edu.unsam.pds.repository.Element
 import ar.edu.unsam.pds.exceptions.ValidationException
+import jakarta.persistence.*
 import java.util.UUID
 
+@Entity
 class User(
+    @Column(length = 30)
     var name: String,
+    @Column
     var lastName: String,
+    @Column
     var email: String,
+    @Column
     var image: String,
-) : Element {
-    val id: String = UUID.randomUUID().toString()
+)  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    lateinit var id : UUID
 
+    @OneToMany(fetch= FetchType.EAGER, cascade = [CascadeType.ALL])
+    @JoinColumn(name="id_user", referencedColumnName = "id")
     val assignmentsList = mutableSetOf<Assignment>()
 
-    override fun findMe(value: String): Boolean = id == value
+    fun findMe(value: UUID): Boolean = id.equals(value)
+
 
     fun subscribedCourses(): Set<Course> {
         return assignmentsList.map { it.course }.toSet()
