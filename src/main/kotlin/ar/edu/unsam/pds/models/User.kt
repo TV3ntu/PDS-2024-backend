@@ -19,7 +19,7 @@ class User(
     @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id : UUID
 
-    @OneToMany(fetch= FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch= FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name="id_user", referencedColumnName = "id")
     val assignmentsList = mutableSetOf<Assignment>()
 

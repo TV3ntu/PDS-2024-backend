@@ -2,25 +2,25 @@ package ar.edu.unsam.pds.repository
 
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.security.models.Principal
+import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
 import java.util.Optional
+import java.util.UUID
 
-@org.springframework.stereotype.Repository
-class UserRepository : Repository<User>() {
-    private var principals: MutableMap<String, Principal> = hashMapOf()
+@Repository
+interface UserRepository : CrudRepository<User, String> {
 
-    fun create(password: String, user: User) {
-        super.create(user)
-        principals[user.id] = Principal().apply {
-            this.username = user.email
-            this.password = password
-            this.user = user
+//    var principals: MutableMap<String, Principal>
+//    fun create(password: String, user: User) {
+//        super.create(user)
+//        principals[user.id] = Principal().apply {
+//            this.username = user.email
+//            this.password = password
+//            this.user = user
+//
+//            this.initProperties()
+//        }
+//    }
 
-            this.initProperties()
-        }
-    }
-
-    fun findByUsername(email: String): Optional<Principal> {
-        val principal = principals.values.firstOrNull { it.username == email }
-        return Optional.ofNullable(principal)
-    }
+    fun findByUsername(email: String): Optional<User>
 }
