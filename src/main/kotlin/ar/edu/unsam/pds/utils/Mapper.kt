@@ -44,7 +44,7 @@ object Mapper {
             institution.description,
             institution.category,
             institution.image,
-            institution.courses
+            institution.courses.map { buildCourseDto(it) }.toMutableSet()
         )
     }
 
@@ -65,7 +65,7 @@ object Mapper {
             course.description,
             course.category,
             course.image,
-            course.assignments
+            course.assignments.map { buildAssignmentDto(it) }.toMutableSet()
         )
     }
 
