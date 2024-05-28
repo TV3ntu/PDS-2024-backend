@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -54,6 +55,7 @@ class UserService(
         return Mapper.buildUserDto(user)
     }
 
+    @Transactional
     fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
         val user = findUserById(idUser)
         val updatedUser = Mapper.patchUser(user, userDetail)

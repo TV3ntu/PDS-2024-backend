@@ -9,6 +9,7 @@ import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -27,6 +28,7 @@ class AssignmentService(
         return Mapper.buildAssignmentDto(assignments)
     }
 
+    @Transactional
     fun subscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
         val assignment = findAssignmentById(idAssignment)
         val user = findUserById(idUser)
@@ -38,6 +40,7 @@ class AssignmentService(
         return Mapper.subscribeResponse(idUser, idAssignment)
     }
 
+    @Transactional
     fun unsubscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
         val assignment = findAssignmentById(idAssignment)
         val user = findUserById(idUser)

@@ -42,10 +42,10 @@ class Assignment(
     }
 
     fun removeSubscribedUser(user: User) {
-        if (!subscribedUsers.any {it.id == user.id}) {
+        if (!subscribedUsers.any { it.id == user.id }) {
             throw ValidationException("El usuario no está subscripto")
         } else {
-            subscribedUsers.remove(user)
+            subscribedUsers.removeIf { it.id == user.id }
         }
     }
 }
