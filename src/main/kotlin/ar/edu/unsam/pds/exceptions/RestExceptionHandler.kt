@@ -7,11 +7,14 @@ import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 
 @RestControllerAdvice
 class RestExceptionHandler {
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = [MethodArgumentNotValidException::class])
     fun customHandleMethodArgumentNotValid(
         exception: MethodArgumentNotValidException,
@@ -24,6 +27,7 @@ class RestExceptionHandler {
         return ResponseEntity(errors, HttpStatus.BAD_REQUEST)
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = [HttpMessageNotReadableException::class])
     fun customHandleHttpMessageNotReadable(
         exception: HttpMessageNotReadableException,
@@ -35,6 +39,7 @@ class RestExceptionHandler {
         return ResponseEntity(body, status)
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = [UsernameNotFoundException::class])
     fun handleUsernameNotFoundException(
         exception: UsernameNotFoundException,
@@ -45,11 +50,13 @@ class RestExceptionHandler {
         return ResponseEntity(body, status)
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = [NotFoundException::class])
     fun notFound(exception: NotFoundException, request: WebRequest): BodyResponse{
         return BodyResponse(HttpStatus.NOT_FOUND, request, exception.message)
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(value = [ValidationException::class])
     fun validation(exception: ValidationException, request: WebRequest): BodyResponse{
         return BodyResponse(HttpStatus.CONFLICT, request, exception.message)
