@@ -6,9 +6,12 @@ import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
+@DataJpaTest
 class CoursesServiceTest {
-    private lateinit var courseRepository: CourseRepository
+    @Autowired private lateinit var courseRepository: CourseRepository
     private lateinit var courseServices: CoursesService
 
     private lateinit var classicDance: Course
@@ -17,7 +20,6 @@ class CoursesServiceTest {
 
     @BeforeEach
     fun setUp() {
-        courseRepository = CourseRepository()
         courseServices = CoursesService(courseRepository)
 
         classicDance = Course(
@@ -41,9 +43,9 @@ class CoursesServiceTest {
             image = ""
         )
 
-        courseRepository.create(classicDance)
-        courseRepository.create(modernDance)
-        courseRepository.create(yoga)
+        classicDance = courseRepository.save(classicDance)
+        modernDance = courseRepository.save(modernDance)
+        yoga = courseRepository.save(yoga)
     }
 
     @Test
@@ -91,7 +93,7 @@ class CoursesServiceTest {
 
     @Test
     fun `test get a particular course`() {
-        val obtainedValue = courseServices.getCourse(classicDance.id)
+        val obtainedValue = courseServices.getCourse(classicDance.id.toString())
         val expectedValue = Mapper.buildCourseDetailDto(classicDance)
 
         assertEquals(obtainedValue, expectedValue)

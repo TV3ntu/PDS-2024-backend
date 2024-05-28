@@ -1,14 +1,17 @@
 package ar.edu.unsam.pds.repository
 
 import ar.edu.unsam.pds.models.Course
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
+import java.util.*
 
-@org.springframework.stereotype.Repository
-class CourseRepository : Repository<Course>() {
-    fun getAllBy(queryOf: String): MutableList<Course> {
-        return this.getAll().filter {
-            it.title.contains(queryOf)  ||
-            it.description.contains(queryOf) ||
-            it.category.contains(queryOf)
-        }.toMutableList()
-    }
+interface CourseRepository : JpaRepository<Course, UUID> {
+    @Query("""
+        SELECT c FROM Course c
+        WHERE c.title LIKE concat('%', :query, '%')
+        OR c.description LIKE concat('%', :query, '%')
+        OR c.category LIKE concat('%', :query, '%')
+    """)
+    fun getAllBy(@Param("query") query: String): MutableList<Course>
 }

@@ -1,7 +1,8 @@
 package ar.edu.unsam.pds.bootstrap
 
 import ar.edu.unsam.pds.models.User
-import ar.edu.unsam.pds.repository.UserRepository
+import ar.edu.unsam.pds.security.models.Principal
+import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
@@ -9,126 +10,176 @@ import org.springframework.stereotype.Component
 @Component(value = "InitUsers.beanName")
 class InitUser : BootstrapGeneric("users") {
     @Autowired private lateinit var passwordEncoder: PasswordEncoder
-    @Autowired private lateinit var userRepository: UserRepository
+    @Autowired private lateinit var principalRepository: PrincipalRepository
 
     override fun doAfterPropertiesSet() {
         // region user = Adan @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("125"),
-            User(
-                "Adan",
-                "AdanAdan",
-                "adan@email.com",
-                ""
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "adan@email.com"
+                password = encode("125")
+                user = User(
+                    name = "Adan",
+                    lastName = "AdanAdan",
+                    email = "adan@email.com",
+                    image = ""
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Eva @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("124"),
-            User(
-                "Eva",
-                "EvaEva",
-                "eva@email.com",
-                ""
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "eva@email.com"
+                password = encode("124")
+                user = User(
+                    name = "Eva",
+                    lastName = "EvaEva",
+                    email = "eva@email.com",
+                    image = ""
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Bonifacio @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Bonifacio",
-                "Gomez",
-                "bonifacio@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "bonifacio@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Bonifacio",
+                    lastName = "Gomez",
+                    email = "bonifacio@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Clemente @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Clemente",
-                "Lopez",
-                "clemente@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "clemente@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Clemente",
+                    lastName = "Lopez",
+                    email = "clemente@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Dalmacio @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Dalmacio",
-                "Martinez",
-                "dalmacio@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "dalmacio@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Dalmacio",
+                    lastName = "Martinez",
+                    email = "dalmacio@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Emeterio @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Emeterio",
-                "Garcia",
-                "emeterio@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "emeterio@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Emeterio",
+                    lastName = "Garcia",
+                    email = "emeterio@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Taciana @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Taciana",
-                "Moyano",
-                "taciana@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "taciana@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Taciana",
+                    lastName = "Moyano",
+                    email = "taciana@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Ursula @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Ursula",
-                "Campos",
-                "ursula@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "ursula@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Ursula",
+                    lastName = "Campos",
+                    email = "ursula@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Valentina @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Valentina",
-                "Soto",
-                "valentina@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "valentina@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Valentina",
+                    lastName = "Soto",
+                    email = "valentina@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
 
         // region user = Zeferina @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        userRepository.create(
-            this.encode("123"),
-            User(
-                "Zeferina",
-                "Chávez",
-                "zeferina@email.com",
-                "",
-            )
+        principalRepository.save(
+            Principal().apply {
+                username = "zeferina@email.com"
+                password = encode("123")
+                user = User(
+                    name = "Zeferina",
+                    lastName = "Chávez",
+                    email = "zeferina@email.com",
+                    image = "",
+                )
+
+                this.initProperties()
+            }
         )
         // endregion
     }

@@ -50,7 +50,7 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.session:spring-session-core")
-    //	implementation("org.springframework.session:spring-session-jdbc") //
+    implementation("org.springframework.session:spring-session-jdbc")
     testImplementation("org.springframework.security:spring-security-test")
 }
 

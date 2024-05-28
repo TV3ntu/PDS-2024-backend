@@ -8,6 +8,7 @@ import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
+import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import ar.edu.unsam.pds.utils.Mapper
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
@@ -16,14 +17,16 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val principalRepository: PrincipalRepository
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
-        return userRepository.findByUsername(email).orElseThrow {
+        return principalRepository.findUserByEmail(email).orElseThrow {
             UsernameNotFoundException("El usuario no existe.")
         }
     }
@@ -42,7 +45,7 @@ class UserService(
     }
 
     fun getUserAll(): List<UserResponseDto> {
-        val user = userRepository.getAll()
+        val user = userRepository.findAll()
         return user.map { Mapper.buildUserDto(it) }
     }
 
@@ -54,7 +57,7 @@ class UserService(
     fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
         val user = findUserById(idUser)
         val updatedUser = Mapper.patchUser(user, userDetail)
-        userRepository.update(idUser, updatedUser)
+        userRepository.save(updatedUser)
         return Mapper.buildUserDto(user)
     }
 
@@ -64,7 +67,8 @@ class UserService(
     }
 
     private fun findUserById(idUser: String): User {
-        return userRepository.findById(idUser).orElseThrow {
+        val uuid = UUID.fromString(idUser)
+        return userRepository.findById(uuid).orElseThrow {
             NotFoundException("Usuario no encontrado")
         }
     }

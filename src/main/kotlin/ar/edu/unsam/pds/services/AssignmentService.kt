@@ -9,6 +9,7 @@ import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class AssignmentService(
@@ -17,7 +18,7 @@ class AssignmentService(
 ) {
 
     fun getAll(): List<AssignmentResponseDto> {
-        val assignments = assignmentRepository.getAll()
+        val assignments = assignmentRepository.findAll()
         return assignments.map { Mapper.buildAssignmentDto(it) }
     }
 
@@ -32,8 +33,8 @@ class AssignmentService(
 
         user.addAssignment(assignment)
         assignment.addSubscribedUser(user)
-        //TODO: Agregar update cuando pongamos persistencia
 
+        userRepository.save(user)
         return Mapper.subscribeResponse(idUser, idAssignment)
     }
 
@@ -43,19 +44,21 @@ class AssignmentService(
 
         user.removeAssignment(assignment)
         assignment.removeSubscribedUser(user)
-        //TODO: Agregar update cuando pongamos persistencia
 
+        userRepository.save(user)
         return Mapper.unsubscribeResponse(idUser, idAssignment)
     }
 
     private fun findUserById(idUser: String): User {
-        return userRepository.findById(idUser).orElseThrow {
+        val uuid = UUID.fromString(idUser)
+        return userRepository.findById(uuid).orElseThrow {
             NotFoundException("Usuario no encontrado")
         }
     }
 
-    private fun findAssignmentById(idAssigment: String): Assignment {
-        return assignmentRepository.findById(idAssigment).orElseThrow {
+    private fun findAssignmentById(idAssignment: String): Assignment {
+        val uuid = UUID.fromString(idAssignment)
+        return assignmentRepository.findById(uuid).orElseThrow {
             NotFoundException("Clase no encontrada")
         }
     }
