@@ -7,6 +7,7 @@ import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class CoursesService(
@@ -24,7 +25,8 @@ class CoursesService(
     }
 
     private fun findCourseById(idCourse: String): Course {
-        return courseRepository.findById(idCourse).orElseThrow {
+        val uuid = UUID.fromString(idCourse)
+        return courseRepository.findById(uuid).orElseThrow {
             NotFoundException("Curso no encontrado")
         }
     }

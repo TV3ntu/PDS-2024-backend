@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.bootstrap
 
-import ar.edu.unsam.pds.models.RecurrenceWeeks
+import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
 import ar.edu.unsam.pds.models.Schedule
 import ar.edu.unsam.pds.repository.ScheduleRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,52 +11,50 @@ import java.time.LocalTime
 
 @Component(value = "InitSchedules.beanName")
 class InitSchedules : BootstrapGeneric("Schedules") {
-
     @Autowired private lateinit var scheduleRepository: ScheduleRepository
 
     override fun doAfterPropertiesSet() {
         val schedule1 = Schedule(
-            listOf(DayOfWeek.MONDAY),
-            LocalTime.of(19, 0),
-            LocalTime.of(20, 0),
-            LocalDate.of(2023, 3, 1),
-            LocalDate.of(2024, 10, 30),
-            RecurrenceWeeks.WEEKLY,
+            days = listOf(DayOfWeek.MONDAY),
+            startTime = LocalTime.of(19, 0),
+            endTime = LocalTime.of(20, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2024, 10, 30),
+            recurrenceWeeks = RecurrenceWeeks.WEEKLY,
         )
-        scheduleRepository.create(schedule1)
+        scheduleRepository.save(schedule1)
 
 
         val schedule2 = Schedule(
-            listOf(DayOfWeek.TUESDAY),
-            LocalTime.of(19, 0),
-            LocalTime.of(21, 0),
-            LocalDate.of(2023, 3, 1),
-            LocalDate.of(2024, 12, 30),
-            RecurrenceWeeks.BIWEEKLY,
+            days = listOf(DayOfWeek.TUESDAY),
+            startTime = LocalTime.of(19, 0),
+            endTime = LocalTime.of(21, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2024, 12, 30),
+            recurrenceWeeks = RecurrenceWeeks.BIWEEKLY,
         )
-        scheduleRepository.create(schedule2)
+        scheduleRepository.save(schedule2)
 
 
         val schedule3 = Schedule(
-            listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY),
-            LocalTime.of(12, 0),
-            LocalTime.of(14, 0),
-            LocalDate.of(2023, 3, 1),
-            LocalDate.of(2025, 6, 30),
-            RecurrenceWeeks.MONTHLY,
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 6, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
         )
-        scheduleRepository.create(schedule3)
+        scheduleRepository.save(schedule3)
 
 
         val schedule4 = Schedule(
-            listOf(DayOfWeek.THURSDAY),
-            LocalTime.of(12, 0),
-            LocalTime.of(14, 0),
-            LocalDate.of(2023, 3, 1),
-            LocalDate.of(2025, 3, 30),
-            RecurrenceWeeks.MONTHLY,
+            days = listOf(DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
         )
-        scheduleRepository.create(schedule4)
+        scheduleRepository.save(schedule4)
     }
-
 }

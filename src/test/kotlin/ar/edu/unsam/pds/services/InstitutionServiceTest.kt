@@ -6,9 +6,12 @@ import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
+@DataJpaTest
 class InstitutionServiceTest {
-    private lateinit var institutionRepository: InstitutionRepository
+    @Autowired private lateinit var institutionRepository: InstitutionRepository
     private lateinit var institutionService: InstitutionService
 
     private lateinit var danceInstitution: Institution
@@ -17,7 +20,6 @@ class InstitutionServiceTest {
 
     @BeforeEach
     fun setUp() {
-        institutionRepository = InstitutionRepository()
         institutionService = InstitutionService(institutionRepository)
 
         danceInstitution = Institution(
@@ -41,9 +43,9 @@ class InstitutionServiceTest {
             image = ""
         )
 
-        institutionRepository.create(danceInstitution)
-        institutionRepository.create(mathematicsInstitution)
-        institutionRepository.create(yogaInstitution)
+        danceInstitution = institutionRepository.save(danceInstitution)
+        mathematicsInstitution = institutionRepository.save(mathematicsInstitution)
+        yogaInstitution = institutionRepository.save(yogaInstitution)
     }
 
     @Test
@@ -91,7 +93,7 @@ class InstitutionServiceTest {
 
     @Test
     fun `test get a particular institution`() {
-        val obtainedValue = institutionService.getInstitution(danceInstitution.id)
+        val obtainedValue = institutionService.getInstitution(danceInstitution.id.toString())
         val expectedValue = Mapper.buildInstitutionDetailDto(danceInstitution)
 
         assertEquals(obtainedValue, expectedValue)

@@ -19,77 +19,76 @@ import java.time.LocalDate
 object Mapper {
     fun buildUserDto(user: User): UserResponseDto {
         return UserResponseDto(
-            user.name,
-            user.lastName,
-            user.email,
-            user.image,
-            user.id
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email,
+            image = user.image,
+            id = user.id.toString()
         )
     }
 
     fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {
         return InstitutionResponseDto(
-            institution.id,
-            institution.name,
-            institution.description,
-            institution.category,
-            institution.image
+            id = institution.id.toString(),
+            name = institution.name,
+            description = institution.description,
+            category = institution.category,
+            image = institution.image
         )
     }
 
     fun buildInstitutionDetailDto(institution: Institution): InstitutionDetailResponseDto {
         return InstitutionDetailResponseDto(
-            institution.id,
-            institution.name,
-            institution.description,
-            institution.category,
-            institution.image,
-            institution.courses.map { buildCourseDto(it) }.toMutableSet()
+            id = institution.id.toString(),
+            name = institution.name,
+            description = institution.description,
+            category = institution.category,
+            image = institution.image,
+            courses = institution.courses.map { buildCourseDto(it) }.toMutableSet()
         )
     }
 
     fun buildCourseDto(course: Course): CourseResponseDto {
         return CourseResponseDto(
-            course.id,
-            course.title,
-            course.description,
-            course.category,
-            course.image
+            id = course.id.toString(),
+            title = course.title,
+            description = course.description,
+            category = course.category,
+            image = course.image
         )
     }
 
     fun buildCourseDetailDto(course: Course): CourseDetailResponseDto {
         return CourseDetailResponseDto(
-            course.id,
-            course.title,
-            course.description,
-            course.category,
-            course.image,
-            course.assignments.map { buildAssignmentDto(it) }.toMutableSet()
+            id = course.id.toString(),
+            title = course.title,
+            description = course.description,
+            category = course.category,
+            image = course.image,
+            assignments = course.assignments.map { buildAssignmentDto(it) }.toMutableSet()
         )
     }
 
     fun buildAssignmentDto(assignment: Assignment): AssignmentResponseDto {
         return AssignmentResponseDto(
-            assignment.id,
-            assignment.quotas,
-            assignment.quantityAvailable(),
-            assignment.isActive,
-            assignment.price,
-            buildScheduleDto(assignment.schedule)
-
-            )
+            id = assignment.id.toString(),
+            quotas = assignment.quotas,
+            quantityAvailable = assignment.quantityAvailable(),
+            isActive = assignment.isActive,
+            price = assignment.price,
+            schedule = buildScheduleDto(assignment.schedule)
+        )
     }
 
     fun buildScheduleDto(schedule: Schedule): ScheduleResponseDto {
         return ScheduleResponseDto(
-            schedule.days,
-            schedule.startTime,
-            schedule.endTime,
-            schedule.startDate,
-            schedule.endDate,
-            schedule.recurrenceWeeks.name,
-            schedule.generateSchedule()
+            days = schedule.days,
+            startTime = schedule.startTime,
+            endTime = schedule.endTime,
+            startDate = schedule.startDate,
+            endDate = schedule.endDate,
+            recurrenceWeeks = schedule.recurrenceWeeks.name,
+            listDates = schedule.generateSchedule()
         )
     }
 

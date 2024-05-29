@@ -1,11 +1,19 @@
 package ar.edu.unsam.pds.security.models
 
 import ar.edu.unsam.pds.models.User
+import jakarta.persistence.*
+import jakarta.persistence.CascadeType.PERSIST
+import jakarta.persistence.FetchType.LAZY
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.util.*
 
+@Entity @Table(name = "SPRING_PRINCIPAL")
 class Principal : UserDetails {
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    lateinit var id: UUID
+
     private var username: String? = null
     private var password: String? = null
     private var accountNonExpired: Boolean? = null
@@ -13,6 +21,7 @@ class Principal : UserDetails {
     private var credentialsNonExpired: Boolean? = null
     private var enabled: Boolean? = null                   // This is done by the system administrator
 
+    @OneToOne(fetch = LAZY, cascade = [PERSIST])
     var user: User? = null
 
     // region UserDetails @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

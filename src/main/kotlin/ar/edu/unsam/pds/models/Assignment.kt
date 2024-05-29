@@ -1,33 +1,40 @@
 package ar.edu.unsam.pds.models
 
 import ar.edu.unsam.pds.exceptions.ValidationException
-import java.util.UUID
-import ar.edu.unsam.pds.repository.Element
+import jakarta.persistence.*
+import java.io.Serializable
+import java.util.*
 
+@Entity @Table(name = "APP_ASSIGNMENT")
 class Assignment(
     val quotas: Int,
     var isActive: Boolean,
     val price: Double,
+
+    @ManyToOne(fetch = FetchType.EAGER)
     var schedule: Schedule
 
-) : Element  {
-    val id: String = UUID.randomUUID().toString()
+) : Serializable {
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    lateinit var id: UUID
 
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "assignmentsList")
+    private val subscribedUsers = mutableSetOf<User>()
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
     lateinit var course: Course
 
-    fun quantityAvailable() = quotas - subscribedUsers.size
-
-    override fun findMe(value: String): Boolean = id == value
+    fun quantityAvailable(): Int {
+        return quotas - subscribedUsers.size
+    }
 
     fun attachCourse(course: Course) {
         this.course = course
     }
 
-    val subscribedUsers = mutableSetOf<User>()
-
-
-    fun addSubscribedUser(user: User){
-        if(quotas > subscribedUsers.size){
+    fun addSubscribedUser(user: User) {
+        if (quotas > subscribedUsers.size) {
             subscribedUsers.add(user)
         } else {
             throw ValidationException("No hay cupos disponibles")
@@ -35,10 +42,10 @@ class Assignment(
     }
 
     fun removeSubscribedUser(user: User) {
-        if (!subscribedUsers.contains(user)) {
+        if (!subscribedUsers.any { it.id == user.id }) {
             throw ValidationException("El usuario no está subscripto")
         } else {
-            subscribedUsers.remove(user)
+            subscribedUsers.removeIf { it.id == user.id }
         }
     }
 }

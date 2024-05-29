@@ -2,7 +2,7 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
-import ar.edu.unsam.pds.models.RecurrenceWeeks
+import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
 import ar.edu.unsam.pds.services.AssignmentService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

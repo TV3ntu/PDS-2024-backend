@@ -7,6 +7,7 @@ import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class InstitutionService(
@@ -24,7 +25,8 @@ class InstitutionService(
     }
 
     private fun findInstitutionById(idInstitution: String): Institution {
-        return institutionRepository.findById(idInstitution).orElseThrow {
+        val uuid = UUID.fromString(idInstitution)
+        return institutionRepository.findById(uuid).orElseThrow {
             NotFoundException("Institucion no encontrada")
         }
     }
