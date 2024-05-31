@@ -15,7 +15,7 @@ class InstitutionService(
 ) {
 
     fun getAll(query: String): List<InstitutionResponseDto> {
-        val institutions = institutionRepository.getAllBy(query)
+        val institutions = institutionRepository.getAllBy(query.lowercase())
         return institutions.map { Mapper.buildInstitutionDto(it) }
     }
 
