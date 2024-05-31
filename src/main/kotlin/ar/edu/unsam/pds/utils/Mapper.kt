@@ -1,13 +1,6 @@
 package ar.edu.unsam.pds.utils
 
-import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
-import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
-import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
-import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.dto.response.InstitutionResponseDto
-import ar.edu.unsam.pds.dto.response.InstitutionDetailResponseDto
-import ar.edu.unsam.pds.dto.response.CourseResponseDto
-import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
+import ar.edu.unsam.pds.dto.response.*
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
@@ -89,6 +82,17 @@ object Mapper {
             endDate = schedule.endDate,
             recurrenceWeeks = schedule.recurrenceWeeks.name,
             listDates = schedule.generateSchedule()
+        )
+    }
+
+    fun buildSubscriptionDto(assignment: Assignment, institution: Institution): SubscriptionResponseDto {
+        return SubscriptionResponseDto(
+            institutionName = institution.name,
+            courseId = assignment.course.id.toString(),
+            courseName = assignment.course.title,
+            date = assignment.schedule.nextDate().toString(),
+            hour = assignment.schedule.startTime.toString(),
+            status = assignment.status()
         )
     }
 

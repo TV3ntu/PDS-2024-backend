@@ -24,10 +24,14 @@ class InstitutionService(
         return Mapper.buildInstitutionDetailDto(institution)
     }
 
-    private fun findInstitutionById(idInstitution: String): Institution {
+    fun findInstitutionById(idInstitution: String): Institution {
         val uuid = UUID.fromString(idInstitution)
         return institutionRepository.findById(uuid).orElseThrow {
             NotFoundException("Institucion no encontrada")
         }
+    }
+
+    fun findInstitutionByCourseId(courseId: UUID): Institution {
+        return institutionRepository.findByCourseId(courseId)
     }
 }
