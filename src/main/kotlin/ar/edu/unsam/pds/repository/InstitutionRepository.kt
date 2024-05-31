@@ -20,5 +20,5 @@ interface InstitutionRepository : JpaRepository<Institution, UUID> {
         JOIN i.courses c
         WHERE c.id = :courseId
     """)
-    fun findByCourseId(@Param("courseId") courseId: String): Institution
+    fun findByCourseId(@Param("courseId") courseId: UUID): Institution
 }

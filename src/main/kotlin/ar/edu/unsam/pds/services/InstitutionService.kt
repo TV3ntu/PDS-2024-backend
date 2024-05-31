@@ -31,7 +31,7 @@ class InstitutionService(
         }
     }
 
-    fun findInstitutionByCourseId(courseId: String): Institution {
+    fun findInstitutionByCourseId(courseId: UUID): Institution {
         return institutionRepository.findByCourseId(courseId)
     }
 }

@@ -82,9 +82,14 @@ class UserService(
 
     fun getSubscriptions(idUser: String): List<SubscriptionResponseDto> {
         val user = findUserById(idUser)
-        return user.assignmentsList.map { assignment ->
-            val institution = institutionService.findInstitutionByCourseId(assignment.course.id.toString())
+        val subscriptions = user.assignmentsList.map { assignment ->
+            val institution = institutionService.findInstitutionByCourseId(assignment.course.id)
             Mapper.buildSubscriptionDto(assignment, institution)
         }
-}
+        return orderSubscriptions(subscriptions)
+    }
+
+    private fun orderSubscriptions(subscriptions: List<SubscriptionResponseDto>): List<SubscriptionResponseDto> {
+        return subscriptions.sortedBy { it.date }
+    }
 }
