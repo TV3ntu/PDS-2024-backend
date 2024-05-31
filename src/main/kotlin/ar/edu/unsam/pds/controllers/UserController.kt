@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
+import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -64,5 +65,13 @@ class UserController {
         @PathVariable @UUID idUser: String
     ): ResponseEntity<List<CourseResponseDto>> {
         return ResponseEntity.ok(userService.getSubscribedCourses(idUser))
+    }
+
+    @GetMapping("/{idUser}/subscriptions")
+    @Operation(summary = "Get the user's subscriptions")
+    fun getSubscriptions(
+        @PathVariable @UUID idUser: String
+    ): ResponseEntity<List<SubscriptionResponseDto>> {
+        return ResponseEntity.ok(userService.getSubscriptions(idUser))
     }
 }

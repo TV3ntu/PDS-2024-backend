@@ -22,6 +22,14 @@ interface InstitutionRepository : JpaRepository<Institution, UUID> {
     fun getAllBy(@Param("query") query: String): MutableList<Institution>
 
     @RestResource(exported = false)
+    @Query("""
+        SELECT i FROM Institution i
+        JOIN i.courses c
+        WHERE c.id = :courseId
+    """)
+    fun findByCourseId(@Param("courseId") courseId: UUID): Institution
+
+    @RestResource(exported = false)
     override fun findAll(pageable: Pageable): Page<Institution>
 
     @RestResource(exported = false)
