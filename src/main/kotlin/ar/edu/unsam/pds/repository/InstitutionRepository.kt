@@ -14,4 +14,11 @@ interface InstitutionRepository : JpaRepository<Institution, UUID> {
         OR i.category LIKE concat('%', :query, '%')
     """)
     fun getAllBy(@Param("query") query: String): MutableList<Institution>
+
+    @Query("""
+        SELECT i FROM Institution i
+        JOIN i.courses c
+        WHERE c.id = :courseId
+    """)
+    fun findByCourseId(@Param("courseId") courseId: String): Institution
 }

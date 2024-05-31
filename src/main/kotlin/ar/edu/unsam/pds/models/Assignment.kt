@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.util.*
 
 @Entity @Table(name = "APP_ASSIGNMENT")
-class Assignment(
+open class Assignment(
     val quotas: Int,
     var isActive: Boolean,
     val price: Double,

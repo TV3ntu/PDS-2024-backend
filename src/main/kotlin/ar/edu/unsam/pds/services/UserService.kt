@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
+import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
@@ -12,6 +13,7 @@ import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import ar.edu.unsam.pds.utils.Mapper
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -23,7 +25,10 @@ import java.util.*
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val principalRepository: PrincipalRepository
+    private val principalRepository: PrincipalRepository,
+    @Autowired
+    private val institutionService: InstitutionService
+
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
@@ -75,10 +80,11 @@ class UserService(
         }
     }
 
-    fun getSubscriptions(idUser: String): List<CourseResponseDto>? {
+    fun getSubscriptions(idUser: String): List<SubscriptionResponseDto> {
         val user = findUserById(idUser)
-        val subscriptions = user.assignmentsList
-        val
-
-    }
+        return user.assignmentsList.map { assignment ->
+            val institution = institutionService.findInstitutionByCourseId(assignment.course.id.toString())
+            Mapper.buildSubscriptionDto(assignment, institution)
+        }
+}
 }
