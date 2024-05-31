@@ -4,8 +4,10 @@ import ar.edu.unsam.pds.models.Institution
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import org.springframework.data.rest.core.annotation.RepositoryRestResource
 import java.util.*
 
+@RepositoryRestResource(exported = false)
 interface InstitutionRepository : JpaRepository<Institution, UUID> {
     @Query("""
         SELECT i FROM Institution i

@@ -56,6 +56,7 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/*"),
                 antMatcher(PATCH, "/api/users/*"),
                 antMatcher(GET, "/api/users/*/courses"),
+                antMatcher(GET, "/api/users/*/subscriptions"),
             ).permitAll()
 
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

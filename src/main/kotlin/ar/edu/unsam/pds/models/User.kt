@@ -28,7 +28,7 @@ class User(
     }
 
     fun addAssignment(assignment: Assignment) {
-        if (assignmentsList.any {it.id == assignment.id}) {
+        if (assignmentsList.any { it.id == assignment.id }) {
             throw ValidationException("El usuario ya está subscripto a esta asignación")
         } else {
             assignmentsList.add(assignment)
@@ -36,10 +36,10 @@ class User(
     }
 
     fun removeAssignment(assignment: Assignment) {
-        if (!assignmentsList.any {it.id == assignment.id}) {
+        if (!assignmentsList.any { it.id == assignment.id }) {
             throw ValidationException("El usuario no está subscripto a esta asignación")
         } else {
-            assignmentsList.remove(assignment)
+            assignmentsList.removeIf { it.id == assignment.id }
         }
     }
 }
