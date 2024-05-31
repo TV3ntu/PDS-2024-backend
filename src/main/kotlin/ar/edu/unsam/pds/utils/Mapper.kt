@@ -16,7 +16,8 @@ object Mapper {
             lastName = user.lastName,
             email = user.email,
             image = user.image,
-            id = user.id.toString()
+            id = user.id.toString(),
+            isAdmin = user.isAdmin
         )
     }
 
