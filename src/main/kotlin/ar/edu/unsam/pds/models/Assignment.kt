@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.models
 import ar.edu.unsam.pds.exceptions.ValidationException
 import jakarta.persistence.*
 import java.io.Serializable
+import java.time.LocalDate
 import java.util.*
 
 @Entity @Table(name = "APP_ASSIGNMENT")
@@ -24,6 +25,14 @@ class Assignment(
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     lateinit var course: Course
+
+    fun status(): String {
+        return if (schedule.isBeforeEndDate(LocalDate.now())) {
+            "Confirmado"
+        } else {
+            "Finalizado"
+        }
+    }
 
     fun quantityAvailable(): Int {
         return quotas - subscribedUsers.size

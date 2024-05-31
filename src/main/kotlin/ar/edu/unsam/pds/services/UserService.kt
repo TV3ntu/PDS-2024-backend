@@ -74,4 +74,11 @@ class UserService(
             NotFoundException("Usuario no encontrado")
         }
     }
+
+    fun getSubscriptions(idUser: String): List<CourseResponseDto>? {
+        val user = findUserById(idUser)
+        val subscriptions = user.assignmentsList
+        val
+
+    }
 }

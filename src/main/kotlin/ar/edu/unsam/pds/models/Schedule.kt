@@ -33,4 +33,12 @@ class Schedule(
                 .takeIf { it.isBefore(endDate) || it.isEqual(endDate) }
         }.map { it.toString() }
     }
+
+    fun isBeforeEndDate(date: LocalDate): Boolean {
+        return date.isBefore(endDate) || date.isEqual(endDate)
+    }
+
+    fun nextDate(): LocalDate {
+        return LocalDate.now().with(TemporalAdjusters.nextOrSame(days.first()))
+    }
 }

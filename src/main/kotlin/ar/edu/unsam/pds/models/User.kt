@@ -21,7 +21,7 @@ class User(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "assignment_id")]
     )
-    private val assignmentsList = mutableSetOf<Assignment>()
+    val assignmentsList = mutableSetOf<Assignment>()
 
     fun subscribedCourses(): Set<Course> {
         return assignmentsList.map { it.course }.toSet()

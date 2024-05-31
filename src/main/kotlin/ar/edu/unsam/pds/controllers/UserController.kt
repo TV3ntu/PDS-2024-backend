@@ -66,4 +66,12 @@ class UserController {
     ): ResponseEntity<List<CourseResponseDto>> {
         return ResponseEntity.ok(userService.getSubscribedCourses(idUser))
     }
+
+    @GetMapping("/{idUser}/subscriptions")
+    @Operation(summary = "Get the user's subscriptions")
+    fun getSubscriptions(
+        @PathVariable @UUID idUser: String
+    ): ResponseEntity<List<CourseResponseDto>> {
+        return ResponseEntity.ok(userService.getSubscriptions(idUser))
+    }
 }
