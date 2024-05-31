@@ -38,7 +38,12 @@ class Schedule(
         return date.isBefore(endDate) || date.isEqual(endDate)
     }
 
-    fun nextDate(): LocalDate {
-        return LocalDate.now().with(TemporalAdjusters.nextOrSame(days.first()))
+    fun nextDate(): LocalDate? {
+        val today = LocalDate.now()
+        val scheduleDates = generateSchedule()
+            .map { LocalDate.parse(it) }
+            .filter { it.isAfter(today) || it.isEqual(today) }
+
+        return scheduleDates.minOrNull()
     }
 }
