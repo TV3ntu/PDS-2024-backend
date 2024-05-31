@@ -2,7 +2,6 @@ package ar.edu.unsam.pds.models
 
 import ar.edu.unsam.pds.exceptions.ValidationException
 import jakarta.persistence.*
-import org.springframework.data.rest.core.annotation.RestResource
 import java.io.Serializable
 import java.time.LocalDate
 import java.util.*
@@ -23,7 +22,6 @@ class Assignment(
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "assignmentsList")
     private val subscribedUsers = mutableSetOf<User>()
 
-    @RestResource(exported = false)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     lateinit var course: Course

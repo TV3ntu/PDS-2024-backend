@@ -10,11 +10,12 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.webmvc.RepositoryRestController
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@RepositoryRestController(path = ["/users"]) @CrossOrigin("*")
+@RestController
+@RequestMapping("api/users")
+@CrossOrigin("*")
 class UserController {
     @Autowired
     lateinit var userService: UserService

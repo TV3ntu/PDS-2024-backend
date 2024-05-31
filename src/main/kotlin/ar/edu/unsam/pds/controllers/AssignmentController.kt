@@ -8,11 +8,12 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.webmvc.RepositoryRestController
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@RepositoryRestController(path = ["/assignments"]) @CrossOrigin("*")
+@RestController
+@RequestMapping("api/assignments")
+@CrossOrigin("*")
 class AssignmentController {
     @Autowired
     lateinit var assignmentService: AssignmentService

@@ -6,11 +6,12 @@ import ar.edu.unsam.pds.services.CoursesService
 import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.rest.webmvc.RepositoryRestController
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@RepositoryRestController(path = ["/courses"]) @CrossOrigin("*")
+@RestController
+@RequestMapping("api/courses")
+@CrossOrigin("*")
 class CoursesController {
     @Autowired
     lateinit var courseServices: CoursesService

@@ -10,9 +10,6 @@ server:
     enabled: true
 
 spring:
-  data:
-    rest:
-      base-path: api
   application:
     name: PDS-2024-backend
   thymeleaf:

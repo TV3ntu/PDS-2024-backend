@@ -1,7 +1,6 @@
 package ar.edu.unsam.pds.models
 
 import jakarta.persistence.*
-import org.springframework.data.rest.core.annotation.RestResource
 import java.io.Serializable
 import java.util.*
 
@@ -18,7 +17,6 @@ class Course(
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
-    @RestResource(exported = false)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "course")
     val assignments = mutableSetOf<Assignment>()
 
