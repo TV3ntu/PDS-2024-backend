@@ -58,6 +58,28 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/*/courses"),
             ).permitAll()
 
+            // automatically generated endpoints @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            .requestMatchers(
+                antMatcher(POST, "/api/assignments"),
+                antMatcher(PUT, "/api/assignments/*"),
+                antMatcher(DELETE, "/api/assignments/*"),
+                antMatcher(PATCH, "/api/assignments/*"),
+
+                antMatcher(POST, "/api/courses"),
+                antMatcher(PUT, "/api/courses/*"),
+                antMatcher(DELETE, "/api/courses/*"),
+                antMatcher(PATCH, "/api/courses/*"),
+
+                antMatcher(POST, "/api/institutions"),
+                antMatcher(PUT, "/api/institutions/*"),
+                antMatcher(DELETE, "/api/institutions/*"),
+                antMatcher(PATCH, "/api/institutions/*"),
+
+                antMatcher(POST, "/api/users"),
+                antMatcher(PUT, "/api/users/*"),
+                antMatcher(DELETE, "/api/users/*"),
+            ).permitAll()
+
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(
                 PathRequest.toH2Console()
