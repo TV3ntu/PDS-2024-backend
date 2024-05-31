@@ -27,5 +27,7 @@ data class UserResponseDto(
     val image: String,
 
     @field: UUID(message = "Debe ser un UUID válido")
-    val id: String
+    val id: String,
+
+    var isAdmin: Boolean
 )
