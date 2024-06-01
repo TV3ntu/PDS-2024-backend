@@ -66,7 +66,7 @@ class InstitutionServiceTest {
             Mapper.buildInstitutionDto(it)
         }
 
-        assertEquals(obtainedValue, expectedValue)
+        assertEquals(expectedValue, obtainedValue)
     }
 
     @Test
