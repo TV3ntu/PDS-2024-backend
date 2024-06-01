@@ -98,4 +98,15 @@ class CoursesServiceTest {
 
         assertEquals(obtainedValue, expectedValue)
     }
+
+    @Test
+    fun `test delete a particular course`() {
+        courseServices.deleteCourse(classicDance.id.toString())
+        val obtainedValue = courseServices.getAll("").toList()
+        val expectedValue = listOf(modernDance, yoga).map {
+            Mapper.buildCourseDto(it)
+        }
+
+        assertEquals(obtainedValue, expectedValue)
+    }
 }

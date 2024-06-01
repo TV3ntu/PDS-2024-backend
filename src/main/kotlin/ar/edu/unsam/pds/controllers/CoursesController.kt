@@ -24,6 +24,15 @@ class CoursesController {
         return ResponseEntity.ok(courseServices.getAll(query ?: ""))
     }
 
+    @DeleteMapping("{idCourse}")
+    @Operation(summary = "Delete course by id")
+    fun deleteCourse(
+        @PathVariable @UUID idCourse: String
+    ): ResponseEntity<Unit> {
+        courseServices.deleteCourse(idCourse)
+        return ResponseEntity.noContent().build()
+    }
+
     @GetMapping("{idCourse}")
     @Operation(summary = "Get course by id")
     fun getCourse(

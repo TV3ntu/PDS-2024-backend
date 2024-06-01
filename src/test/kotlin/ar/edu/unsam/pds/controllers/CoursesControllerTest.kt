@@ -59,4 +59,10 @@ class CoursesControllerTest {
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == course)
     }
+
+    @Test
+    fun `test delete a particular course`() {
+        val responseEntity = coursesController.deleteCourse("123")
+        assert(responseEntity.statusCode == HttpStatus.NO_CONTENT)
+    }
 }

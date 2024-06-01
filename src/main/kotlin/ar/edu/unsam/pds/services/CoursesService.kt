@@ -6,6 +6,7 @@ import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.utils.Mapper
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -22,6 +23,12 @@ class CoursesService(
     fun getCourse(idCourse: String): CourseDetailResponseDto {
         val course = findCourseById(idCourse)
         return Mapper.buildCourseDetailDto(course)
+    }
+
+    @Transactional
+    fun deleteCourse(idCourse: String) {
+        val course = findCourseById(idCourse)
+        courseRepository.delete(course)
     }
 
     private fun findCourseById(idCourse: String): Course {
