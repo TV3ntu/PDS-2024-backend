@@ -65,7 +65,8 @@ class CoursesControllerTest {
     fun `test delete a particular course`() {
         val responseEntity = coursesController.deleteCourse("123")
         assert(responseEntity.statusCode == HttpStatus.NO_CONTENT)
-        
+    }
+
     @Test
     fun `test create a course`() {
         val course = CourseResponseDto(
