@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.services.CoursesService
@@ -7,6 +8,8 @@ import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -22,6 +25,14 @@ class CoursesController {
         @RequestParam(required = false) query: String?
     ): ResponseEntity<List<CourseResponseDto>> {
         return ResponseEntity.ok(courseServices.getAll(query ?: ""))
+    }
+
+    @PostMapping("")
+    @Operation(summary = "Create a course")
+    fun createCourse(
+        @RequestBody course: CourseRequestDto
+    ): ResponseEntity<CourseResponseDto> {
+        return ResponseEntity.ok(courseServices.createCourse(course))
     }
 
     @GetMapping("{idCourse}")
