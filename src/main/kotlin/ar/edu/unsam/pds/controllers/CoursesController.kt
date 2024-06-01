@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.services.CoursesService
@@ -31,6 +32,14 @@ class CoursesController {
     ): ResponseEntity<Unit> {
         courseServices.deleteCourse(idCourse)
         return ResponseEntity.noContent().build()
+    }
+        
+    @PostMapping("")
+    @Operation(summary = "Create a course")
+    fun createCourse(
+        @RequestBody course: CourseRequestDto
+    ): ResponseEntity<CourseResponseDto> {
+        return ResponseEntity.ok(courseServices.createCourse(course))
     }
 
     @GetMapping("{idCourse}")

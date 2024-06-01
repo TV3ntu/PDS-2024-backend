@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.utils.Mapper
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import java.util.UUID
 
 @DataJpaTest
 class CoursesServiceTest {
@@ -106,6 +108,20 @@ class CoursesServiceTest {
         val expectedValue = listOf(modernDance, yoga).map {
             Mapper.buildCourseDto(it)
         }
+    }
+        
+    @Test
+    fun `test create a course`() {
+        val courseRequest = CourseRequestDto(
+            title = "new course",
+            description = "new course description",
+            category = "new category",
+            image = ""
+        )
+
+        val obtainedValue = courseServices.createCourse(courseRequest)
+        val id = UUID.fromString(obtainedValue?.id!!)
+        val expectedValue = Mapper.buildCourseDto(courseRepository.findById(id).get())
 
         assertEquals(obtainedValue, expectedValue)
     }

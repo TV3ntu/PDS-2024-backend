@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
@@ -36,5 +37,17 @@ class CoursesService(
         return courseRepository.findById(uuid).orElseThrow {
             NotFoundException("Curso no encontrado")
         }
+    }
+
+    @Transactional
+    fun createCourse(course: CourseRequestDto): CourseResponseDto? {
+        val newCourse = Course(
+            course.title,
+            course.description,
+            course.category,
+            course.image
+        )
+        courseRepository.save(newCourse)
+        return Mapper.buildCourseDto(newCourse)
     }
 }
