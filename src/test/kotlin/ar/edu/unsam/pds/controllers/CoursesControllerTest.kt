@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.services.CoursesService
@@ -55,6 +56,29 @@ class CoursesControllerTest {
         `when`(courseServices.getCourse("123")).thenReturn(course)
 
         val responseEntity = coursesController.getCourse("123")
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == course)
+    }
+
+    @Test
+    fun `test create a course`() {
+        val course = CourseResponseDto(
+            id = "123",
+            title = "title 1",
+            description = "description",
+            category = "category",
+            image = ""
+        )
+        val courseRequest = CourseRequestDto(
+            title = "title 1",
+            description = "description",
+            category = "category",
+            image = ""
+        )
+        `when`(courseServices.createCourse(courseRequest)).thenReturn(course)
+
+        val responseEntity = coursesController.createCourse(courseRequest)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == course)
