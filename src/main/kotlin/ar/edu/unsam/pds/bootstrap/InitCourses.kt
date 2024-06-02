@@ -122,9 +122,9 @@ class InitCourses : BootstrapGeneric("Courses") {
         val course32 = Course(
             title = "Artesanía Creativa",
             description = """
-                Una clase que introduce a los niños y adolescentes al mundo de la artesanía y las manualidades. Desde la
-                 creación de joyas hasta la fabricación de esculturas con materiales reciclados, este curso fomenta la 
-                 imaginación y la destreza manual de los estudiantes.
+                Una clase que introduce a los niños y adolescentes al mundo de la artesanía y las manualidades. Desde 
+                la creación de joyas hasta la fabricación de esculturas con materiales reciclados, este curso fomenta 
+                la imaginación y la destreza manual de los estudiantes.
             """.trimIndent(),
             category = "Artesanía",
             image = ""
