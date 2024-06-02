@@ -12,28 +12,28 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
     override fun doAfterPropertiesSet() {
         institutionRepository.save(
             Institution(
-                name = "Sport Club",
-                description = "cadena de gimnasios",
-                category = "Funcional",
-                image = "https://www.sportclub.com.ar/assets/logo-nav-bad008ff.png"
+                name = "Estrellas en Movimiento: Academia de Danza Mágica",
+                description = "¡Bienvenidos a Estrellas en Movimiento! Aquí, los sueños bailan y la magia se fusiona con el ritmo. Nuestra academia ofrece un ambiente vibrante y acogedor donde niños y adolescentes exploran su pasión por la danza. Con instructores dedicados y programas que inspiran creatividad, cada paso es un viaje hacia el brillo del escenario. Únete a nuestra familia y deja que tus movimientos brillen como estrellas en el firmamento de la danza.",
+                category = "Danza",
+                image = ""
             )
         )
 
         institutionRepository.save(
             Institution(
-                name = "Punto Fit",
-                description = "Club de Yoga",
-                category = "Yoga",
-                image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIU23JHmnjOPv7N3csEVpxeseaTLOEHJg300Y4DJQvOw&s"
+                name = "El Escenario Encantado: Academia de Arte Dramático",
+                description = "¡Bienvenidos a El Escenario Encantado! Aquí, la magia del teatro cobra vida. Nuestra academia ofrece un espacio donde los sueños escénicos se convierten en realidad. Con un enfoque en la creatividad, la expresión y el desarrollo de habilidades, nuestros estudiantes exploran el mundo del arte dramático con pasión y dedicación. Únete a nuestra comunidad teatral y déjate llevar por el poder de la actuación.",
+                category = "Teatro",
+                image = ""
             )
         )
 
         institutionRepository.save(
             Institution(
-                name = "Club Tres de Febrero",
-                description = "Club de Natacion",
-                category = "Natacion",
-                image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu98a-RFTDCxeiT2I3QYJz4ZPIPTqdr6e9-mkumkCiFw&s"
+                name = "El Rincón Creativo: Academia de Arte Visual para Jóvenes",
+                description = "Descubre tu creatividad en El Rincón Creativo. Nuestra academia es un oasis de expresión artística donde niños y adolescentes exploran el mundo del arte visual. Con enfoque en técnicas diversas y libertad creativa, nuestros estudiantes desarrollan su talento mientras dan vida a sus visiones. Únete a nuestra comunidad y sumérgete en un viaje de colores, formas y texturas donde cada pincelada cuenta una historia única.",
+                category = "Artes plasticas",
+                image = ""
             )
         )
     }
