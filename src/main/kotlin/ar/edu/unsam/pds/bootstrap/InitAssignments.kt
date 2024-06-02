@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 
-@Component(value = "InitAssignments.beanName")
-@DependsOn(value = ["InitCourses.beanName", "InitSchedules.beanName"])
+//@Component(value = "InitAssignments.beanName")
+//@DependsOn(value = ["InitCourses.beanName", "InitSchedules.beanName"])
 class InitAssignments : BootstrapGeneric("Assignments") {
     @Autowired private lateinit var scheduleRepository: ScheduleRepository
     @Autowired private lateinit var institutionRepository: InstitutionRepository

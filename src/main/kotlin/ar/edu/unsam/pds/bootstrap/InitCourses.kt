@@ -16,143 +16,139 @@ class InitCourses : BootstrapGeneric("Courses") {
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        val sportClub = this.findByName("Sport Club")
+        val estrellasEnMovimiento = this.findByName("Estrellas en Movimiento")
 
         val course11 = Course(
-            title = "Entrenamiento Funcional",
+            title = "Ballet Clásico para Principiantes",
             description = """
-                Este curso se enfoca en enseñar técnicas de entrenamiento que mejoren la funcionalidad del cuerpo en
-                actividades cotidianas y deportivas. Incluye ejercicios de fuerza, equilibrio, flexibilidad y movilidad.
+                Un curso diseñado para niños y adolescentes que desean aprender los fundamentos del ballet clásico, 
+                incluyendo postura, técnica de pies y brazos, y movimientos básicos como pliés, tendus y rond de jambes.
             """.trimIndent(),
-            category = "Funcional",
-            image = "https://img.freepik.com/foto-gratis/personas-que-trabajan-interior-junto-pesas_23-2149175410.jpg"
+            category = "Ballet",
+            image = ""
         )
 
-        sportClub?.addCourse(course11)
+        estrellasEnMovimiento?.addCourse(course11)
         courseRepository.save(course11)
 
         val course12 = Course(
-            title = "Nutrición y Salud",
+            title = "Hip Hop Kids",
             description = """
-                Un entrenador personal podría ofrecer un curso que aborde los principios básicos de la nutrición y cómo
-                aplicarlos para mejorar el rendimiento físico y la salud en general. Este curso podría incluir
-                planificación de comidas, educación sobre macronutrientes y micronutrientes, y pautas para un estilo de
-                vida saludable.
+                Una clase energética y divertida que introduce a los estudiantes a los fundamentos del hip hop, 
+                incluyendo movimientos de popping, locking, y breakdance adaptados a su edad y habilidades.
             """.trimIndent(),
-            category = "Salud",
-            image = "https://img.freepik.com/foto-gratis/mujeres-vista-frontal-comida-deliciosa_23-2149894894.jpg"
+            category = "Hip Hop",
+            image = ""
         )
 
-        sportClub?.addCourse(course12)
+        estrellasEnMovimiento?.addCourse(course12)
         courseRepository.save(course12)
 
         val course13 = Course(
-            title = "Entrenamiento de Resistencia y Cardio",
+            title = "Jazz Dance Junior",
             description = """
-                Este curso se centraría en el desarrollo de programas de entrenamiento que mejoren la resistencia
-                cardiovascular y la fuerza muscular. Los estudiantes aprenderían sobre diferentes métodos de
-                entrenamiento cardiovascular, como correr, andar en bicicleta o nadar, así como también sobre técnicas
-                de entrenamiento de fuerza con pesas, bandas de resistencia y peso corporal.
+                Un curso dinámico que combina elementos de ballet, danza contemporánea y estilos de baile moderno,
+                enseñando a los estudiantes rutinas coreografiadas con énfasis en la expresión y el estilo personal.
             """.trimIndent(),
-            category = "Cardio",
-            image = "https://img.freepik.com/foto-gratis/atleta-femenina-haciendo-ejercicio-gimnasio-ems_155003-10284.jpg"
+            category = "Jazz Dance",
+            image = ""
         )
 
-        sportClub?.addCourse(course13)
+        estrellasEnMovimiento?.addCourse(course13)
         courseRepository.save(course13)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        val puntoFit = this.findByName("Punto Fit")
+        val elEscenarioEncantado = this.findByName("El Escenario Encantado")
 
         val course21 = Course(
-            title = "Introducción al Yoga",
+            title = "Actuación para Niños",
             description = """
-                Este curso sería ideal para principiantes y personas que deseen conocer los fundamentos del yoga.
-                Cubriría las posturas básicas (asanas), técnicas de respiración (pranayama), relajación y meditación,
-                así como una introducción a la filosofía yóguica.
+                Un curso diseñado para niños de diversas edades que desean explorar el mundo del teatro. Incluye 
+                ejercicios de improvisación, técnicas de expresión vocal y corporal, y la preparación de pequeñas obras 
+                de teatro adaptadas a su edad.
             """.trimIndent(),
-            category = "Yoga",
-            image = "https://img.freepik.com/foto-gratis/grupo-personas-entrenando-clase-yoga-alivio-cuerpo-alma-mente_53876-121280.jpg"
+            category = "Actuación",
+            image = ""
         )
 
-        puntoFit?.addCourse(course21)
+        elEscenarioEncantado?.addCourse(course21)
         courseRepository.save(course21)
 
         val course22 = Course(
-            title = "Yoga Terapéutico",
+            title = "Taller de Magia e Ilusionismo",
             description = """
-                Dirigido a aquellos que buscan aliviar dolores específicos, recuperarse de lesiones o mejorar su salud
-                en general. En este curso, se enseñarían técnicas de yoga adaptadas para abordar diferentes condiciones
-                físicas y emocionales, como dolor de espalda, estrés, ansiedad, entre otros.
+                Una clase emocionante que enseña a los estudiantes los secretos detrás de los trucos de magia y 
+                ilusionismo. Aprenderán a realizar trucos sorprendentes, a dominar la prestidigitación y a crear su 
+                propia rutina mágica.
             """.trimIndent(),
-            category = "Yoga",
-            image = "https://img.freepik.com/foto-gratis/mujeres-clase-yoga-cerca_23-2148924630.jpg"
+            category = "Magia e Ilusionismo",
+            image = ""
         )
 
-        puntoFit?.addCourse(course22)
+        elEscenarioEncantado?.addCourse(course22)
         courseRepository.save(course22)
 
         val course23 = Course(
-            title = "Yoga Avanzado",
+            title = "Dramaturgia Creativa para Adolescentes",
             description = """
-                Destinado a practicantes con experiencia que deseen profundizar en su práctica y desarrollar
-                habilidades más avanzadas. Se abordarían posturas más desafiantes, técnicas de respiración más
-                avanzadas, así como la integración de filosofía yóguica en la práctica diaria.
+                Un curso dirigido a adolescentes interesados en la escritura teatral. Aprenderán los conceptos básicos 
+                de la dramaturgia, explorarán diferentes géneros teatrales y trabajarán en la creación de sus propios 
+                guiones y escenas originales.
             """.trimIndent(),
-            category = "Yoga",
-            image = "https://img.freepik.com/foto-gratis/vista-lateral-mujer-hacer-yoga-estera_23-2148732887.jpg"
+            category = "Dramaturgia",
+            image = ""
         )
 
-        puntoFit?.addCourse(course23)
+        elEscenarioEncantado?.addCourse(course23)
         courseRepository.save(course23)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        val clubTresDeFebrero = this.findByName("Club Tres de Febrero")
+        val elRinconCreativo = this.findByName("El Rincón Creativo")
 
         val course31 = Course(
-            title = "Natación para Principiantes",
+            title = "Pintura y Dibujo para Niños",
             description = """
-                Este curso estaría diseñado para personas que no saben nadar o tienen poca experiencia en el agua. Se
-                enfocaría en enseñar habilidades básicas de flotación, respiración y propulsión, así como técnicas de
-                seguridad en el agua.
+                Un curso diseñado para niños de todas las edades que deseen explorar su creatividad a través de la 
+                pintura y el dibujo. Los estudiantes aprenderán técnicas básicas de pintura al óleo, acuarela, 
+                acrílico y dibujo a lápiz, mientras desarrollan su estilo artístico único.
             """.trimIndent(),
-            category = "Natación",
-            image = "https://img.freepik.com/foto-gratis/hombre-siendo-rescatado-agua_53876-15127.jpg"
+            category = "Pintura y Dibujo",
+            image = ""
         )
 
-        clubTresDeFebrero?.addCourse(course31)
+        elRinconCreativo?.addCourse(course31)
         courseRepository.save(course31)
 
         val course32 = Course(
-            title = "Natación Avanzada",
+            title = "Artesanía Creativa",
             description = """
-                Dirigido a nadadores con experiencia que deseen perfeccionar su técnica y mejorar su rendimiento en el
-                agua. Se abordarían aspectos más avanzados de la técnica de nado en estilos como crol, espalda, braza
-                y mariposa, así como entrenamiento de resistencia y velocidad.
+                Una clase que introduce a los niños y adolescentes al mundo de la artesanía y las manualidades. Desde la
+                 creación de joyas hasta la fabricación de esculturas con materiales reciclados, este curso fomenta la 
+                 imaginación y la destreza manual de los estudiantes.
             """.trimIndent(),
-            category = "Natación",
-            image = "https://img.freepik.com/foto-gratis/nadadores-masculinos-nadando-piscina_23-2148687629.jpg"
+            category = "Artesanía",
+            image = ""
         )
 
-        clubTresDeFebrero?.addCourse(course32)
+        elRinconCreativo?.addCourse(course32)
         courseRepository.save(course32)
 
         val course33 = Course(
-            title = "Natación para Bebés y Niños Pequeños",
+            title = "Explorando el Arte Digital",
             description = """
-                Este curso se centraría en enseñar habilidades acuáticas básicas a bebés y niños pequeños, así como en
-                fomentar la confianza y la comodidad en el agua desde una edad temprana. Se utilizarían técnicas de
-                juego y actividades lúdicas para hacer que el aprendizaje sea divertido y seguro.
+                Un taller que enseña a los estudiantes cómo utilizar herramientas digitales para crear arte. Desde la 
+                ilustración digital hasta el diseño gráfico básico, este curso les proporciona las habilidades 
+                necesarias para expresarse artísticamente en el mundo digital.
             """.trimIndent(),
-            category = "Natación",
-            image = "https://img.freepik.com/foto-gratis/pequeno-bebe-lindo-instructor-nino-madre-hijo_1157-42274.jpg"
+            category = "Arte Digital",
+            image = ""
         )
 
-        clubTresDeFebrero?.addCourse(course33)
+        elRinconCreativo?.addCourse(course33)
         courseRepository.save(course33)
     }
 
     fun findByName(name: String): Institution? {
-        return institutionRepository.findAll().find { it.name == name }
+        return institutionRepository.findAll().find { it.name.contains(name) }
     }
 }
