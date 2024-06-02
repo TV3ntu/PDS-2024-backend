@@ -21,7 +21,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                     como estrellas en el firmamento de la danza.
                 """.trimIndent(),
                 category = "Danza",
-                image = ""
+                image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento.png"
             )
         )
 
@@ -36,7 +36,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                      de la actuación.
                 """.trimIndent(),
                 category = "Teatro",
-                image = ""
+                image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/escenario_encantado.png"
             )
         )
 
@@ -51,7 +51,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                     pincelada cuenta una historia única.
                 """.trimIndent(),
                 category = "Artes plasticas",
-                image = ""
+                image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/el_rincon_creativo.png"
             )
         )
     }
