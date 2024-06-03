@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 @Component(value = "InitInstitutions.beanName")
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
+    private val urlBase = "https://rafaeljosecalderon.github.io/PDS-2024-images/img"
 
     override fun doAfterPropertiesSet() {
         institutionRepository.save(
@@ -21,7 +22,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                     como estrellas en el firmamento de la danza.
                 """.trimIndent(),
                 category = "Danza",
-                image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento.png"
+                image = "$urlBase/estrella_en_movimiento.png"
             )
         )
 
@@ -36,7 +37,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                      de la actuación.
                 """.trimIndent(),
                 category = "Teatro",
-                image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/escenario_encantado.png"
+                image = "$urlBase/escenario_encantado.png"
             )
         )
 
@@ -51,7 +52,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                     pincelada cuenta una historia única.
                 """.trimIndent(),
                 category = "Artes plasticas",
-                image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/el_rincon_creativo.png"
+                image = "$urlBase/el_rincon_creativo.png"
             )
         )
     }

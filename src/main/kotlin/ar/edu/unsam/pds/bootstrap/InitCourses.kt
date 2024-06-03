@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component
 class InitCourses : BootstrapGeneric("Courses") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var courseRepository: CourseRepository
+    private val urlBase = "https://rafaeljosecalderon.github.io/PDS-2024-images/img"
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -25,7 +26,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 incluyendo postura, técnica de pies y brazos, y movimientos básicos como pliés, tendus y rond de jambes.
             """.trimIndent(),
             category = "Ballet",
-            image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento/ballet_principiantes.png"
+            image = "$urlBase/estrellas_en_movimiento/ballet.jpg"
         )
 
         estrellasEnMovimiento?.addCourse(course11)
@@ -38,7 +39,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 incluyendo movimientos de popping, locking, y breakdance adaptados a su edad y habilidades.
             """.trimIndent(),
             category = "Hip Hop",
-            image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento/hip_hop.png"
+            image = "$urlBase//estrellas_en_movimiento/hip_hop.jpg"
         )
 
         estrellasEnMovimiento?.addCourse(course12)
@@ -51,7 +52,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 enseñando a los estudiantes rutinas coreografiadas con énfasis en la expresión y el estilo personal.
             """.trimIndent(),
             category = "Jazz Dance",
-            image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento/jazz_dance.png"
+            image = "$urlBase//estrellas_en_movimiento/jazz.jpg"
         )
 
         estrellasEnMovimiento?.addCourse(course13)
@@ -68,7 +69,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 de teatro adaptadas a su edad.
             """.trimIndent(),
             category = "Actuación",
-            image = ""
+            image = "$urlBase//el_escenario_encantado/actuaci%C3%B3n_ni%C3%B1os.jpg"
         )
 
         elEscenarioEncantado?.addCourse(course21)
@@ -82,7 +83,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 propia rutina mágica.
             """.trimIndent(),
             category = "Magia e Ilusionismo",
-            image = ""
+            image = "$urlBase//el_escenario_encantado/magia.jpg"
         )
 
         elEscenarioEncantado?.addCourse(course22)
@@ -96,7 +97,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 guiones y escenas originales.
             """.trimIndent(),
             category = "Dramaturgia",
-            image = ""
+            image = "$urlBase//el_escenario_encantado/dramaturgia.jpg"
         )
 
         elEscenarioEncantado?.addCourse(course23)
@@ -113,7 +114,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 acrílico y dibujo a lápiz, mientras desarrollan su estilo artístico único.
             """.trimIndent(),
             category = "Pintura y Dibujo",
-            image = ""
+            image = "$urlBase//el_rincon_creativo/pintura_ni%C3%B1os_.jpg"
         )
 
         elRinconCreativo?.addCourse(course31)
@@ -127,7 +128,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 la imaginación y la destreza manual de los estudiantes.
             """.trimIndent(),
             category = "Artesanía",
-            image = ""
+            image = "$urlBase//el_rincon_creativo/artesania.jpg"
         )
 
         elRinconCreativo?.addCourse(course32)
@@ -141,7 +142,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 necesarias para expresarse artísticamente en el mundo digital.
             """.trimIndent(),
             category = "Arte Digital",
-            image = ""
+            image = "$urlBase//el_rincon_creativo/arte_digital.jpg"
         )
 
         elRinconCreativo?.addCourse(course33)
