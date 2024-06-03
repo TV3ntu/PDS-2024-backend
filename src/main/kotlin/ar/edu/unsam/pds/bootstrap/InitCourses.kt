@@ -25,7 +25,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 incluyendo postura, técnica de pies y brazos, y movimientos básicos como pliés, tendus y rond de jambes.
             """.trimIndent(),
             category = "Ballet",
-            image = ""
+            image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento/ballet_principiantes.png"
         )
 
         estrellasEnMovimiento?.addCourse(course11)
@@ -38,7 +38,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 incluyendo movimientos de popping, locking, y breakdance adaptados a su edad y habilidades.
             """.trimIndent(),
             category = "Hip Hop",
-            image = ""
+            image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento/hip_hop.png"
         )
 
         estrellasEnMovimiento?.addCourse(course12)
@@ -51,7 +51,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 enseñando a los estudiantes rutinas coreografiadas con énfasis en la expresión y el estilo personal.
             """.trimIndent(),
             category = "Jazz Dance",
-            image = ""
+            image = "https://rafaeljosecalderon.github.io/PDS-2024-images/img/estrella_en_movimiento/jazz_dance.png"
         )
 
         estrellasEnMovimiento?.addCourse(course13)
