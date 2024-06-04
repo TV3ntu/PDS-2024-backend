@@ -32,6 +32,14 @@ class CoursesService(
         courseRepository.delete(course)
     }
 
+    @Transactional
+    fun deleteAllById(courseIds: List<String>) {
+        courseIds.forEach { id ->
+            val course = findCourseById(id)
+            courseRepository.delete(course)
+        }
+    }
+
     private fun findCourseById(idCourse: String): Course {
         val uuid = UUID.fromString(idCourse)
         return courseRepository.findById(uuid).orElseThrow {
