@@ -112,4 +112,18 @@ object Mapper {
     fun unsubscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
         return SubscribeResponseDto(idUser, idAssignment, "Desuscripción exitosa", LocalDate.now())
     }
+
+    fun buildCourseStatsDto(course: Course): CourseStatsResponseDto {
+        return CourseStatsResponseDto(
+            id = course.id.toString(),
+            title = course.title,
+            description = course.description,
+            category = course.category,
+            image = course.image,
+            totalAssignments = course.assignments.size,
+            totalSubscriptions = course.assignments.sumBy { it.totalSubscribedUsers() },
+            totalIncome = course.assignments.sumByDouble { it.totalIncome() }
+        )
+
+    }
 }

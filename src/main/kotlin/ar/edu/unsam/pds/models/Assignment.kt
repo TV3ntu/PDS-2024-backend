@@ -16,11 +16,12 @@ class Assignment(
     var schedule: Schedule
 
 ) : Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "assignmentsList")
-    private val subscribedUsers = mutableSetOf<User>()
+    val subscribedUsers = mutableSetOf<User>()
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
@@ -28,9 +29,9 @@ class Assignment(
 
     fun status(): String {
         return if (schedule.isBeforeEndDate(LocalDate.now())) {
-            "Confirmado"
+            Status.CONFIRMED.name
         } else {
-            "Finalizado"
+            Status.FINISHED.name
         }
     }
 
@@ -57,4 +58,24 @@ class Assignment(
             subscribedUsers.removeIf { it.id == user.id }
         }
     }
+
+    fun hasAnySubscribedUser(): Boolean {
+        return subscribedUsers.isNotEmpty()
+    }
+
+    fun totalSubscribedUsers(): Int {
+        return subscribedUsers.size
+    }
+
+    fun totalIncome(): Double {
+        return price * subscribedUsers.size
+    }
+
+    fun name(): String {
+        return schedule.days.joinToString(", ") { it.name }
+    }
+}
+
+enum class Status {
+    CONFIRMED, FINISHED
 }

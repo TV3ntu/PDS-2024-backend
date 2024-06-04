@@ -40,4 +40,12 @@ class CoursesController {
     ): ResponseEntity<CourseDetailResponseDto> {
         return ResponseEntity.ok(courseServices.getCourse(idCourse))
     }
+
+    @GetMapping("{idCourse}/stats")
+    @Operation(summary = "Get course stats")
+    fun getCourseStats(
+        @PathVariable @UUID idCourse: String
+    ): ResponseEntity<CourseDetailResponseDto> {
+        return ResponseEntity.ok(courseServices.getCourseStats(idCourse))
+    }
 }

@@ -44,4 +44,10 @@ class CoursesService(
         courseRepository.save(newCourse)
         return Mapper.buildCourseDto(newCourse)
     }
+
+    fun getCourseStats(idCourse: String): CourseStatsResponseDto? {
+        val course = findCourseById(idCourse)
+        return Mapper.buildCourseStatsDto(course)
+
+    }
 }
