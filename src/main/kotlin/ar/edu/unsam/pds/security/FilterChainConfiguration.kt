@@ -38,6 +38,7 @@ class FilterChainConfiguration {
 
                 // registration @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 antMatcher(POST, "/api/users/login"),
+                antMatcher(POST, "/api/users/register"),
 
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 antMatcher(GET, "/api/institutions"),

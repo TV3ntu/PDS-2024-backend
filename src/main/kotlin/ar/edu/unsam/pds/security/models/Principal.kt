@@ -21,7 +21,7 @@ class Principal : UserDetails {
     private var credentialsNonExpired: Boolean? = null
     private var enabled: Boolean? = null                   // This is done by the system administrator
 
-    @OneToOne(fetch = LAZY, cascade = [PERSIST])
+    @OneToOne(fetch = FetchType.EAGER, cascade = [PERSIST])
     var user: User? = null
 
     // region UserDetails @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

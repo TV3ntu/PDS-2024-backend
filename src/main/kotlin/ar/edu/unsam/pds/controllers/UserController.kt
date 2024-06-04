@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
@@ -40,6 +41,16 @@ class UserController {
     ): ResponseEntity<Map<String, String>> {
         request.logout()
         return ResponseEntity.ok(mapOf("message" to "Se ha deslogeado correctamente."))
+    }
+
+    @PostMapping("register")
+    @Operation(summary = "Register a new user")
+    fun register(
+        @RequestBody @Valid form: RegisterFormDto,
+        request: HttpServletRequest
+    ): ResponseEntity<UserResponseDto> {
+        val registeredUser = userService.register(form, request)
+        return ResponseEntity.ok(registeredUser)
     }
 
     @GetMapping("/{idUser}")
