@@ -19,300 +19,327 @@ class InitAssignments : BootstrapGeneric("Assignments") {
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        // Sport Club + Entrenamiento Funcional ########################################################################
-        val course11 = this.findByNameAndCourseTitle("Sport Club", "Entrenamiento Funcional")
+        // Estrellas en Movimiento + Ballet Clásico para Principiantes #################################################
+        val course11 = this.findByNameAndCourseTitle(
+            name = "Estrellas en Movimiento",
+            title = "Ballet Clásico para Principiantes"
+        )
 
         val assignment111 = Assignment(
-            100,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 100,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course11?.addAssignment(assignment111)
         assignmentRepository.save(assignment111)
 
         val assignment112 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course11?.addAssignment(assignment112)
         assignmentRepository.save(assignment112)
 
         val assignment113 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course11?.addAssignment(assignment113)
         assignmentRepository.save(assignment113)
 
-        // Sport Club + Nutrición y Salud ##############################################################################
-        val course12 = this.findByNameAndCourseTitle("Sport Club", "Nutrición y Salud")
+        // Estrellas en Movimiento + Hip Hop Kids ######################################################################
+        val course12 = this.findByNameAndCourseTitle(
+            name = "Estrellas en Movimiento",
+            title = "Hip Hop Kids"
+        )
 
         val assignment121 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course12?.addAssignment(assignment121)
         assignmentRepository.save(assignment121)
 
         val assignment122 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course12?.addAssignment(assignment122)
         assignmentRepository.save(assignment122)
 
         val assignment123 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course12?.addAssignment(assignment123)
         assignmentRepository.save(assignment123)
 
-        // Sport Club + Entrenamiento de Resistencia y Cardio ##########################################################
-        val course13 = this.findByNameAndCourseTitle("Sport Club", "Entrenamiento de Resistencia y Cardio")
+        // Estrellas en Movimiento + Jazz Dance Junior #################################################################
+        val course13 = this.findByNameAndCourseTitle(
+            name = "Estrellas en Movimiento",
+            title = "Jazz Dance Junior"
+        )
 
         val assignment131 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course13?.addAssignment(assignment131)
         assignmentRepository.save(assignment131)
 
         val assignment132 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course13?.addAssignment(assignment132)
         assignmentRepository.save(assignment132)
 
         val assignment133 = Assignment(
-            10,
-            true,
-            100.0,
-            findRandomSchedule()
+            quotas = 10,
+            isActive = true,
+            price = 100.0,
+            schedule = findRandomSchedule()
         )
 
         course13?.addAssignment(assignment133)
         assignmentRepository.save(assignment133)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        // Punto Fit + Introducción al Yoga ############################################################################
-        val course21 = this.findByNameAndCourseTitle("Punto Fit", "Introducción al Yoga")
+        // El Escenario Encantado + Actuación para Niños ###############################################################
+        val course21 = this.findByNameAndCourseTitle(
+            name = "El Escenario Encantado",
+            title = "Actuación para Niños"
+        )
 
         val assignment211 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course21?.addAssignment(assignment211)
         assignmentRepository.save(assignment211)
 
         val assignment212 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course21?.addAssignment(assignment212)
         assignmentRepository.save(assignment212)
 
         val assignment213 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course21?.addAssignment(assignment213)
         assignmentRepository.save(assignment213)
 
-        // Punto Fit + Introducción al Yoga ############################################################################
-        val course22 = this.findByNameAndCourseTitle("Punto Fit", "Yoga Terapéutico")
+        // El Escenario Encantado + Taller de Magia e Ilusionismo ######################################################
+        val course22 = this.findByNameAndCourseTitle(
+            name = "El Escenario Encantado",
+            title = "Taller de Magia e Ilusionismo"
+        )
 
         val assignment221 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course22?.addAssignment(assignment221)
         assignmentRepository.save(assignment221)
 
         val assignment222 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course22?.addAssignment(assignment222)
         assignmentRepository.save(assignment222)
 
         val assignment223 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course22?.addAssignment(assignment223)
         assignmentRepository.save(assignment223)
 
-        // Punto Fit + Introducción al Yoga ############################################################################
-        val course23 = this.findByNameAndCourseTitle("Punto Fit", "Yoga Terapéutico")
+        // El Escenario Encantado + Dramaturgia Creativa para Adolescentes #############################################
+        val course23 = this.findByNameAndCourseTitle(
+            name = "El Escenario Encantado",
+            title = "Dramaturgia Creativa para Adolescentes"
+        )
 
         val assignment231 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course23?.addAssignment(assignment231)
         assignmentRepository.save(assignment231)
 
         val assignment232 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course23?.addAssignment(assignment232)
         assignmentRepository.save(assignment232)
 
         val assignment233 = Assignment(
-            15,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 15,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course23?.addAssignment(assignment233)
         assignmentRepository.save(assignment233)
 
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        // Club Tres de Febrero + Natacion Libre #######################################################################
-        val course31 = this.findByNameAndCourseTitle("Club Tres de Febrero", "Natación para Principiantes")
+        // El Rincón Creativo + Pintura y Dibujo para Niños ############################################################
+        val course31 = this.findByNameAndCourseTitle(
+            name = "El Rincón Creativo",
+            title = "Pintura y Dibujo para Niños"
+        )
 
         val assignment311 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course31?.addAssignment(assignment311)
         assignmentRepository.save(assignment311)
 
         val assignment312 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course31?.addAssignment(assignment312)
         assignmentRepository.save(assignment312)
 
         val assignment313 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course31?.addAssignment(assignment313)
         assignmentRepository.save(assignment313)
 
-        // Club Tres de Febrero + Natacion Libre #######################################################################
-        val course32 = this.findByNameAndCourseTitle("Club Tres de Febrero", "Natación Avanzada")
+        // El Rincón Creativo + Artesanía Creativa #####################################################################
+        val course32 = this.findByNameAndCourseTitle(
+            name = "El Rincón Creativo",
+            title = "Artesanía Creativa"
+        )
 
         val assignment321 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course32?.addAssignment(assignment321)
         assignmentRepository.save(assignment321)
 
         val assignment322 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course32?.addAssignment(assignment322)
         assignmentRepository.save(assignment322)
 
         val assignment323 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course32?.addAssignment(assignment323)
         assignmentRepository.save(assignment323)
 
-        // Club Tres de Febrero + Natación para Bebés y Niños Pequeños##################################################
-        val course33 = this.findByNameAndCourseTitle("Club Tres de Febrero", "Natación para Bebés y Niños Pequeños")
+        // El Rincón Creativo + Explorando el Arte Digital #############################################################
+        val course33 = this.findByNameAndCourseTitle(
+            name = "El Rincón Creativo",
+            title = "Explorando el Arte Digital"
+        )
 
         val assignment331 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course33?.addAssignment(assignment331)
         assignmentRepository.save(assignment331)
 
         val assignment332 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course33?.addAssignment(assignment332)
         assignmentRepository.save(assignment332)
 
         val assignment333 = Assignment(
-            5,
-            true,
-            200.0,
-            findRandomSchedule()
+            quotas = 5,
+            isActive = true,
+            price = 200.0,
+            schedule = findRandomSchedule()
         )
 
         course33?.addAssignment(assignment333)
@@ -320,9 +347,9 @@ class InitAssignments : BootstrapGeneric("Assignments") {
     }
 
     fun findByNameAndCourseTitle(name: String, title: String): Course? {
-        val course = institutionRepository.findAll().find { it.name == name }.let { institution ->
+        val course = institutionRepository.findAll().find { it.name.contains(name) }.let { institution ->
             institution?.courses.let { courses ->
-                courses?.find { it.title == title }
+                courses?.find { it.title.contains(title) }
             }
         } ?: error("error find to $name and $title")
 
