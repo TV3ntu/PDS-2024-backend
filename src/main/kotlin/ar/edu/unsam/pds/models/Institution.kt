@@ -7,7 +7,10 @@ import java.util.*
 @Entity @Table(name = "APP_INSTITUTION")
 class Institution(
     val name: String,
+
+    @Column(length = 1024)
     val description: String,
+
     val category: String,
     var image: String
 ) : Serializable {
