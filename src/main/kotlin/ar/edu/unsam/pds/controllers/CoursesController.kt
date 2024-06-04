@@ -31,7 +31,7 @@ class CoursesController {
         @PathVariable @UUID idCourse: String
     ): ResponseEntity<Unit> {
         courseServices.deleteCourse(idCourse)
-        return ResponseEntity.noContent().build()
+        return ResponseEntity.ok().build()
     }
         
     @PostMapping("")

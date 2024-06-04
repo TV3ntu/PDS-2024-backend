@@ -46,6 +46,9 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/courses"),
                 antMatcher(GET, "/api/courses/*"),
                 antMatcher(POST, "/api/courses"),
+                antMatcher(POST, "/api/courses/*"),
+                antMatcher(DELETE, "/api/courses/*"),
+                antMatcher(DELETE, "/api/courses"),
 
                 antMatcher(GET, "/api/assignments"),
                 antMatcher(GET, "/api/assignments/*"),
