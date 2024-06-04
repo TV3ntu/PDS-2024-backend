@@ -25,6 +25,15 @@ class CoursesController {
         return ResponseEntity.ok(courseServices.getAll(query ?: ""))
     }
 
+    @DeleteMapping("")
+    @Operation(summary = "Delete multiple courses by ids")
+    fun deleteMultipleCourses(
+        @RequestBody @UUID idCourses: List<String>
+    ): ResponseEntity<Unit> {
+        courseServices.deleteAllById(idCourses)
+        return ResponseEntity.ok().build()
+    }
+
     @DeleteMapping("{idCourse}")
     @Operation(summary = "Delete course by id")
     fun deleteCourse(
