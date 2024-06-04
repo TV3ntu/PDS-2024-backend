@@ -26,6 +26,12 @@ class CoursesService(
         return Mapper.buildCourseDetailDto(course)
     }
 
+    @Transactional
+    fun deleteCourse(idCourse: String) {
+        val course = findCourseById(idCourse)
+        courseRepository.delete(course)
+    }
+
     private fun findCourseById(idCourse: String): Course {
         val uuid = UUID.fromString(idCourse)
         return courseRepository.findById(uuid).orElseThrow {

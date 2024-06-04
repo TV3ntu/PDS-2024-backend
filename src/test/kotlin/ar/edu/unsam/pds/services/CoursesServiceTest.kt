@@ -102,6 +102,15 @@ class CoursesServiceTest {
     }
 
     @Test
+    fun `test delete a particular course`() {
+        courseServices.deleteCourse(classicDance.id.toString())
+        val obtainedValue = courseServices.getAll("").toList()
+        val expectedValue = listOf(modernDance, yoga).map {
+            Mapper.buildCourseDto(it)
+        }
+    }
+        
+    @Test
     fun `test create a course`() {
         val courseRequest = CourseRequestDto(
             title = "new course",
