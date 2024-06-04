@@ -30,9 +30,7 @@ class CoursesController {
     fun deleteMultipleCourses(
         @RequestBody @UUID idCourses: List<String>
     ): ResponseEntity<Unit> {
-        idCourses.forEach { courseId ->
-            courseServices.deleteCourse(courseId)
-        }
+        courseServices.deleteAllById(idCourses)
         return ResponseEntity.ok().build()
     }
 
