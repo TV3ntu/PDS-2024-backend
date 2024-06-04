@@ -17,7 +17,7 @@ class Course(
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "course")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "course", cascade = [CascadeType.ALL], orphanRemoval = true)
     val assignments = mutableSetOf<Assignment>()
 
     fun addAssignment(assignment: Assignment) {

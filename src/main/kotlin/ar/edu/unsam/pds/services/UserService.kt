@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
@@ -18,6 +19,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -48,6 +50,39 @@ class UserService(
         val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
 
         return Mapper.buildUserDto(principalUser)
+    }
+
+    @Transactional
+    fun register(form: RegisterFormDto, request: HttpServletRequest): UserResponseDto {
+        // Verificar si el correo ya está en uso
+        if (principalRepository.findUserByEmail(form.email).isPresent) {
+            throw InternalServerError("El correo ya está en uso.")
+        }
+
+        // Encriptar la contraseña
+        val encoder = BCryptPasswordEncoder()
+        val encryptedPassword = encoder.encode(form.password)
+
+        // Crear y guardar el nuevo usuario
+        val newUser = User(
+            name = form.name,
+            lastName = form.lastName,
+            email = form.email,
+            image = ""
+        )
+        userRepository.save(newUser)
+
+        // Crear y guardar el principal asociado
+        val principal = Principal().apply {
+            setUsername(form.email)
+            setPassword(encryptedPassword)
+            initProperties()
+            user = newUser
+        }
+        principalRepository.save(principal)
+
+        // Retornar el DTO de respuesta
+        return Mapper.buildUserDto(newUser)
     }
 
     fun getUserAll(): List<UserResponseDto> {

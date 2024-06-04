@@ -38,6 +38,7 @@ class FilterChainConfiguration {
 
                 // registration @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 antMatcher(POST, "/api/users/login"),
+                antMatcher(POST, "/api/users/register"),
 
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 antMatcher(GET, "/api/institutions"),
@@ -46,6 +47,9 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/courses"),
                 antMatcher(GET, "/api/courses/*"),
                 antMatcher(POST, "/api/courses"),
+                antMatcher(POST, "/api/courses/*"),
+                antMatcher(DELETE, "/api/courses/*"),
+                antMatcher(DELETE, "/api/courses"),
 
                 antMatcher(GET, "/api/assignments"),
                 antMatcher(GET, "/api/assignments/*"),

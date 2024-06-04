@@ -62,6 +62,15 @@ class CoursesControllerTest {
     }
 
     @Test
+    fun `test delete a particular course`() {
+        `when`(courseServices.deleteCourse("123")).then { }
+
+        val responseEntity = coursesController.deleteCourse("123")
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+    }
+
+    @Test
     fun `test create a course`() {
         val course = CourseResponseDto(
             id = "123",
@@ -82,5 +91,6 @@ class CoursesControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == course)
+
     }
 }
