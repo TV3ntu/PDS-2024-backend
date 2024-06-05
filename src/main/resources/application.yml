@@ -1,0 +1,49 @@
+server:
+  error:
+    include-message: always
+    include-stacktrace: always
+    include-binding-errors: always
+    whitelabel.enabled: true
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB
+    enabled: true
+
+spring:
+  application:
+    name: PDS-2024-backend
+  thymeleaf:
+    check-template-location: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true # true | false
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: true
+  session:
+    store-type: jdbc
+    jdbc.initialize-schema: always
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:my_db;COLLATION=ENGLISH STRENGTH PRIMARY
+    username: pds
+    password: pds
+  jpa:
+    open-in-view: false
+    show-sql: false # true | false
+    properties:
+      hibernate:
+        format_sql: false # true | false
+        ddl-auto: create-drop
+        dialect: org.hibernate.dialect.H2Dialect
+  sql:
+    init:
+      mode: always
