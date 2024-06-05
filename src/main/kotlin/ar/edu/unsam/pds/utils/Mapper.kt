@@ -74,7 +74,7 @@ object Mapper {
         )
     }
 
-    fun buildScheduleDto(schedule: Schedule): ScheduleResponseDto {
+    private fun buildScheduleDto(schedule: Schedule): ScheduleResponseDto {
         return ScheduleResponseDto(
             days = schedule.days,
             startTime = schedule.startTime,
@@ -111,5 +111,37 @@ object Mapper {
 
     fun unsubscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
         return SubscribeResponseDto(idUser, idAssignment, "Desuscripción exitosa", LocalDate.now())
+    }
+
+    fun buildCourseStatsDto(course: Course): CourseStatsResponseDto {
+        return CourseStatsResponseDto(
+            id = course.id.toString(),
+            title = course.title,
+            description = course.description,
+            category = course.category,
+            image = course.image,
+            totalAssignments = course.assignments.size,
+            totalSubscriptions = course.totalSubscribedUsers(),
+            totalIncome = course.totalIncome(),
+            mostPopularAssignment = buildAssignmentStatsDto(course.mostPopularAssignment()),
+            mostProfitableAssignment = buildAssignmentStatsDto(course.mostProfitableAssignment()),
+            assignments = course.assignments.map { buildAssignmentStatsDto(it) }.toMutableSet())
+
+    }
+
+    private fun buildAssignmentStatsDto(assignment: Assignment): AssignmentStatsResponseDto {
+        return AssignmentStatsResponseDto(
+            id = assignment.id.toString(),
+            quotas = assignment.quotas,
+            quantityAvailable = assignment.quantityAvailable(),
+            isActive = assignment.isActive,
+            price = assignment.price,
+            schedule = buildScheduleDto(assignment.schedule),
+            name = assignment.name(),
+            subscribers = assignment.subscribedUsers.map { buildUserDto(it) }.toMutableSet(),
+            totalIncome = assignment.totalIncome(),
+            status = assignment.status()
+        )
+
     }
 }

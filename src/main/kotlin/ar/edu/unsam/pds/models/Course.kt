@@ -24,4 +24,26 @@ class Course(
         assignments.add(assignment)
         assignment.attachCourse(this)
     }
+
+    fun totalIncome(): Double {
+        return assignments.sumOf { it.totalIncome() }
+    }
+
+    fun mostPopularAssignment(): Assignment {
+        return assignments.maxByOrNull { it.subscribedUsers.size }!!
+    }
+
+    fun mostProfitableAssignment(): Assignment {
+        return assignments.maxByOrNull { it.totalIncome() }!!
+    }
+
+    fun totalSubscribedUsers(): Int {
+        return assignments.sumOf { it.totalSubscribedUsers() }
+    }
+
+    fun assigmentsNames(): Set<String> {
+        return assignments.map { it.name() }.toSet()
+    }
+
+
 }

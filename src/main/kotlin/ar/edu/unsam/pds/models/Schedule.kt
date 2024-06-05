@@ -21,9 +21,15 @@ class Schedule(
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
-    fun generateSchedule(): List<String> {
+    fun generateCompleteSchedule(): List<String> {
         return days.flatMap { this.rangeOfDays(it) }
     }
+
+fun generateSchedule(): List<String> {
+    val today = LocalDate.now()
+    return days.flatMap { this.rangeOfDays(it) }
+        .filter { it >= today.toString() }
+}
 
     private fun rangeOfDays(day: DayOfWeek): Sequence<String> {
         val initialDate = startDate.with(TemporalAdjusters.nextOrSame(day))

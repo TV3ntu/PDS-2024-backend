@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.controllers
 import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
+import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
 import ar.edu.unsam.pds.services.CoursesService
 import io.swagger.v3.oas.annotations.Operation
 import org.hibernate.validator.constraints.UUID
@@ -57,5 +58,13 @@ class CoursesController {
         @PathVariable @UUID idCourse: String
     ): ResponseEntity<CourseDetailResponseDto> {
         return ResponseEntity.ok(courseServices.getCourse(idCourse))
+    }
+
+    @GetMapping("{idCourse}/stats")
+    @Operation(summary = "Get course stats")
+    fun getCourseStats(
+        @PathVariable @UUID idCourse: String
+    ): ResponseEntity<CourseStatsResponseDto> {
+        return ResponseEntity.ok(courseServices.getCourseStats(idCourse))
     }
 }
