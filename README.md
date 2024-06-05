@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/TV3ntu/PDS-2024-backend/badge.svg?branch=master)](https://coveralls.io/github/TV3ntu/PDS-2024-backend?branch=master)
+
 # PDS-2024-backend
 Proyecto de software 2024 - Backend
 
