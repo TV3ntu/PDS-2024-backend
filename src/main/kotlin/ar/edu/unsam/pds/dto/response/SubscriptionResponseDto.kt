@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.dto.response
 
-class SubscriptionResponseDto (
+data class SubscriptionResponseDto (
     val institutionName: String,
     val courseId: String,
     val courseName: String,

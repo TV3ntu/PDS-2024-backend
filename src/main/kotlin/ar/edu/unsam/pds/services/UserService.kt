@@ -53,7 +53,7 @@ class UserService(
     }
 
     @Transactional
-    fun register(form: RegisterFormDto, request: HttpServletRequest): UserResponseDto {
+    fun register(form: RegisterFormDto): UserResponseDto {
         // Verificar si el correo ya está en uso
         if (principalRepository.findUserByEmail(form.email).isPresent) {
             throw InternalServerError("El correo ya está en uso.")
