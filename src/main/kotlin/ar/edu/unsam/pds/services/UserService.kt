@@ -99,7 +99,7 @@ class UserService(
     fun getUserDetail(idUser: String): UserDetailResponseDto {
         val user = findUserById(idUser)
         val nextClass = getSubscriptions(idUser).firstOrNull()
-        return Mapper.buildUserDto(user, nextClass)
+        return Mapper.buildUserDetailDto(user, nextClass)
     }
 
     @Transactional
