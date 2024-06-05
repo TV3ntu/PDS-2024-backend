@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import org.junit.jupiter.api.BeforeEach
@@ -47,16 +48,17 @@ class UserControllerTest {
 
     @Test
     fun `test get a particular user`() {
-        val user = UserResponseDto(
+        val user = UserDetailResponseDto(
             id = "123",
             name = "name",
             lastName = "lastName",
             email = "email",
             image = "image",
-            isAdmin = false
+            isAdmin = false,
+            nextClass = null
         )
 
-        `when`(userService.getUserItem("123")).thenReturn(user)
+        `when`(userService.getUserDetail("123")).thenReturn(user)
 
         val responseEntity = userController.userItem("123")
 
