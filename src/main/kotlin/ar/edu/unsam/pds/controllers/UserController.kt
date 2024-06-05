@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -57,8 +58,8 @@ class UserController {
     @Operation(summary = "Get user id")
     fun userItem(
         @PathVariable @UUID idUser: String
-    ): ResponseEntity<UserResponseDto> {
-        return ResponseEntity.ok(userService.getUserItem(idUser))
+    ): ResponseEntity<UserDetailResponseDto> {
+        return ResponseEntity.ok(userService.getUserDetail(idUser))
     }
 
     @PatchMapping("/{idUser}")
