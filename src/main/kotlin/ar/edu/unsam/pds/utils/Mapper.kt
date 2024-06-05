@@ -21,6 +21,18 @@ object Mapper {
         )
     }
 
+    fun buildUserDetailDto(user: User, nextClass: SubscriptionResponseDto?): UserDetailResponseDto {
+        return UserDetailResponseDto(
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email,
+            image = user.image,
+            id = user.id.toString(),
+            isAdmin = user.isAdmin,
+            nextClass = nextClass
+        )
+    }
+
     fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {
         return InstitutionResponseDto(
             id = institution.id.toString(),
