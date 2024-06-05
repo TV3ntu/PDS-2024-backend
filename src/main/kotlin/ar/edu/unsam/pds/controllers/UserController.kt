@@ -49,7 +49,7 @@ class UserController {
         @RequestBody @Valid form: RegisterFormDto,
         request: HttpServletRequest
     ): ResponseEntity<UserResponseDto> {
-        val registeredUser = userService.register(form, request)
+        val registeredUser = userService.register(form)
         return ResponseEntity.ok(registeredUser)
     }
 
