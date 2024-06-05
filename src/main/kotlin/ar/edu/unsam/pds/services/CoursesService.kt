@@ -3,7 +3,9 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
+import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.utils.Mapper
@@ -29,6 +31,10 @@ class CoursesService(
     @Transactional
     fun deleteCourse(idCourse: String) {
         val course = findCourseById(idCourse)
+
+        if (course.assignments.any { it.hasAnySubscribedUser() }) {
+            throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
+        }
         courseRepository.delete(course)
     }
 

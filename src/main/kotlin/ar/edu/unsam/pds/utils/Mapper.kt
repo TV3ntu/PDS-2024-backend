@@ -74,7 +74,7 @@ object Mapper {
         )
     }
 
-    fun buildScheduleDto(schedule: Schedule): ScheduleResponseDto {
+    private fun buildScheduleDto(schedule: Schedule): ScheduleResponseDto {
         return ScheduleResponseDto(
             days = schedule.days,
             startTime = schedule.startTime,
@@ -121,8 +121,26 @@ object Mapper {
             category = course.category,
             image = course.image,
             totalAssignments = course.assignments.size,
-            totalSubscriptions = course.assignments.sumBy { it.totalSubscribedUsers() },
-            totalIncome = course.assignments.sumByDouble { it.totalIncome() }
+            totalSubscriptions = course.totalSubscribedUsers(),
+            totalIncome = course.totalIncome(),
+            mostPopularAssignment = buildAssignmentStatsDto(course.mostPopularAssignment()),
+            mostProfitableAssignment = buildAssignmentStatsDto(course.mostProfitableAssignment()),
+            assignments = course.assignments.map { buildAssignmentStatsDto(it) }.toMutableSet())
+
+    }
+
+    private fun buildAssignmentStatsDto(assignment: Assignment): AssignmentStatsResponseDto {
+        return AssignmentStatsResponseDto(
+            id = assignment.id.toString(),
+            quotas = assignment.quotas,
+            quantityAvailable = assignment.quantityAvailable(),
+            isActive = assignment.isActive,
+            price = assignment.price,
+            schedule = buildScheduleDto(assignment.schedule),
+            name = assignment.name(),
+            subscribers = assignment.subscribedUsers.map { buildUserDto(it) }.toMutableSet(),
+            totalIncome = assignment.totalIncome(),
+            status = assignment.status()
         )
 
     }
