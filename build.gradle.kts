@@ -63,6 +63,7 @@ dependencyManagement {
 
 allOpen {
     annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
 }
 
 tasks.withType<KotlinCompile> {
