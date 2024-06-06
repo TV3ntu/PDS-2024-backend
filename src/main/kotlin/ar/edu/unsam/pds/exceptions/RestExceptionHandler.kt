@@ -19,13 +19,15 @@ class RestExceptionHandler {
     fun customHandleMethodArgumentNotValid(
         exception: MethodArgumentNotValidException,
         request: WebRequest
-    ): ResponseEntity<Map<String, String>> {
-        val errors = exception.bindingResult.fieldErrors.associate {
-            it.field to it.defaultMessage!!
-        }
+    ): ResponseEntity<BodyResponse> {
 
-        return ResponseEntity(errors, HttpStatus.BAD_REQUEST)
+        val status = HttpStatus.BAD_REQUEST
+        val message = exception.bindingResult.fieldErrors[0].defaultMessage
+        val body = BodyResponse(status, request, message)
+        return ResponseEntity(body, status)
+
     }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = [HttpMessageNotReadableException::class])
