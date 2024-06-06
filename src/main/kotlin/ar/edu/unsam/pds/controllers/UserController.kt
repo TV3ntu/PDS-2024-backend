@@ -47,8 +47,7 @@ class UserController {
     @PostMapping("register")
     @Operation(summary = "Register a new user")
     fun register(
-        @RequestBody @Valid form: RegisterFormDto,
-        request: HttpServletRequest
+        @RequestBody @Valid form: RegisterFormDto
     ): ResponseEntity<UserResponseDto> {
         val registeredUser = userService.register(form)
         return ResponseEntity.ok(registeredUser)

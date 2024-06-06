@@ -50,7 +50,7 @@ class AssignmentServiceTest : BootstrapNBTest() {
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString(),
             message = "Suscripción exitosa",
-            date = LocalDate.of(2024, 6, 5)
+            date = LocalDate.now()
         )
 
         assertEquals(obtainedValue, expectedValue)
@@ -88,7 +88,7 @@ class AssignmentServiceTest : BootstrapNBTest() {
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString(),
             message = "Desuscripción exitosa",
-            date = LocalDate.of(2024, 6, 5)
+            date = LocalDate.now()
         )
 
         assertEquals(obtainedValue, expectedValue)

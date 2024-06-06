@@ -91,11 +91,6 @@ class UserService(
         return user.map { Mapper.buildUserDto(it) }
     }
 
-    fun getUserItem(idUser: String): UserResponseDto {
-        val user = findUserById(idUser)
-        return Mapper.buildUserDto(user)
-    }
-
     fun getUserDetail(idUser: String): UserDetailResponseDto {
         val user = findUserById(idUser)
         val nextClass = getSubscriptions(idUser).firstOrNull()
