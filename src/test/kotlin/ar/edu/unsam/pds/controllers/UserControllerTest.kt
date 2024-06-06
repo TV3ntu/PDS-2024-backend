@@ -1,9 +1,12 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.request.LoginForm
+import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
-import ar.edu.unsam.pds.dto.response.UserResponseDto
+import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.services.UserService
+import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,6 +14,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockHttpServletRequest
+import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class UserControllerTest {
@@ -18,24 +23,29 @@ class UserControllerTest {
     private lateinit var userService: UserService
     private lateinit var userController: UserController
 
+    private lateinit var user: User
+    private lateinit var uuid: String
+
     @BeforeEach
     fun setUp() {
         userController = UserController()
         userController.userService = userService
+
+        user = User(
+            name = "Juan",
+            lastName = "Perez",
+            email = "juan_perezm@email.com",
+            image = ""
+        ).apply {
+            id = UUID.randomUUID()
+        }
+
+        uuid = user.id.toString()
     }
 
     @Test
     fun `test get all user`() {
-        val users = listOf(
-            UserResponseDto(
-                id = "id",
-                name = "name",
-                lastName = "lastName",
-                email = "email",
-                image = "image",
-                isAdmin = false
-            )
-        )
+        val users = listOf(Mapper.buildUserDto(user))
 
         `when`(userService.getUserAll()).thenReturn(users)
 
@@ -46,19 +56,56 @@ class UserControllerTest {
     }
 
     @Test
-    fun `test get a particular user`() {
-        val user = UserResponseDto(
-            id = "123",
-            name = "name",
-            lastName = "lastName",
-            email = "email",
-            image = "image",
-            isAdmin = false
+    fun `test login user`() {
+        val request = MockHttpServletRequest()
+        val userForm = LoginForm(user.email, "666")
+
+        `when`(userService.login(userForm, request)).thenReturn(
+            Mapper.buildUserDto(user)
         )
 
-        `when`(userService.getUserItem("123")).thenReturn(user)
+        val responseEntity = userController.login(userForm, request)
 
-        val responseEntity = userController.userItem("123")
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == Mapper.buildUserDto(user))
+    }
+
+    @Test
+    fun `test logout user`() {
+        val request = MockHttpServletRequest()
+        request.setParameter("logout", "true")
+
+        val responseEntity = userController.logout(request)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == mapOf("message" to "Se ha deslogeado correctamente."))
+    }
+
+    @Test
+    fun `test register a particular user`() {
+        val expectedValue = Mapper.buildUserDto(user)
+        val userRegister = RegisterFormDto(
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email,
+            password = "666"
+        )
+
+        `when`(userService.register(userRegister)).thenReturn(expectedValue)
+
+        val responseEntity = userController.register(userRegister)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == expectedValue)
+    }
+
+    @Test
+    fun `test get a particular user`() {
+        val user = Mapper.buildUserDetailDto(user, null)
+
+        `when`(userService.getUserDetail(uuid)).thenReturn(user)
+
+        val responseEntity = userController.userItem(uuid)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == user)
@@ -66,18 +113,11 @@ class UserControllerTest {
 
     @Test
     fun `test update a particular user`() {
-        val user = UserResponseDto(
-            id = "123",
-            name = "name",
-            lastName = "lastName",
-            email = "email",
-            image = "image",
-            isAdmin = false
-        )
+        val user = Mapper.buildUserDto(user)
 
-        `when`(userService.updateDetail("123", user)).thenReturn(user)
+        `when`(userService.updateDetail(uuid, user)).thenReturn(user)
 
-        val responseEntity = userController.updateDetail("123", user)
+        val responseEntity = userController.updateDetail(uuid, user)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == user)

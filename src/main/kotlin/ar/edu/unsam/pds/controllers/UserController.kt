@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -46,8 +47,7 @@ class UserController {
     @PostMapping("register")
     @Operation(summary = "Register a new user")
     fun register(
-        @RequestBody @Valid form: RegisterFormDto,
-        request: HttpServletRequest
+        @RequestBody @Valid form: RegisterFormDto
     ): ResponseEntity<UserResponseDto> {
         val registeredUser = userService.register(form)
         return ResponseEntity.ok(registeredUser)
@@ -57,8 +57,8 @@ class UserController {
     @Operation(summary = "Get user id")
     fun userItem(
         @PathVariable @UUID idUser: String
-    ): ResponseEntity<UserResponseDto> {
-        return ResponseEntity.ok(userService.getUserItem(idUser))
+    ): ResponseEntity<UserDetailResponseDto> {
+        return ResponseEntity.ok(userService.getUserDetail(idUser))
     }
 
     @PatchMapping("/{idUser}")

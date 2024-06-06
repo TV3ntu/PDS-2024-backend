@@ -13,7 +13,7 @@ class Course(
 
     var category: String,
     var image: String
-) : Serializable {
+) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
@@ -44,6 +44,4 @@ class Course(
     fun assigmentsNames(): Set<String> {
         return assignments.map { it.name() }.toSet()
     }
-
-
 }

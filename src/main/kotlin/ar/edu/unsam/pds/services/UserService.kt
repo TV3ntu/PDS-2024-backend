@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
@@ -97,9 +98,10 @@ class UserService(
         return user.map { Mapper.buildUserDto(it) }
     }
 
-    fun getUserItem(idUser: String): UserResponseDto {
+    fun getUserDetail(idUser: String): UserDetailResponseDto {
         val user = findUserById(idUser)
-        return Mapper.buildUserDto(user)
+        val nextClass = getSubscriptions(idUser).firstOrNull()
+        return Mapper.buildUserDetailDto(user, nextClass)
     }
 
     @Transactional

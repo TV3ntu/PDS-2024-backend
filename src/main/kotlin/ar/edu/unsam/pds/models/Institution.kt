@@ -13,7 +13,7 @@ class Institution(
 
     val category: String,
     var image: String
-) : Serializable {
+) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 

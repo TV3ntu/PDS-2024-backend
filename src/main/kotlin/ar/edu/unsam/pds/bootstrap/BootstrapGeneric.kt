@@ -26,8 +26,4 @@ abstract class BootstrapGeneric(private val message: String) : InitializingBean 
     private fun transactionTemplate(): TransactionTemplate {
         return TransactionTemplate(transactionManager)
     }
-
-    fun clean(text: String): String {
-        return text.replace("\n", "").replace("    ", "")
-    }
 }

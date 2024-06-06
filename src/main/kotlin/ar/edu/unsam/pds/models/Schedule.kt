@@ -17,7 +17,7 @@ class Schedule(
     val startDate: LocalDate,
     val endDate: LocalDate,
     val recurrenceWeeks: RecurrenceWeeks
-) : Serializable {
+) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
@@ -25,11 +25,11 @@ class Schedule(
         return days.flatMap { this.rangeOfDays(it) }
     }
 
-fun generateSchedule(): List<String> {
-    val today = LocalDate.now()
-    return days.flatMap { this.rangeOfDays(it) }
-        .filter { it >= today.toString() }
-}
+    fun generateSchedule(): List<String> {
+        val today = LocalDate.now()
+        return days.flatMap { this.rangeOfDays(it) }
+            .filter { it >= today.toString() }
+    }
 
     private fun rangeOfDays(day: DayOfWeek): Sequence<String> {
         val initialDate = startDate.with(TemporalAdjusters.nextOrSame(day))
