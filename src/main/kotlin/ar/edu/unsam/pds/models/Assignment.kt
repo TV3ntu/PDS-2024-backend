@@ -2,11 +2,16 @@ package ar.edu.unsam.pds.models
 
 import ar.edu.unsam.pds.exceptions.ValidationException
 import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity @Table(name = "APP_ASSIGNMENT")
+@EntityListeners(AuditingEntityListener::class)
 class Assignment(
     val quotas: Int,
     var isActive: Boolean,
@@ -26,6 +31,14 @@ class Assignment(
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     lateinit var course: Course
+
+    @CreatedDate
+    @Column(name = "REGISTER_DATE", nullable = false, updatable = false)
+    lateinit var registerDate: LocalDateTime
+
+    @LastModifiedDate
+    @Column(name = "LAST_UPDATE", nullable = false)
+    lateinit var lastUpdate: LocalDateTime
 
     fun status(): String {
         return if (schedule.isBeforeEndDate(LocalDate.now())) {
