@@ -4,8 +4,8 @@ import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
+import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
-import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
@@ -78,11 +78,19 @@ class CoursesService(
 
     }
 
+
     private fun checkAdminPermissions() {
-        val currentUser = userService.getCurrentUser()
-        if (!currentUser.isAdmin) {
-            throw PermissionDeniedException("No tienes permiso para realizar esta acción")
+        try {
+            val currentUser = userService.getCurrentUser()
+            if (!currentUser.isAdmin) {
+                throw NotFoundException("No tienes permiso para realizar esta acción.")
+            }
+        } catch (e: NotFoundException) {
+            throw NotFoundException("Usuario no encontrado. No tienes permiso para realizar esta acción.")
+        } catch (e: Exception) {
+            throw InternalServerError("Error al verificar los permisos. Inténtelo de nuevo más tarde.")
         }
     }
+
 
 }
