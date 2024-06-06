@@ -41,7 +41,7 @@ spring:
     show-sql: false # true | false
     properties:
       hibernate:
-        format_sql: false # true | false
+        format_sql: false
         ddl-auto: create-drop
         dialect: org.hibernate.dialect.H2Dialect
   sql:

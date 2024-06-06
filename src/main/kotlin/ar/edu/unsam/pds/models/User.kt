@@ -11,7 +11,7 @@ class User(
     var lastName: String,
     var email: String,
     var image: String,
-) : Serializable {
+) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
@@ -19,7 +19,7 @@ class User(
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_assignment",
+        name = "app_user_assignment",
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "assignment_id")]
     )
