@@ -42,7 +42,7 @@ spring:
     properties:
       hibernate:
         format_sql: false
-        ddl-auto: update
+        ddl-auto: create-drop
         dialect: org.hibernate.dialect.H2Dialect
   sql:
     init:
