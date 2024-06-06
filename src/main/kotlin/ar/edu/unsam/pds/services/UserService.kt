@@ -55,35 +55,41 @@ class UserService(
 
     @Transactional
     fun register(form: RegisterFormDto): UserResponseDto {
-        // Verificar si el correo ya está en uso
-        if (principalRepository.findUserByEmail(form.email).isPresent) {
-            throw InternalServerError("El correo ya está en uso.")
+        try {
+            // Verificar si el correo ya está en uso
+            if (principalRepository.findUserByEmail(form.email).isPresent) {
+                throw NotFoundException("El correo ya está en uso.")
+            }
+
+            // Encriptar la contraseña
+            val encoder = BCryptPasswordEncoder()
+            val encryptedPassword = encoder.encode(form.password)
+
+            // Crear y guardar el nuevo usuario
+            val newUser = User(
+                name = form.name,
+                lastName = form.lastName,
+                email = form.email,
+                image = ""
+            )
+            userRepository.save(newUser)
+
+            // Crear y guardar el principal asociado
+            val principal = Principal().apply {
+                setUsername(form.email)
+                setPassword(encryptedPassword)
+                initProperties()
+                user = newUser
+            }
+            principalRepository.save(principal)
+
+            // Retornar el DTO de respuesta
+            return Mapper.buildUserDto(newUser)
+        } catch (e: NotFoundException) {
+            throw e
+        } catch (e: Exception) {
+            throw InternalServerError("Error al registrar el usuario. Inténtelo de nuevo más tarde.")
         }
-
-        // Encriptar la contraseña
-        val encoder = BCryptPasswordEncoder()
-        val encryptedPassword = encoder.encode(form.password)
-
-        // Crear y guardar el nuevo usuario
-        val newUser = User(
-            name = form.name,
-            lastName = form.lastName,
-            email = form.email,
-            image = ""
-        )
-        userRepository.save(newUser)
-
-        // Crear y guardar el principal asociado
-        val principal = Principal().apply {
-            setUsername(form.email)
-            setPassword(encryptedPassword)
-            initProperties()
-            user = newUser
-        }
-        principalRepository.save(principal)
-
-        // Retornar el DTO de respuesta
-        return Mapper.buildUserDto(newUser)
     }
 
     fun getUserAll(): List<UserResponseDto> {
