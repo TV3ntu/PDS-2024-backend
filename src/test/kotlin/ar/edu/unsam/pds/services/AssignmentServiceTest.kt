@@ -2,13 +2,16 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
+import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
+import java.util.*
 
-class AssignmentServiceTest : BootstrapNBTest()  {
+class AssignmentServiceTest : BootstrapNBTest() {
     private lateinit var assignmentService: AssignmentService
 
     @BeforeEach
@@ -54,6 +57,23 @@ class AssignmentServiceTest : BootstrapNBTest()  {
     }
 
     @Test
+    fun `test throw subscribe to assignment -1`() {
+        assertThrows<NotFoundException> {
+            assignmentService.subscribe(
+                idUser = UUID.randomUUID().toString(),
+                idAssignment = assignments[0].id.toString()
+            )
+        }
+
+        assertThrows<NotFoundException> {
+            assignmentService.subscribe(
+                idUser = UUID.randomUUID().toString(),
+                idAssignment = UUID.randomUUID().toString()
+            )
+        }
+    }
+
+    @Test
     fun `test unsubscribe to assignment`() {
         assignmentService.subscribe(
             idUser = users[0].id.toString(),
@@ -72,5 +92,22 @@ class AssignmentServiceTest : BootstrapNBTest()  {
         )
 
         assertEquals(obtainedValue, expectedValue)
+    }
+
+    @Test
+    fun `test throw unsubscribe to assignment`() {
+        assertThrows<NotFoundException> {
+            assignmentService.unsubscribe(
+                idUser = UUID.randomUUID().toString(),
+                idAssignment = assignments[0].id.toString()
+            )
+        }
+
+        assertThrows<NotFoundException> {
+            assignmentService.unsubscribe(
+                idUser = UUID.randomUUID().toString(),
+                idAssignment = UUID.randomUUID().toString()
+            )
+        }
     }
 }
