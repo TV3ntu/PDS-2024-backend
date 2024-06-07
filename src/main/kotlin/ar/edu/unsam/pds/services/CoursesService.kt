@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
+import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.models.Course
@@ -15,7 +16,8 @@ import java.util.*
 
 @Service
 class CoursesService(
-    private val courseRepository: CourseRepository
+    private val courseRepository: CourseRepository,
+    private val userService: UserService
 ) {
 
     fun getAll(query: String): List<CourseResponseDto> {
@@ -30,6 +32,7 @@ class CoursesService(
 
     @Transactional
     fun deleteCourse(idCourse: String) {
+        checkAdminPermissions()
         val course = findCourseById(idCourse)
 
         if (course.assignments.any { it.hasAnySubscribedUser() }) {
@@ -40,6 +43,7 @@ class CoursesService(
 
     @Transactional
     fun deleteAllById(courseIds: List<String>) {
+        checkAdminPermissions()
         courseIds.forEach { id ->
             val course = findCourseById(id)
             courseRepository.delete(course)
@@ -55,6 +59,7 @@ class CoursesService(
 
     @Transactional
     fun createCourse(course: CourseRequestDto): CourseResponseDto? {
+        checkAdminPermissions()
         val newCourse = Course(
             course.title,
             course.description,
@@ -70,4 +75,18 @@ class CoursesService(
         return Mapper.buildCourseStatsDto(course)
 
     }
+
+    fun checkAdminPermissions() {
+        try {
+            val currentUser = userService.getCurrentUser()
+            if (!currentUser.isAdmin) {
+                throw NotFoundException("No tienes permiso para realizar esta acción.")
+            }
+        } catch (e: NotFoundException) {
+            throw NotFoundException("Usuario no encontrado. No tienes permiso para realizar esta acción.")
+        } catch (e: Exception) {
+            throw InternalServerError("Error al verificar los permisos. Inténtelo de nuevo más tarde.")
+        }
+    }
+
 }

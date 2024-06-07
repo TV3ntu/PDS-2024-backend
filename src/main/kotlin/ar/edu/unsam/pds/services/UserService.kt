@@ -17,6 +17,7 @@ import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -129,4 +130,15 @@ class UserService(
     private fun orderSubscriptions(subscriptions: List<SubscriptionResponseDto>): List<SubscriptionResponseDto> {
         return subscriptions.sortedBy { it.date }
     }
+
+    fun getCurrentUser(): User {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val principal = authentication.principal as UserDetails
+        val email = principal.username
+
+        return principalRepository.findUserByEmail(email).orElseThrow {
+            UsernameNotFoundException("El usuario no existe.")
+        }.user ?: throw InternalServerError("Internal Server Error")
+    }
+
 }
