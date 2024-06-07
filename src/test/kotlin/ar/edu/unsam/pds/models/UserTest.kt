@@ -89,6 +89,6 @@ class UserTest : BootstrapBasicTest() {
         users[0].addAssignment(assignments[0])
         users[0].addAssignment(assignments[1])
 
-        assertEquals(courses.toSet(), users[0].subscribedCourses())
+        assertEquals(setOf(courses[0], courses[1]), users[0].subscribedCourses())
     }
 }

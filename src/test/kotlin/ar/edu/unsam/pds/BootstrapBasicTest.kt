@@ -31,8 +31,10 @@ open class BootstrapBasicTest {
                 name = "Adam",
                 lastName = "AdamAdam",
                 email = "adam@email.com",
-                image = ""
-            )
+                image = "",
+            ).apply {
+                isAdmin = true
+            }
         )
 
         users.add(
@@ -119,6 +121,13 @@ open class BootstrapBasicTest {
         ).apply {
             addAssignment(this@BootstrapBasicTest.assignments[1])
         })
+
+        courses.add(Course(
+            title = "yoga",
+            description = "yoga course",
+            category = "yoga_category",
+            image = ""
+        ))
 
         institutions.add(Institution(
             name = "Enchanted Dance",

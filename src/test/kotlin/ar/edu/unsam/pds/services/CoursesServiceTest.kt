@@ -1,59 +1,43 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.request.CourseRequestDto
-import ar.edu.unsam.pds.models.Course
-import ar.edu.unsam.pds.repository.CourseRepository
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
+import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import java.util.UUID
+import org.junit.jupiter.api.assertThrows
+import org.springframework.security.test.context.support.WithMockUser
 
-@DataJpaTest
-class CoursesServiceTest {
-    @Autowired private lateinit var courseRepository: CourseRepository
+class CoursesServiceTest : BootstrapNBTest() {
+    private lateinit var institutionService: InstitutionService
+    private lateinit var userService: UserService
     private lateinit var courseServices: CoursesService
 
-    private lateinit var classicDance: Course
-    private lateinit var modernDance: Course
-    private lateinit var yoga: Course
-
     @BeforeEach
-    fun setUp() {
-        courseServices = CoursesService(courseRepository)
-
-        classicDance = Course(
-            title = "classic dance",
-            description = "classical dance course",
-            category = "dance",
-            image = ""
+    fun setUpCoursesServiceTest() {
+        institutionService = InstitutionService(
+            institutionRepository = institutionRepository
         )
 
-        modernDance = Course(
-            title = "modern dance",
-            description = "modern dance course",
-            category = "dance",
-            image = ""
+        userService = UserService(
+            userRepository = userRepository,
+            principalRepository = principalRepository,
+            institutionService = institutionService
         )
 
-        yoga = Course(
-            title = "yoga",
-            description = "yoga course",
-            category = "yoga_category",
-            image = ""
+        courseServices = CoursesService(
+            courseRepository = courseRepository,
+            userService = userService
         )
-
-        classicDance = courseRepository.save(classicDance)
-        modernDance = courseRepository.save(modernDance)
-        yoga = courseRepository.save(yoga)
     }
 
     @Test
     fun `test get all courses`() {
         val obtainedValue = courseServices.getAll("").toList()
-        val expectedValue = listOf(classicDance, modernDance, yoga).map {
+        val expectedValue = courses.map {
             Mapper.buildCourseDto(it)
         }
 
@@ -64,7 +48,7 @@ class CoursesServiceTest {
     fun `test get classic dance course`() {
         val obtainedValue = courseServices.getAll("classic dance").toList()
 
-        val expectedValue = listOf(classicDance).map {
+        val expectedValue = listOf(courses[0]).map {
             Mapper.buildCourseDto(it)
         }
 
@@ -75,7 +59,7 @@ class CoursesServiceTest {
     fun `test get modern dance course`() {
         val obtainedValue = courseServices.getAll("modern").toList()
 
-        val expectedValue = listOf(modernDance).map {
+        val expectedValue = listOf(courses[1]).map {
             Mapper.buildCourseDto(it)
         }
 
@@ -86,7 +70,7 @@ class CoursesServiceTest {
     fun `test get yoga course`() {
         val obtainedValue = courseServices.getAll("yoga_category").toList()
 
-        val expectedValue = listOf(yoga).map {
+        val expectedValue = listOf(courses[2]).map {
             Mapper.buildCourseDto(it)
         }
 
@@ -95,33 +79,43 @@ class CoursesServiceTest {
 
     @Test
     fun `test get a particular course`() {
-        val obtainedValue = courseServices.getCourse(classicDance.id.toString())
-        val expectedValue = Mapper.buildCourseDetailDto(classicDance)
+        val obtainedValue = courseServices.getCourse(courses[0].id.toString())
+        val expectedValue = Mapper.buildCourseDetailDto(courses[0])
 
         assertEquals(obtainedValue, expectedValue)
     }
 
     @Test
+    @WithMockUser(username = "adam@email.com", roles = [])
     fun `test delete a particular course`() {
-        courseServices.deleteCourse(classicDance.id.toString())
-        val obtainedValue = courseServices.getAll("").toList()
-        val expectedValue = listOf(modernDance, yoga).map {
-            Mapper.buildCourseDto(it)
+        courseServices.deleteCourse(courses[2].id.toString())
+    }
+
+    @Test
+    @WithMockUser(username = "eve@email.com", roles = [])
+    fun `test throw delete a particular course`() {
+        assertThrows<NotFoundException> {
+            courseServices.deleteCourse(courses[2].id.toString())
         }
     }
-        
+
     @Test
+    @WithMockUser(username = "adam@email.com", roles = [])
     fun `test create a course`() {
-        val courseRequest = CourseRequestDto(
+        val obtainedValue = courseServices.createCourse(CourseRequestDto(
+            title = "new course",
+            description = "new course description",
+            category = "new category",
+            image = ""
+        ))
+
+        val expectedValue = CourseResponseDto(
+            id = obtainedValue?.id!!,
             title = "new course",
             description = "new course description",
             category = "new category",
             image = ""
         )
-
-        val obtainedValue = courseServices.createCourse(courseRequest)
-        val id = UUID.fromString(obtainedValue?.id!!)
-        val expectedValue = Mapper.buildCourseDto(courseRepository.findById(id).get())
 
         assertEquals(obtainedValue, expectedValue)
     }
