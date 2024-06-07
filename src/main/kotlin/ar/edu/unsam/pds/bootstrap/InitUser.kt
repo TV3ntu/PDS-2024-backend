@@ -1,8 +1,12 @@
 package ar.edu.unsam.pds.bootstrap
 
 import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.repository.AssignmentRepository
+import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
+import ar.edu.unsam.pds.services.AssignmentService
+import ar.edu.unsam.pds.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
@@ -11,6 +15,9 @@ import org.springframework.stereotype.Component
 class InitUser : BootstrapGeneric("users") {
     @Autowired private lateinit var passwordEncoder: PasswordEncoder
     @Autowired private lateinit var principalRepository: PrincipalRepository
+    @Autowired private lateinit var assignmentRepository: AssignmentRepository
+    @Autowired private lateinit var assignmentService: AssignmentService
+    @Autowired private lateinit var userRepository: UserRepository
 
     override fun doAfterPropertiesSet() {
         // region user = Adan @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -25,6 +32,9 @@ class InitUser : BootstrapGeneric("users") {
                     image = ""
                 )
                 user!!.isAdmin = true
+
+
+
                 this.initProperties()
             }
         )
@@ -182,7 +192,17 @@ class InitUser : BootstrapGeneric("users") {
             }
         )
         // endregion
+
+        var assignments = assignmentRepository.findAll()
+        var user = userRepository.findAll().get(0)
+        for ( i in 0..3) {
+            val assignment = assignments.get(i)
+            assignmentService.subscribe(user.id.toString(), assignment.id.toString())
+        }
+
     }
+
+
 
     fun encode(clave: String): String {
         return passwordEncoder.encode(clave)
