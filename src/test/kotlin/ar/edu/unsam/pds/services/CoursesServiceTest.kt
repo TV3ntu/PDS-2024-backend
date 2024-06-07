@@ -88,7 +88,17 @@ class CoursesServiceTest : BootstrapNBTest() {
     @Test
     @WithMockUser(username = "adam@email.com", roles = [])
     fun `test delete a particular course`() {
+        assertEquals(
+            listOf(courses[0], courses[1], courses[2]),
+            courseRepository.findAll()
+        )
+
         courseServices.deleteCourse(courses[2].id.toString())
+
+        assertEquals(
+            listOf(courses[0], courses[1]),
+            courseRepository.findAll()
+        )
     }
 
     @Test

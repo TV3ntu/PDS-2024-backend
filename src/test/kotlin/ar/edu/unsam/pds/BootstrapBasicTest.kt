@@ -137,6 +137,7 @@ open class BootstrapBasicTest {
         ).apply {
             addCourse(this@BootstrapBasicTest.courses[0])
             addCourse(this@BootstrapBasicTest.courses[1])
+            addCourse(this@BootstrapBasicTest.courses[2])
         })
     }
 }

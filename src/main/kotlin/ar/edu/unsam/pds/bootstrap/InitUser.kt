@@ -23,7 +23,9 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "AdanAdan",
                     email = "adan@email.com",
                     image = ""
-                )
+                ).apply {
+                    isAdmin = true
+                }
 
                 this.initProperties()
             }
