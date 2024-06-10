@@ -13,6 +13,23 @@ class InitUser : BootstrapGeneric("users") {
     @Autowired private lateinit var principalRepository: PrincipalRepository
 
     override fun doAfterPropertiesSet() {
+        // ADMIN
+        principalRepository.save(
+            Principal().apply {
+                username = "admin@admin.com"
+                password = encode("123")
+                user = User(
+                    name = "Admin",
+                    lastName = "Admin",
+                    email = "admin@admin.com",
+                    image = "",
+                    isAdmin = true
+                )
+
+                this.initProperties()
+            }
+        )
+
         // region user = Adan @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         principalRepository.save(
             Principal().apply {
