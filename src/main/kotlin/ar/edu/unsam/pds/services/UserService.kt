@@ -40,7 +40,7 @@ class UserService(
         }
     }
 
-    fun login(user: LoginForm, request: HttpServletRequest): UserResponseDto {
+    fun login(user: LoginForm, request: HttpServletRequest): UserDetailResponseDto {
         try {
             request.login(user.email, user.password)
         } catch (e: ServletException) {
@@ -49,8 +49,8 @@ class UserService(
 
         val principal = (request.userPrincipal as Authentication).principal as Principal
         val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
-
-        return Mapper.buildUserDto(principalUser)
+        val nextClass = getSubscriptions(principalUser.id.toString()).firstOrNull()
+        return Mapper.buildUserDetailDto(principalUser,nextClass)
     }
 
     @Transactional
