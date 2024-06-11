@@ -12,6 +12,7 @@ class Course(
     val description: String,
 
     var category: String,
+    @Column(length = 1024)
     var image: String
 ) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
