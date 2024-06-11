@@ -39,9 +39,9 @@ class CoursesController {
     @Operation(summary = "Delete course by id")
     fun deleteCourse(
         @PathVariable @UUID idCourse: String
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<Map<String, String>> {
         courseServices.deleteCourse(idCourse)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok(mapOf("message" to "Curso eliminado correctamente."))
     }
         
     @PostMapping("")
