@@ -32,7 +32,7 @@ class UserController {
     fun login(
         @RequestBody @Valid user: LoginForm,
         request: HttpServletRequest
-    ): ResponseEntity<UserResponseDto> {
+    ): ResponseEntity<UserDetailResponseDto> {
         return ResponseEntity.ok(userService.login(user, request))
     }
 

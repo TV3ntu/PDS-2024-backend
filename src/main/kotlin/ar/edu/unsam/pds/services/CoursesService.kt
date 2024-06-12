@@ -8,6 +8,7 @@ import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
+import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.utils.Mapper
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -15,7 +16,8 @@ import java.util.*
 
 @Service
 class CoursesService(
-    private val courseRepository: CourseRepository
+    private val courseRepository: CourseRepository,
+    private val institutionRepository: InstitutionRepository
 ) {
 
     fun getAll(query: String): List<CourseResponseDto> {
@@ -55,13 +57,23 @@ class CoursesService(
 
     @Transactional
     fun createCourse(course: CourseRequestDto): CourseResponseDto? {
+        val insitutionId = UUID.fromString(course.institutionId)
+        val institution = institutionRepository.findById(insitutionId).orElseThrow {
+            NotFoundException("Institución no encontrada")
+        }
+
+
         val newCourse = Course(
             course.title,
             course.description,
             course.category,
-            course.image
+            course.image,
         )
         courseRepository.save(newCourse)
+
+        institution.addCourse(newCourse)
+        institutionRepository.save(institution)
+
         return Mapper.buildCourseDto(newCourse)
     }
 

@@ -59,15 +59,23 @@ class UserControllerTest {
     fun `test login user`() {
         val request = MockHttpServletRequest()
         val userForm = LoginForm(user.email, "666")
-
+        val nextClass = SubscriptionResponseDto(
+            institutionName = "institutionName",
+            courseId = "courseId",
+            courseName = "courseName",
+            date = "date",
+            hour = "hour",
+            status = "status",
+            assignmentId = "assignmentId"
+        )
         `when`(userService.login(userForm, request)).thenReturn(
-            Mapper.buildUserDto(user)
+            Mapper.buildUserDetailDto(user,nextClass)
         )
 
         val responseEntity = userController.login(userForm, request)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == Mapper.buildUserDto(user))
+        assert(responseEntity.body == Mapper.buildUserDetailDto(user,nextClass))
     }
 
     @Test
@@ -152,7 +160,8 @@ class UserControllerTest {
                 courseName = "courseName",
                 date = "date",
                 hour = "hour",
-                status = "status"
+                status = "status",
+                assignmentId = "assignmentId"
             )
         )
 

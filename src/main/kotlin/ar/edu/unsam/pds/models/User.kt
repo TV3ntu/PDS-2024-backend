@@ -11,11 +11,10 @@ class User(
     var lastName: String,
     var email: String,
     var image: String,
+    var isAdmin: Boolean = false
 ) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
-
-    var isAdmin: Boolean = false
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

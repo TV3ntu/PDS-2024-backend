@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api/assignments")
+
 @CrossOrigin("*")
 class AssignmentController {
     @Autowired
@@ -42,7 +43,7 @@ class AssignmentController {
         return ResponseEntity.ok(assignmentService.subscribe(idUser, idAssignment))
     }
 
-    @PatchMapping("/unsubscribe")
+    @PostMapping("/unsubscribe")
     @Operation(summary = "A user unsubscribes to a assignment")
     fun unsubscribeToAssignment(
         @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto

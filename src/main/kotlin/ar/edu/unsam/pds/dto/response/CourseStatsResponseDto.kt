@@ -9,7 +9,7 @@ class CourseStatsResponseDto (
     val totalAssignments: Int,
     val totalSubscriptions: Int,
     val totalIncome: Double,
-    val mostPopularAssignment: AssignmentStatsResponseDto,
-    val mostProfitableAssignment: AssignmentStatsResponseDto,
+    val mostPopularAssignment: AssignmentStatsResponseDto?,
+    val mostProfitableAssignment: AssignmentStatsResponseDto?,
     val assignments: MutableSet<AssignmentStatsResponseDto>
 ) {}
