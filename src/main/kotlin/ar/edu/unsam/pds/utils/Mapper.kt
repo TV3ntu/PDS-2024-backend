@@ -100,8 +100,10 @@ object Mapper {
         )
     }
 
-    fun buildSubscriptionDto(assignment: Assignment, institution: Institution): SubscriptionResponseDto {
+    fun buildSubscriptionDto(assignment: Assignment, institution: Institution
+                             ): SubscriptionResponseDto {
         return SubscriptionResponseDto(
+            assignmentId = assignment.id.toString(),
             institutionName = institution.name,
             courseId = assignment.course.id.toString(),
             courseName = assignment.course.title,
