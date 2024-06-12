@@ -126,19 +126,27 @@ object Mapper {
     }
 
     fun buildCourseStatsDto(course: Course): CourseStatsResponseDto {
-        return CourseStatsResponseDto(
-            id = course.id.toString(),
-            title = course.title,
-            description = course.description,
-            category = course.category,
-            image = course.image,
-            totalAssignments = course.assignments.size,
-            totalSubscriptions = course.totalSubscribedUsers(),
-            totalIncome = course.totalIncome(),
-            mostPopularAssignment = buildAssignmentStatsDto(course.mostPopularAssignment()),
-            mostProfitableAssignment = buildAssignmentStatsDto(course.mostProfitableAssignment()),
-            assignments = course.assignments.map { buildAssignmentStatsDto(it) }.toMutableSet())
 
+        val totalAssignments = if (course.assignments.isEmpty()) 0 else course.assignments.size
+        val totalSubscriptions = if (course.assignments.isEmpty()) 0 else course.totalSubscribedUsers()
+        val totalIncome = if (course.assignments.isEmpty()) 0.0 else course.totalIncome()
+        val mostPopularAssignment = if (course.assignments.isEmpty()) null else buildAssignmentStatsDto(course.mostPopularAssignment())
+        val mostProfitableAssignment = if (course.assignments.isEmpty()) null else buildAssignmentStatsDto(course.mostProfitableAssignment())
+        val assignments = if (course.assignments.isEmpty()) mutableSetOf<AssignmentStatsResponseDto>() else course.assignments.map { buildAssignmentStatsDto(it) }.toMutableSet()
+
+        return CourseStatsResponseDto(
+                id = course.id.toString(),
+                title = course.title,
+                description = course.description,
+                category = course.category,
+                image = course.image,
+                totalAssignments = totalAssignments,
+                totalSubscriptions = totalSubscriptions,
+                totalIncome = totalIncome,
+                mostPopularAssignment = mostPopularAssignment,
+                mostProfitableAssignment = mostProfitableAssignment,
+                assignments = assignments
+        )
     }
 
     private fun buildAssignmentStatsDto(assignment: Assignment): AssignmentStatsResponseDto {
