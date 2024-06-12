@@ -153,7 +153,7 @@ object Mapper {
         )
     }
 
-    private fun buildAssignmentStatsDto(assignment: Assignment): AssignmentStatsResponseDto {
+    fun buildAssignmentStatsDto(assignment: Assignment): AssignmentStatsResponseDto {
         return AssignmentStatsResponseDto(
             id = assignment.id.toString(),
             quotas = assignment.quotas,

@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.dto.response
 
-class AssignmentStatsResponseDto (
+data class AssignmentStatsResponseDto (
     val id: String,
     val quotas: Int,
     var quantityAvailable: Int,
@@ -12,4 +12,3 @@ class AssignmentStatsResponseDto (
     val schedule: ScheduleResponseDto,
     val subscribers : MutableSet<UserResponseDto>
 )
-{}

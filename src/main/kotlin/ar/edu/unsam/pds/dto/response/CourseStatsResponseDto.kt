@@ -1,6 +1,6 @@
 package ar.edu.unsam.pds.dto.response
 
-class CourseStatsResponseDto (
+data class CourseStatsResponseDto (
     val id: String,
     val title: String,
     val description: String,
@@ -12,4 +12,4 @@ class CourseStatsResponseDto (
     val mostPopularAssignment: AssignmentStatsResponseDto?,
     val mostProfitableAssignment: AssignmentStatsResponseDto?,
     val assignments: MutableSet<AssignmentStatsResponseDto>
-) {}
+)

@@ -89,10 +89,12 @@ class AssignmentControllerTest {
             date = LocalDate.now()
         )
 
-        `when`(assignmentService.subscribe(
-            idUser = subscribeRequest.idUser,
-            idAssignment = subscribeRequest.idAssignment
-        )).thenReturn(response)
+        `when`(
+            assignmentService.subscribe(
+                idUser = subscribeRequest.idUser,
+                idAssignment = subscribeRequest.idAssignment
+            )
+        ).thenReturn(response)
 
         val responseEntity = assignmentController.subscribeToAssignment(subscribeRequest)
 
@@ -109,10 +111,12 @@ class AssignmentControllerTest {
             date = LocalDate.now()
         )
 
-        `when`(assignmentService.unsubscribe(
-            idUser = subscribeRequest.idUser,
-            idAssignment = subscribeRequest.idAssignment
-        )).thenReturn(response)
+        `when`(
+            assignmentService.unsubscribe(
+                idUser = subscribeRequest.idUser,
+                idAssignment = subscribeRequest.idAssignment
+            )
+        ).thenReturn(response)
 
         val responseEntity = assignmentController.unsubscribeToAssignment(subscribeRequest)
 
