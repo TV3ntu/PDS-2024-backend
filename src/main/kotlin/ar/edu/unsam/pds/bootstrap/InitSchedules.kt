@@ -56,5 +56,169 @@ class InitSchedules : BootstrapGeneric("Schedules") {
             recurrenceWeeks = RecurrenceWeeks.MONTHLY,
         )
         scheduleRepository.save(schedule4)
+
+        val schedule5 = Schedule(
+            days = listOf(DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule5)
+
+        // Create 10 more random schedules
+
+        val schedule6 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule6)
+
+        val schedule7 = Schedule(
+            days = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+
+        scheduleRepository.save(schedule7)
+
+        val schedule8 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule8)
+
+        val schedule9 = Schedule(
+            days = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule9)
+
+        val schedule10 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule10)
+
+        val schedule11 = Schedule(
+            days = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule11)
+
+        val schedule12 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule12)
+
+        val schedule13 = Schedule(
+            days = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule13)
+
+        val schedule14 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule14)
+
+        val schedule15 = Schedule(
+            days = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule15)
+
+        val schedule16 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule16)
+
+        val schedule17 = Schedule(
+            days = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule17)
+
+        val schedule18 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule18)
+
+        val schedule19 = Schedule(
+            days = listOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule19)
+
+        val schedule20 = Schedule(
+            days = listOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
+            startTime = LocalTime.of(12, 0),
+            endTime = LocalTime.of(14, 0),
+            startDate = LocalDate.of(2023, 3, 1),
+            endDate = LocalDate.of(2025, 3, 30),
+            recurrenceWeeks = RecurrenceWeeks.MONTHLY,
+        )
+        scheduleRepository.save(schedule20)
+
     }
 }
