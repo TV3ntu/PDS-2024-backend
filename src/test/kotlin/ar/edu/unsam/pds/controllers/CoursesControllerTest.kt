@@ -83,7 +83,8 @@ class CoursesControllerTest {
             title = "title 1",
             description = "description",
             category = "category",
-            image = ""
+            image = "",
+            institutionId = "123"
         )
         `when`(courseServices.createCourse(courseRequest)).thenReturn(course)
 
