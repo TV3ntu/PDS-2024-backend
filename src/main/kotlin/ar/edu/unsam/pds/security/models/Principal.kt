@@ -19,7 +19,8 @@ class Principal : UserDetails {
     private var accountNonExpired: Boolean? = null
     private var accountNonLocked: Boolean? = null          // This is done by the system, for example, invalid logins.
     private var credentialsNonExpired: Boolean? = null
-    private var enabled: Boolean? = null                   // This is done by the system administrator
+    private var enabled: Boolean? = null
+    var role: String? = "USER"
 
     @OneToOne(fetch = EAGER, cascade = [PERSIST])
     var user: User? = null
@@ -36,7 +37,8 @@ class Principal : UserDetails {
     override fun isEnabled(): Boolean = enabled!!
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority("ROLE_UNKNOWN"))
+//        return mutableListOf(SimpleGrantedAuthority("ROLE_UNKNOWN"))
+            return mutableListOf(SimpleGrantedAuthority("ROLE_$role"))
     }
     // endregion @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

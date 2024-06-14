@@ -16,8 +16,7 @@ import java.util.*
 
 @Service
 class CoursesService(
-    private val courseRepository: CourseRepository,
-    private val userService: UserService
+    private val courseRepository: CourseRepository
 ) {
 
     fun getAll(query: String): List<CourseResponseDto> {
@@ -32,7 +31,6 @@ class CoursesService(
 
     @Transactional
     fun deleteCourse(idCourse: String) {
-        checkAdminPermissions()
         val course = findCourseById(idCourse)
 
         if (course.assignments.any { it.hasAnySubscribedUser() }) {
@@ -43,7 +41,6 @@ class CoursesService(
 
     @Transactional
     fun deleteAllById(courseIds: List<String>) {
-        checkAdminPermissions()
         courseIds.forEach { id ->
             val course = findCourseById(id)
             courseRepository.delete(course)
@@ -59,7 +56,6 @@ class CoursesService(
 
     @Transactional
     fun createCourse(course: CourseRequestDto): CourseResponseDto? {
-        checkAdminPermissions()
         val newCourse = Course(
             course.title,
             course.description,
@@ -76,17 +72,6 @@ class CoursesService(
 
     }
 
-    fun checkAdminPermissions() {
-        try {
-            val currentUser = userService.getCurrentUser()
-            if (!currentUser.isAdmin) {
-                throw NotFoundException("No tienes permiso para realizar esta acción.")
-            }
-        } catch (e: NotFoundException) {
-            throw NotFoundException("Usuario no encontrado. No tienes permiso para realizar esta acción.")
-        } catch (e: Exception) {
-            throw InternalServerError("Error al verificar los permisos. Inténtelo de nuevo más tarde.")
-        }
-    }
+
 
 }

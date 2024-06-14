@@ -22,11 +22,11 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Adan",
                     lastName = "AdanAdan",
                     email = "adan@email.com",
-                    image = ""
+                    image = "",
                 ).apply {
                     isAdmin = true
                 }
-
+                role = "ADMIN"
                 this.initProperties()
             }
         )

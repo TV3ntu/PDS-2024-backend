@@ -30,18 +30,18 @@ class CoursesController {
     @Operation(summary = "Delete multiple courses by ids")
     fun deleteMultipleCourses(
         @RequestBody @UUID idCourses: List<String>
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<Map<String, String>> {
         courseServices.deleteAllById(idCourses)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok(mapOf("message" to "Cursos eliminados correctamente."))
     }
 
     @DeleteMapping("{idCourse}")
     @Operation(summary = "Delete course by id")
     fun deleteCourse(
         @PathVariable @UUID idCourse: String
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<Map<String, String>> {
         courseServices.deleteCourse(idCourse)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok(mapOf("message" to "Curso eliminado correctamente."))
     }
         
     @PostMapping("")

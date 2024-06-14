@@ -29,8 +29,7 @@ class CoursesServiceTest : BootstrapNBTest() {
         )
 
         courseServices = CoursesService(
-            courseRepository = courseRepository,
-            userService = userService
+            courseRepository = courseRepository
         )
     }
 
@@ -99,14 +98,6 @@ class CoursesServiceTest : BootstrapNBTest() {
             listOf(courses[0], courses[1]),
             courseRepository.findAll()
         )
-    }
-
-    @Test
-    @WithMockUser(username = "eve@email.com", roles = [])
-    fun `test throw delete a particular course`() {
-        assertThrows<NotFoundException> {
-            courseServices.deleteCourse(courses[2].id.toString())
-        }
     }
 
     @Test
