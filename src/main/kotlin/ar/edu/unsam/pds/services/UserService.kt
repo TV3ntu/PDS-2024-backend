@@ -8,6 +8,7 @@ import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
@@ -50,7 +51,7 @@ class UserService(
         val principal = (request.userPrincipal as Authentication).principal as Principal
         val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
         val nextClass = getSubscriptions(principalUser.id.toString()).firstOrNull()
-        return Mapper.buildUserDetailDto(principalUser,nextClass)
+        return UserMapper.buildUserDetailDto(principalUser,nextClass)
     }
 
     @Transactional
@@ -83,26 +84,26 @@ class UserService(
         principalRepository.save(principal)
 
         // Retornar el DTO de respuesta
-        return Mapper.buildUserDto(newUser)
+        return UserMapper.buildUserDto(newUser)
     }
 
     fun getUserAll(): List<UserResponseDto> {
         val user = userRepository.findAll()
-        return user.map { Mapper.buildUserDto(it) }
+        return user.map { UserMapper.buildUserDto(it) }
     }
 
     fun getUserDetail(idUser: String): UserDetailResponseDto {
         val user = findUserById(idUser)
         val nextClass = getSubscriptions(idUser).firstOrNull()
-        return Mapper.buildUserDetailDto(user, nextClass)
+        return UserMapper.buildUserDetailDto(user, nextClass)
     }
 
     @Transactional
     fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
         val user = findUserById(idUser)
-        val updatedUser = Mapper.patchUser(user, userDetail)
+        val updatedUser = UserMapper.patchUser(user, userDetail)
         userRepository.save(updatedUser)
-        return Mapper.buildUserDto(user)
+        return UserMapper.buildUserDto(user)
     }
 
     fun getSubscribedCourses(idUser: String): List<CourseResponseDto> {
@@ -128,5 +129,14 @@ class UserService(
 
     private fun orderSubscriptions(subscriptions: List<SubscriptionResponseDto>): List<SubscriptionResponseDto> {
         return subscriptions.sortedBy { it.date }
+    }
+
+    @Transactional
+    fun chargeCredits(idUser: String, credits: Double): UserResponseDto {
+        val user = findUserById(idUser)
+        user.chargeCredits(credits)
+        userRepository.save(user)
+        return UserMapper.buildUserDto(user)
+
     }
 }

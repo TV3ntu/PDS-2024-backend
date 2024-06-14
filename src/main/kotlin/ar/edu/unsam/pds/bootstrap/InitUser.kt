@@ -23,7 +23,8 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Admin",
                     email = "admin@admin.com",
                     image = "",
-                    isAdmin = true
+                    isAdmin = true,
+                    credits = 1000.0
                 )
 
                 this.initProperties()
@@ -39,7 +40,8 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Adan",
                     lastName = "AdanAdan",
                     email = "adan@email.com",
-                    image = ""
+                    image = "",
+                    credits = 1000.0
                 )
 
                 this.initProperties()
@@ -56,7 +58,8 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Eva",
                     lastName = "EvaEva",
                     email = "eva@email.com",
-                    image = ""
+                    image = "",
+                    credits = 10000.0
                 )
 
                 this.initProperties()
@@ -74,6 +77,7 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Gomez",
                     email = "bonifacio@email.com",
                     image = "",
+                    credits = 1000.0
                 )
 
                 this.initProperties()
@@ -91,6 +95,7 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Lopez",
                     email = "clemente@email.com",
                     image = "",
+                    credits = 10000.0
                 )
 
                 this.initProperties()
@@ -108,6 +113,7 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Martinez",
                     email = "dalmacio@email.com",
                     image = "",
+                    credits = 10000.0
                 )
 
                 this.initProperties()
@@ -125,6 +131,7 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Garcia",
                     email = "emeterio@email.com",
                     image = "",
+                    credits = 10000.0
                 )
 
                 this.initProperties()
@@ -142,6 +149,8 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Moyano",
                     email = "taciana@email.com",
                     image = "",
+                    credits = 10000.0
+
                 )
 
                 this.initProperties()
@@ -159,6 +168,8 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Campos",
                     email = "ursula@email.com",
                     image = "",
+                    credits = 10000.0
+
                 )
 
                 this.initProperties()
@@ -176,6 +187,8 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Soto",
                     email = "valentina@email.com",
                     image = "",
+                    credits = 10000.0
+
                 )
 
                 this.initProperties()
@@ -193,6 +206,8 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "Chávez",
                     email = "zeferina@email.com",
                     image = "",
+                    credits = 10000.0
+
                 )
 
                 this.initProperties()

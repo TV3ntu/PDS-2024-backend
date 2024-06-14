@@ -86,4 +86,14 @@ class UserController {
     ): ResponseEntity<List<SubscriptionResponseDto>> {
         return ResponseEntity.ok(userService.getSubscriptions(idUser))
     }
+
+    @PatchMapping("/{idUser}/charge-credits")
+    @Operation(summary = "Charge credits to a user's account")
+    fun chargeCredits(
+        @PathVariable @UUID idUser: String,
+        @RequestParam credits: Double
+    ): ResponseEntity<UserResponseDto> {
+        val updatedUser = userService.chargeCredits(idUser, credits)
+        return ResponseEntity.ok(updatedUser)
+    }
 }

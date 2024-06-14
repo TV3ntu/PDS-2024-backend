@@ -31,7 +31,8 @@ open class BootstrapBasicTest {
                 name = "Adam",
                 lastName = "AdamAdam",
                 email = "adam@email.com",
-                image = ""
+                image = "",
+                credits = 100000.0
             )
         )
 
@@ -40,7 +41,8 @@ open class BootstrapBasicTest {
                 name = "Eve",
                 lastName = "Eve",
                 email = "eve@email.com",
-                image = ""
+                image = "",
+                credits = 100000.0
             )
         )
 

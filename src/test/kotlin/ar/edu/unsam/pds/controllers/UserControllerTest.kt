@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
+import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.services.UserService
 import ar.edu.unsam.pds.utils.Mapper
@@ -45,7 +46,7 @@ class UserControllerTest {
 
     @Test
     fun `test get all user`() {
-        val users = listOf(Mapper.buildUserDto(user))
+        val users = listOf(UserMapper.buildUserDto(user))
 
         `when`(userService.getUserAll()).thenReturn(users)
 
@@ -69,13 +70,13 @@ class UserControllerTest {
             assignmentId = "assignmentId"
         )
         `when`(userService.login(userForm, request)).thenReturn(
-            Mapper.buildUserDetailDto(user,nextClass)
+            UserMapper.buildUserDetailDto(user,nextClass)
         )
 
         val responseEntity = userController.login(userForm, request)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == Mapper.buildUserDetailDto(user,nextClass))
+        assert(responseEntity.body == UserMapper.buildUserDetailDto(user,nextClass))
     }
 
     @Test
@@ -91,7 +92,7 @@ class UserControllerTest {
 
     @Test
     fun `test register a particular user`() {
-        val expectedValue = Mapper.buildUserDto(user)
+        val expectedValue = UserMapper.buildUserDto(user)
         val userRegister = RegisterFormDto(
             name = user.name,
             lastName = user.lastName,
@@ -109,7 +110,7 @@ class UserControllerTest {
 
     @Test
     fun `test get a particular user`() {
-        val user = Mapper.buildUserDetailDto(user, null)
+        val user = UserMapper.buildUserDetailDto(user, null)
 
         `when`(userService.getUserDetail(uuid)).thenReturn(user)
 
@@ -121,7 +122,7 @@ class UserControllerTest {
 
     @Test
     fun `test update a particular user`() {
-        val user = Mapper.buildUserDto(user)
+        val user = UserMapper.buildUserDto(user)
 
         `when`(userService.updateDetail(uuid, user)).thenReturn(user)
 
@@ -171,5 +172,17 @@ class UserControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == subscriptions)
+    }
+
+    @Test fun `test charge credits`() {
+        val credits = 100.0
+        val user = UserMapper.buildUserDto(user)
+
+        `when`(userService.chargeCredits(uuid, credits)).thenReturn(user)
+
+        val responseEntity = userController.chargeCredits(uuid, credits)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == user)
     }
 }

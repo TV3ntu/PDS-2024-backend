@@ -29,5 +29,7 @@ data class UserResponseDto(
     @field: UUID(message = "Debe ser un UUID válido")
     val id: String,
 
+    val credits: Double,
+
     var isAdmin: Boolean
 )

@@ -61,6 +61,18 @@ class UserTest : BootstrapBasicTest() {
         }
     }
 
+    @Test fun `Try subscribing to an assignment`() {
+        users[0].subscribe(assignment)
+        assertEquals(setOf(assignment), users[0].assignmentsList)
+    }
+
+    @Test fun `Try subscribing with not enough credits`() {
+        users[0].credits = 0.0
+        assertThrows<ValidationException> {
+            users[0].subscribe(assignment)
+        }
+    }
+
     @Test
     fun `Try deleting an assignment to the user`() {
         users[0].addAssignment(assignments[0])
