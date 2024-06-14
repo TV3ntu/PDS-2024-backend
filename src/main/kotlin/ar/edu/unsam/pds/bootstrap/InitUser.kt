@@ -25,7 +25,7 @@ class InitUser : BootstrapGeneric("users") {
                     image = "",
                     isAdmin = true
                 )
-
+                role = "ADMIN"
                 this.initProperties()
             }
         )
