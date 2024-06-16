@@ -14,6 +14,12 @@ interface CourseRepository : JpaRepository<Course, UUID> {
         WHERE c.title LIKE concat('%', :query, '%')
         OR c.description LIKE concat('%', :query, '%')
         OR c.category LIKE concat('%', :query, '%')
+        ORDER BY 
+        CASE 
+            WHEN c.title LIKE concat('%', :query, '%') THEN 1
+            WHEN c.category LIKE concat('%', :query, '%') THEN 2
+            ELSE 3
+        END
     """)
     fun getAllBy(@Param("query") query: String): MutableList<Course>
 }

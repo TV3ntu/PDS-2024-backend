@@ -122,6 +122,13 @@ open class BootstrapBasicTest {
             addAssignment(this@BootstrapBasicTest.assignments[1])
         })
 
+        courses.add(Course(
+            title = "yoga",
+            description = "yoga course",
+            category = "yoga_category",
+            image = ""
+        ))
+
         institutions.add(Institution(
             name = "Enchanted Dance",
             description = "dance institution",
@@ -131,5 +138,19 @@ open class BootstrapBasicTest {
             addCourse(this@BootstrapBasicTest.courses[0])
             addCourse(this@BootstrapBasicTest.courses[1])
         })
+
+        institutions.add(Institution(
+            name = "The Kingdom of Calculations",
+            description = "mathematics institution",
+            category = "mathematics_category",
+            image = ""
+        ))
+
+        institutions.add(Institution(
+            name = "Serenity and Postures",
+            description = "yoga institution",
+            category = "yoga_category",
+            image = ""
+        ))
     }
 }

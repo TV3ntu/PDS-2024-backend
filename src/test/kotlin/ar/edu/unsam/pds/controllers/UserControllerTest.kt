@@ -60,15 +60,8 @@ class UserControllerTest {
     fun `test login user`() {
         val request = MockHttpServletRequest()
         val userForm = LoginForm(user.email, "666")
-        val nextClass = SubscriptionResponseDto(
-            institutionName = "institutionName",
-            courseId = "courseId",
-            courseName = "courseName",
-            date = "date",
-            hour = "hour",
-            status = "status",
-            assignmentId = "assignmentId"
-        )
+        val nextClass: SubscriptionResponseDto? = null
+
         `when`(userService.login(userForm, request)).thenReturn(
             UserMapper.buildUserDetailDto(user,nextClass)
         )

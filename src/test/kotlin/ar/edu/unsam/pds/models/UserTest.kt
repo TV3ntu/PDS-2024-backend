@@ -101,6 +101,6 @@ class UserTest : BootstrapBasicTest() {
         users[0].addAssignment(assignments[0])
         users[0].addAssignment(assignments[1])
 
-        assertEquals(courses.toSet(), users[0].subscribedCourses())
+        assertEquals(courses.subList(0,2).toSet(), users[0].subscribedCourses())
     }
 }
