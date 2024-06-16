@@ -43,28 +43,36 @@ class FilterChainConfiguration {
                 // public @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 antMatcher(GET, "/api/institutions"),
                 antMatcher(GET, "/api/institutions/*"),
-
                 antMatcher(GET, "/api/courses"),
                 antMatcher(GET, "/api/courses/*"),
+                antMatcher(GET, "/api/courses/*/stats"),
+                antMatcher(GET, "/api/assignments"),
+                antMatcher(GET, "/api/assignments/*"),
+                antMatcher(GET, "/api/users"),
+                antMatcher(GET, "/api/users/*"),
+                antMatcher(GET, "/api/users/*/courses"),
+                antMatcher(GET, "/api/users/*/subscriptions"),
+
+                // una vez puesta la seguridad en front quitar estos de aqui abajo
                 antMatcher(POST, "/api/courses"),
                 antMatcher(POST, "/api/courses/*"),
                 antMatcher(DELETE, "/api/courses/*"),
                 antMatcher(DELETE, "/api/courses"),
-                antMatcher(GET, "/api/courses/*/stats"),
-
-
-                antMatcher(GET, "/api/assignments"),
-                antMatcher(GET, "/api/assignments/*"),
-
                 antMatcher(POST, "/api/assignments/subscribe"),
                 antMatcher(POST, "/api/assignments/unsubscribe"),
-
-                antMatcher(GET, "/api/users"),
-                antMatcher(GET, "/api/users/*"),
                 antMatcher(PATCH, "/api/users/*"),
-                antMatcher(GET, "/api/users/*/courses"),
-                antMatcher(GET, "/api/users/*/subscriptions"),
             ).permitAll()
+
+            // ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            .requestMatchers(
+                antMatcher(POST, "/api/courses"),
+                antMatcher(POST, "/api/courses/*"),
+                antMatcher(DELETE, "/api/courses/*"),
+                antMatcher(DELETE, "/api/courses"),
+                antMatcher(POST, "/api/assignments/subscribe"),
+                antMatcher(PATCH, "/api/assignments/unsubscribe"),
+                antMatcher(PATCH, "/api/users/*"),
+            ).hasRole("ADMIN")
 
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(
