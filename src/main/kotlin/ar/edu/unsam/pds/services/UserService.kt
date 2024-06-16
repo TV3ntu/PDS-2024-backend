@@ -70,7 +70,6 @@ class UserService(
             name = form.name,
             lastName = form.lastName,
             email = form.email,
-            image = ""
         )
         userRepository.save(newUser)
 
@@ -82,8 +81,6 @@ class UserService(
             user = newUser
         }
         principalRepository.save(principal)
-
-        // Retornar el DTO de respuesta
         return UserMapper.buildUserDto(newUser)
     }
 
@@ -124,19 +121,10 @@ class UserService(
             val institution = institutionService.findInstitutionByCourseId(assignment.course.id)
             Mapper.buildSubscriptionDto(assignment, institution)
         }
-        return orderSubscriptions(subscriptions)
+        return orderSubscriptionsByDate(subscriptions)
     }
 
-    private fun orderSubscriptions(subscriptions: List<SubscriptionResponseDto>): List<SubscriptionResponseDto> {
+    private fun orderSubscriptionsByDate(subscriptions: List<SubscriptionResponseDto>): List<SubscriptionResponseDto> {
         return subscriptions.sortedBy { it.date }
-    }
-
-    @Transactional
-    fun chargeCredits(idUser: String, credits: Double): UserResponseDto {
-        val user = findUserById(idUser)
-        user.chargeCredits(credits)
-        userRepository.save(user)
-        return UserMapper.buildUserDto(user)
-
     }
 }

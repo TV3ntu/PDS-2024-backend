@@ -10,7 +10,7 @@ class User(
     var name: String,
     var lastName: String,
     var email: String,
-    var image: String,
+    var image: String = "",
     var isAdmin: Boolean = false,
     var credits: Double = 0.0
 ) : Timestamp(), Serializable {
