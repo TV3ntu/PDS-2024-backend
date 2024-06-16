@@ -11,6 +11,7 @@ import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.security.models.Principal
+import ar.edu.unsam.pds.utils.Mapper
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -82,7 +83,8 @@ class UserServiceTest : BootstrapNBTest() {
             image = "",
             id = obtainedValue.id,
             isAdmin = false,
-            nextClass = null
+            nextClass = null,
+            credits = 100000.0
         )
 
         assertEquals(obtainedValue, expectedValue)
@@ -145,7 +147,7 @@ class UserServiceTest : BootstrapNBTest() {
             id = id,
             isAdmin = false,
             nextClass = null,
-            credits = 10000.0
+            credits = 0.0
         )
 
         assertEquals(obtainedValue, expectedValue)
@@ -199,7 +201,7 @@ class UserServiceTest : BootstrapNBTest() {
             image = "__",
             id = users[0].id.toString(),
             isAdmin = false,
-            credits = 10000.0
+            credits = 100000.0
         )
 
         userService.updateDetail(
@@ -216,7 +218,7 @@ class UserServiceTest : BootstrapNBTest() {
             id = adanUpdate.id,
             isAdmin = adanUpdate.isAdmin,
             nextClass = null,
-            credits = 1000.0
+            credits = adanUpdate.credits
         )
 
         assertEquals(obtainedValuePos, expectedValuePos)

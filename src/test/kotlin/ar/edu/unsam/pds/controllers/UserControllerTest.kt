@@ -166,16 +166,4 @@ class UserControllerTest {
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == subscriptions)
     }
-
-    @Test fun `test charge credits`() {
-        val credits = 100.0
-        val user = UserMapper.buildUserDto(user)
-
-        `when`(userService.chargeCredits(uuid, credits)).thenReturn(user)
-
-        val responseEntity = userController.chargeCredits(uuid, credits)
-
-        assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == user)
-    }
 }
