@@ -8,5 +8,5 @@ data class UserDetailResponseDto(
     val id: String,
     var isAdmin: Boolean,
     var nextClass: SubscriptionResponseDto?,
-    var credits: Double
+    var credits: Double?
 )

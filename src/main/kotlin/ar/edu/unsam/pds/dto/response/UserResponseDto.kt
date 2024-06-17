@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.dto.response
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.UUID
 
@@ -29,7 +30,8 @@ data class UserResponseDto(
     @field: UUID(message = "Debe ser un UUID válido")
     val id: String,
 
-    val credits: Double,
+    @field: Positive
+    val credits: Double? = null,
 
     var isAdmin: Boolean
 )
