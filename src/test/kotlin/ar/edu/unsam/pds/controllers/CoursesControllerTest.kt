@@ -3,6 +3,9 @@ package ar.edu.unsam.pds.controllers
 import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
 import ar.edu.unsam.pds.models.Course
+import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.security.models.Principal
+import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import ar.edu.unsam.pds.services.CoursesService
 import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.BeforeEach
@@ -20,9 +23,10 @@ class CoursesControllerTest {
     @Mock
     private lateinit var courseServices: CoursesService
     private lateinit var coursesController: CoursesController
-
     private lateinit var course: Course
     private lateinit var uuid: String
+
+    private lateinit var principal: Principal
 
     @BeforeEach
     fun setUp() {
@@ -39,6 +43,20 @@ class CoursesControllerTest {
         }
 
         uuid = course.id.toString()
+
+        principal = Principal().apply {
+            username = "admin@admin.com"
+            password = "123"
+            user = User(
+                name = "Admin",
+                lastName = "Admin",
+                email = "admin@admin.com",
+                image = "",
+                isAdmin = true
+            )
+            this.initProperties()
+        }
+
     }
 
     @Test
@@ -77,9 +95,9 @@ class CoursesControllerTest {
 
     @Test
     fun `test delete a particular course`() {
-        `when`(courseServices.deleteCourse(uuid)).then { }
+        `when`(courseServices.deleteCourse(uuid, principal)).then { }
 
-        val responseEntity = coursesController.deleteCourse(uuid)
+        val responseEntity = coursesController.deleteCourse(uuid, principal)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
     }

@@ -33,6 +33,7 @@ open class BootstrapBasicTest {
                 email = "adam@email.com",
                 image = "",
                 credits = 100000.0
+                isAdmin = true
             )
         )
 
@@ -55,7 +56,7 @@ open class BootstrapBasicTest {
             )
         )
 
-        users.forEachIndexed { i,it ->
+        users.forEachIndexed { i, it ->
             principals.add(Principal().apply {
                 username = it.email
                 password = encode(i.toString())
@@ -122,12 +123,14 @@ open class BootstrapBasicTest {
             addAssignment(this@BootstrapBasicTest.assignments[1])
         })
 
-        courses.add(Course(
-            title = "yoga",
-            description = "yoga course",
-            category = "yoga_category",
-            image = ""
-        ))
+        courses.add(
+            Course(
+                title = "yoga",
+                description = "yoga course",
+                category = "yoga_category",
+                image = ""
+            )
+        )
 
         institutions.add(Institution(
             name = "Enchanted Dance",
@@ -137,20 +140,23 @@ open class BootstrapBasicTest {
         ).apply {
             addCourse(this@BootstrapBasicTest.courses[0])
             addCourse(this@BootstrapBasicTest.courses[1])
+            addAdmin(principals[0].user!!)
         })
 
         institutions.add(Institution(
             name = "The Kingdom of Calculations",
             description = "mathematics institution",
             category = "mathematics_category",
-            image = ""
+            image = "",
         ))
 
-        institutions.add(Institution(
-            name = "Serenity and Postures",
-            description = "yoga institution",
-            category = "yoga_category",
-            image = ""
-        ))
+        institutions.add(
+            Institution(
+                name = "Serenity and Postures",
+                description = "yoga institution",
+                category = "yoga_category",
+                image = ""
+            )
+        )
     }
 }

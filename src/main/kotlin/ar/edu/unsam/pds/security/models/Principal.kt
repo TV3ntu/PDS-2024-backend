@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.security.models
 
+import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.models.User
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.PERSIST
@@ -20,7 +21,6 @@ class Principal : UserDetails {
     private var accountNonLocked: Boolean? = null          // This is done by the system, for example, invalid logins.
     private var credentialsNonExpired: Boolean? = null
     private var enabled: Boolean? = null                   // This is done by the system administrator
-    var role: String? = "USER"
     @OneToOne(fetch = EAGER, cascade = [PERSIST])
     var user: User? = null
 
@@ -36,7 +36,9 @@ class Principal : UserDetails {
     override fun isEnabled(): Boolean = enabled!!
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority("ROLE_$role"))
+        if (user == null ) throw InternalServerError("Usuario no encontrado")
+        val role = if (user!!.isAdmin) "ROLE_ADMIN" else "ROLE_USER"
+        return mutableListOf(SimpleGrantedAuthority(role))
     }
     // endregion @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
