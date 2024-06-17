@@ -1,21 +1,32 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
+import ar.edu.unsam.pds.dto.request.ScheduleRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.models.Schedule
 import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
 import ar.edu.unsam.pds.repository.AssignmentRepository
+import ar.edu.unsam.pds.repository.CourseRepository
+import ar.edu.unsam.pds.repository.ScheduleRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.*
 
 @Service
 class AssignmentService(
     private val assignmentRepository: AssignmentRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val scheduleRepository: ScheduleRepository,
+    private val courseRepository: CourseRepository
 ) {
 
     fun getAll(): List<AssignmentResponseDto> {
@@ -64,5 +75,37 @@ class AssignmentService(
         return assignmentRepository.findById(uuid).orElseThrow {
             NotFoundException("Clase no encontrada")
         }
+    }
+
+    fun createAssignment(assignment: AssignmentRequestDto): AssignmentResponseDto {
+        val courseId = UUID.fromString(assignment.idCourse)
+        val course = courseRepository.findById(courseId).orElseThrow {
+            NotFoundException("course no encontrado")
+        }
+
+
+        val newSchedule = Schedule(
+            days = assignment.schedule.days,
+            startTime = assignment.schedule.startTime,
+            endTime = assignment.schedule.endTime,
+            startDate = assignment.schedule.startDate,
+            endDate = assignment.schedule.endDate,
+            recurrenceWeeks = assignment.schedule.recurrenceWeeks,
+        )
+
+        scheduleRepository.save(newSchedule)
+
+        val newAssignment = Assignment(
+            quotas = assignment.quotas,
+            isActive = true,
+            price = assignment.price,
+            schedule = newSchedule
+        )
+
+        assignmentRepository.save(newAssignment)
+        course.addAssignment(newAssignment)
+        courseRepository.save(course)
+
+        return Mapper.buildAssignmentDto(newAssignment)
     }
 }
