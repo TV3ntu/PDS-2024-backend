@@ -1,24 +1,22 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
-import ar.edu.unsam.pds.dto.request.ScheduleRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.exceptions.PermissionDeniedException
+import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Schedule
 import ar.edu.unsam.pds.models.User
-import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
 import ar.edu.unsam.pds.repository.AssignmentRepository
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.ScheduleRepository
 import ar.edu.unsam.pds.repository.UserRepository
+import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
 import java.util.*
 
 @Service
@@ -108,4 +106,19 @@ class AssignmentService(
 
         return Mapper.buildAssignmentDto(newAssignment)
     }
+
+    @Transactional
+    fun deleteAssignment(idAssignment: String, principal: Principal) {
+        val isOwner = assignmentRepository.isOwner(UUID.fromString(idAssignment), principal)
+        if (!isOwner) throw PermissionDeniedException("Acceso denegado")
+
+        val assignment = findAssignmentById(idAssignment)
+
+        if (assignment.hasAnySubscribedUser()) {
+            throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
+        }
+
+        assignmentRepository.delete(assignment)
+    }
+
 }
