@@ -61,6 +61,11 @@ class RestExceptionHandler {
         return BodyResponse(HttpStatus.CONFLICT, request, exception.message)
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = [PermissionDeniedException::class])
+    fun denied(exception: PermissionDeniedException, request: WebRequest): BodyResponse{
+        return BodyResponse(HttpStatus.FORBIDDEN, request, exception.message)
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = [IllegalArgumentException::class])

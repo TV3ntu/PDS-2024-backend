@@ -25,7 +25,6 @@ class InitUser : BootstrapGeneric("users") {
                     image = "",
                     isAdmin = true
                 )
-                role = "ADMIN"
                 this.initProperties()
             }
         )
@@ -39,7 +38,8 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Adan",
                     lastName = "AdanAdan",
                     email = "adan@email.com",
-                    image = ""
+                    image = "",
+                    isAdmin = true
                 )
 
                 this.initProperties()

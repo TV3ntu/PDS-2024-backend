@@ -81,7 +81,7 @@ class UserServiceTest : BootstrapNBTest() {
             email = "adam@email.com",
             image = "",
             id = obtainedValue.id,
-            isAdmin = false,
+            isAdmin = true,
             nextClass = null
         )
 
@@ -197,7 +197,7 @@ class UserServiceTest : BootstrapNBTest() {
             email = "adan__@email.com",
             image = "__",
             id = users[0].id.toString(),
-            isAdmin = false
+            isAdmin = true
         )
 
         userService.updateDetail(

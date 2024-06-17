@@ -4,11 +4,14 @@ import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
+import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,8 +34,12 @@ class CoursesService(
     }
 
     @Transactional
-    fun deleteCourse(idCourse: String) {
+    fun deleteCourse(idCourse: String, principal: Principal) {
+       val isOwner = courseRepository.isOwner(UUID.fromString(idCourse), principal)
+
         val course = findCourseById(idCourse)
+
+        if (!isOwner) throw PermissionDeniedException("Acceso denegado")
 
         if (course.assignments.any { it.hasAnySubscribedUser() }) {
             throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
@@ -41,10 +48,9 @@ class CoursesService(
     }
 
     @Transactional
-    fun deleteAllById(courseIds: List<String>) {
+    fun deleteAllById(courseIds: List<String>, principal: Principal) {
         courseIds.forEach { id ->
-            val course = findCourseById(id)
-            courseRepository.delete(course)
+            deleteCourse(id, principal)
         }
     }
 
