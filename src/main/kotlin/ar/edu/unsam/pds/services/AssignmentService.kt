@@ -118,7 +118,12 @@ class AssignmentService(
             throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
         }
 
-        assignmentRepository.delete(assignment)
+        val course = courseRepository.findByAssigmentId(assignment.id).orElseThrow {
+            NotFoundException("curso no encontrado")
+        }
+
+        course.removeAssignment(assignment)
+        courseRepository.save(course)
     }
 
 }
