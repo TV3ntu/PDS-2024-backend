@@ -40,7 +40,7 @@ class InitUser : BootstrapGeneric("users") {
                     lastName = "AdanAdan",
                     email = "adan@email.com",
                     image = "",
-                    credits = 1000.0
+                    credits = 1000.0,
                     isAdmin = true
                 )
 
