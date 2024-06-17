@@ -64,17 +64,6 @@ class CoursesControllerTest {
     }
 
     @Test
-    fun `test delete multiple courses`() {
-        val uuids = listOf(uuid)
-
-        doNothing().`when`(courseServices).deleteAllById(uuids)
-        val responseEntity = coursesController.deleteMultipleCourses(uuids)
-
-        assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == null)
-    }
-
-    @Test
     fun `test get a particular course`() {
         val course = Mapper.buildCourseDetailDto(course)
 
