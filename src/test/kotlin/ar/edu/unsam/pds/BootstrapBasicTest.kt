@@ -32,7 +32,7 @@ open class BootstrapBasicTest {
                 lastName = "AdamAdam",
                 email = "adam@email.com",
                 image = "",
-                credits = 100000.0
+                credits = 100000.0,
                 isAdmin = true
             )
         )
