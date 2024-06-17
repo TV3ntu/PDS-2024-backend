@@ -143,6 +143,7 @@ class UserControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == user)
+        assert(responseEntity.body?.credits == null)
     }
 
     @Test

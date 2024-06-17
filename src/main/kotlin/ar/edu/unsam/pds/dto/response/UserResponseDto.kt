@@ -31,7 +31,7 @@ data class UserResponseDto(
     val id: String,
 
     @field: Positive
-    val credits: Double? = null,
+    var credits: Double? = null,
 
     var isAdmin: Boolean
 )
