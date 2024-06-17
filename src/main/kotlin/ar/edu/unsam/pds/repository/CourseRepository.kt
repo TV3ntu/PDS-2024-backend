@@ -34,13 +34,3 @@ interface CourseRepository : JpaRepository<Course, UUID> {
 fun isOwner(@Param("idCourse") idCourse: UUID, @Param("principal") principal: Principal) : Boolean
 
 }
-
-
-//@Query("""
-//        SELECT COUNT(cursos.id) = 1
-//            FROM Institution i
-//            JOIN FETCH i.courses cursos
-//            JOIN FETCH i.admin admins
-//            WHERE cursos.id = :idCourse AND admins.id = :#{#principal.user.id}
-//            """)
-//fun isOwner(@Param("idCourse") idCourse: String, @Param("principal") principal: Principal) : Boolean

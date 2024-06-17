@@ -93,7 +93,7 @@ class CoursesServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test delete a particular course`() {
-        val uuid = courses[2].id.toString()
+        val uuid = courses[1].id.toString()
 
         val obtainedValuePre = courseServices.getAll("").toList()
         val expectedValuePre = courses.map {
@@ -102,10 +102,10 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         assertEquals(obtainedValuePre, expectedValuePre)
 
-        courseServices.deleteCourse(uuid)
+        courseServices.deleteCourse(uuid, principals[0])
 
         val obtainedValuePos = courseServices.getAll("").toList()
-        val expectedValuePos = courses.subList(0, 2).map {
+        val expectedValuePos = listOf(courses[0],courses[2]).map {
             Mapper.buildCourseDto(it)
         }
 
@@ -121,13 +121,13 @@ class CoursesServiceTest : BootstrapNBTest() {
         assignmentService.subscribe(userId, assignmentId)
 
         assertThrows<ValidationException> {
-            courseServices.deleteCourse(courseId)
+            courseServices.deleteCourse(courseId, principals[0])
         }
     }
 
     @Test
     fun `test delete a list course`() {
-        val uuid = courses[2].id.toString()
+        val uuid = courses[1].id.toString()
 
         val obtainedValuePre = courseServices.getAll("").toList()
         val expectedValuePre = courses.map {
@@ -136,10 +136,10 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         assertEquals(obtainedValuePre, expectedValuePre)
 
-        courseServices.deleteAllById(listOf(uuid))
+        courseServices.deleteAllById(listOf(uuid), principals[0])
 
         val obtainedValuePos = courseServices.getAll("").toList()
-        val expectedValuePos = courses.subList(0, 2).map {
+        val expectedValuePos =  listOf(courses[0], courses[2]) .map {
             Mapper.buildCourseDto(it)
         }
 
