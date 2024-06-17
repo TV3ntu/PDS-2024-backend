@@ -57,10 +57,6 @@ class User(
         }
     }
 
-    fun chargeCredits(credits: Double) {
-        this.credits += credits
-    }
-
     fun subscribe(assignment: Assignment) {
         if (hasEnoughCredits(assignment.price)) {
             payCredits(assignment.price)

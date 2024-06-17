@@ -32,10 +32,11 @@ object UserMapper {
     }
 
     fun patchUser(user: User, userDetail: UserResponseDto): User {
-        userDetail.name.let { user.name = it }
-        userDetail.lastName.let { user.lastName = it }
-        userDetail.email.let { user.email = it }
-        userDetail.image.let { user.image = it }
+        user.name = userDetail.name
+        user.lastName = userDetail.lastName
+        user.email = userDetail.email
+        user.image = userDetail.image
+        user.credits = userDetail.credits ?: user.credits
         return user
     }
 }
