@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.repository
 
 import ar.edu.unsam.pds.models.Course
+import ar.edu.unsam.pds.security.models.Principal
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -22,4 +23,14 @@ interface CourseRepository : JpaRepository<Course, UUID> {
         END
     """)
     fun getAllBy(@Param("query") query: String): MutableList<Course>
+
+@Query("""
+        SELECT COUNT(cursos.id) = 1
+            FROM Institution i
+            JOIN i.courses cursos
+            JOIN i.admin admins
+            WHERE cursos.id = :idCourse AND admins.id = :#{#principal.user.id}
+            """)
+fun isOwner(@Param("idCourse") idCourse: UUID, @Param("principal") principal: Principal) : Boolean
+
 }
