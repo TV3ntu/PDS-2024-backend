@@ -19,7 +19,9 @@ class AssignmentServiceTest : BootstrapNBTest() {
     fun prepareTestData() {
         assignmentService = AssignmentService(
             assignmentRepository = assignmentRepository,
-            userRepository = userRepository
+            userRepository = userRepository,
+            scheduleRepository = scheduleRepository,
+            courseRepository = courseRepository
         )
     }
 

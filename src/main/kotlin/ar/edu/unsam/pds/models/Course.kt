@@ -26,6 +26,10 @@ class Course(
         assignment.attachCourse(this)
     }
 
+    fun removeAssignment(assignment: Assignment) {
+        assignments.removeIf{ it.id == assignment.id }
+    }
+
     fun totalIncome(): Double {
         return assignments.sumOf { it.totalIncome() }
     }
