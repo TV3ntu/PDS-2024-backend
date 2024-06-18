@@ -13,7 +13,7 @@ class InstitutionServiceTest : BootstrapNBTest() {
 
     @BeforeEach
     fun setUpInstitutionServiceTest() {
-        institutionService = InstitutionService(institutionRepository)
+        institutionService = InstitutionService(institutionRepository, principalRepository)
     }
 
     @Test
