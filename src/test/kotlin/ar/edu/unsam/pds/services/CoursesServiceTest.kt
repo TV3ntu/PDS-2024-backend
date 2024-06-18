@@ -30,7 +30,8 @@ class CoursesServiceTest : BootstrapNBTest() {
             assignmentRepository = assignmentRepository,
             userRepository = userRepository,
             scheduleRepository = scheduleRepository,
-            courseRepository = courseRepository
+            courseRepository = courseRepository,
+            paymentRepository = paymentRepository
         )
     }
 

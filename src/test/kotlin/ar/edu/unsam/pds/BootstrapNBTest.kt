@@ -14,6 +14,7 @@ class BootstrapNBTest : BootstrapBasicTest() {
     @Autowired lateinit var assignmentRepository: AssignmentRepository
     @Autowired lateinit var courseRepository: CourseRepository
     @Autowired lateinit var institutionRepository: InstitutionRepository
+    @Autowired lateinit var paymentRepository: PaymentRepository
 
     @BeforeEach
     fun setUpBootstrapNBTest() {
