@@ -8,12 +8,13 @@ import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.mappers.AssignmentMapper
+import ar.edu.unsam.pds.mappers.CourseMapper
 import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
-import ar.edu.unsam.pds.utils.Mapper
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
@@ -105,7 +106,7 @@ class UserService(
 
     fun getSubscribedCourses(idUser: String): List<CourseResponseDto> {
         val user = findUserById(idUser)
-        return user.subscribedCourses().map { Mapper.buildCourseDto(it) }
+        return user.subscribedCourses().map { CourseMapper.buildCourseDto(it) }
     }
 
     private fun findUserById(idUser: String): User {
@@ -119,7 +120,7 @@ class UserService(
         val user = findUserById(idUser)
         val subscriptions = user.assignmentsList.map { assignment ->
             val institution = institutionService.findInstitutionByCourseId(assignment.course.id)
-            Mapper.buildSubscriptionDto(assignment, institution)
+            AssignmentMapper.buildSubscriptionDto(assignment, institution)
         }
         return orderSubscriptionsByDate(subscriptions)
     }

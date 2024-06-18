@@ -5,7 +5,8 @@ import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
-import ar.edu.unsam.pds.utils.Mapper
+import ar.edu.unsam.pds.mappers.AssignmentMapper
+import ar.edu.unsam.pds.mappers.CourseMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -37,7 +38,7 @@ class CoursesServiceTest : BootstrapNBTest() {
     fun `test get all courses`() {
         val obtainedValue = courseServices.getAll("").toList()
         val expectedValue = courses.map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -48,7 +49,7 @@ class CoursesServiceTest : BootstrapNBTest() {
         val obtainedValue = courseServices.getAll("classic dance").toList()
 
         val expectedValue = listOf(courses[0]).map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -59,7 +60,7 @@ class CoursesServiceTest : BootstrapNBTest() {
         val obtainedValue = courseServices.getAll("modern").toList()
 
         val expectedValue = listOf(courses[1]).map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -70,7 +71,7 @@ class CoursesServiceTest : BootstrapNBTest() {
         val obtainedValue = courseServices.getAll("yoga_category").toList()
 
         val expectedValue = listOf(courses[2]).map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -80,7 +81,7 @@ class CoursesServiceTest : BootstrapNBTest() {
     fun `test get a particular course`() {
         val uuid = courses[0].id.toString()
         val obtainedValue = courseServices.getCourse(uuid)
-        val expectedValue = Mapper.buildCourseDetailDto(courses[0])
+        val expectedValue = CourseMapper.buildCourseDetailDto(courses[0])
 
         assertEquals(obtainedValue, expectedValue)
     }
@@ -99,7 +100,7 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         val obtainedValuePre = courseServices.getAll("").toList()
         val expectedValuePre = courses.map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValuePre, expectedValuePre)
@@ -108,7 +109,7 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         val obtainedValuePos = courseServices.getAll("").toList()
         val expectedValuePos = listOf(courses[0],courses[2]).map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValuePos, expectedValuePos)
@@ -133,7 +134,7 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         val obtainedValuePre = courseServices.getAll("").toList()
         val expectedValuePre = courses.map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValuePre, expectedValuePre)
@@ -142,7 +143,7 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         val obtainedValuePos = courseServices.getAll("").toList()
         val expectedValuePos =  listOf(courses[0], courses[2]) .map {
-            Mapper.buildCourseDto(it)
+            CourseMapper.buildCourseDto(it)
         }
 
         assertEquals(obtainedValuePos, expectedValuePos)
@@ -160,7 +161,7 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         val obtainedValue = courseServices.createCourse(courseRequest)
         val id = UUID.fromString(obtainedValue?.id!!)
-        val expectedValue = Mapper.buildCourseDto(courseRepository.findById(id).get())
+        val expectedValue = CourseMapper.buildCourseDto(courseRepository.findById(id).get())
 
         assertEquals(obtainedValue, expectedValue)
     }
@@ -216,9 +217,9 @@ class CoursesServiceTest : BootstrapNBTest() {
             totalAssignments = 1,
             totalSubscriptions = 0,
             totalIncome = 0.0,
-            mostPopularAssignment = Mapper.buildAssignmentStatsDto(assignments[1]),
-            mostProfitableAssignment = Mapper.buildAssignmentStatsDto(assignments[1]),
-            assignments = mutableSetOf(Mapper.buildAssignmentStatsDto(assignments[1]))
+            mostPopularAssignment = AssignmentMapper.buildAssignmentStatsDto(assignments[1]),
+            mostProfitableAssignment = AssignmentMapper.buildAssignmentStatsDto(assignments[1]),
+            assignments = mutableSetOf(AssignmentMapper.buildAssignmentStatsDto(assignments[1]))
         )
 
         val obtainedValue = courseServices.getCourseStats(uuid)

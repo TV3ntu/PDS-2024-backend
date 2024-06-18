@@ -2,17 +2,15 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
+import ar.edu.unsam.pds.mappers.CourseMapper
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.security.models.Principal
-import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import ar.edu.unsam.pds.services.CoursesService
-import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
-import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
@@ -61,7 +59,7 @@ class CoursesControllerTest {
 
     @Test
     fun `test get all courses - not query`() {
-        val courses = listOf(Mapper.buildCourseDto(course))
+        val courses = listOf(CourseMapper.buildCourseDto(course))
 
         `when`(courseServices.getAll("")).thenReturn(courses)
         val responseEntity = coursesController.getAll(null)
@@ -72,7 +70,7 @@ class CoursesControllerTest {
 
     @Test
     fun `test get all courses - query`() {
-        val courses = listOf(Mapper.buildCourseDto(course))
+        val courses = listOf(CourseMapper.buildCourseDto(course))
 
         `when`(courseServices.getAll("query")).thenReturn(courses)
         val responseEntity = coursesController.getAll("query")
@@ -83,7 +81,7 @@ class CoursesControllerTest {
 
     @Test
     fun `test get a particular course`() {
-        val course = Mapper.buildCourseDetailDto(course)
+        val course = CourseMapper.buildCourseDetailDto(course)
 
         `when`(courseServices.getCourse(uuid)).thenReturn(course)
 
@@ -104,7 +102,7 @@ class CoursesControllerTest {
 
     @Test
     fun `test create a course`() {
-        val course = Mapper.buildCourseDto(course)
+        val course = CourseMapper.buildCourseDto(course)
 
         val courseRequest = CourseRequestDto(
             title = "title 1",

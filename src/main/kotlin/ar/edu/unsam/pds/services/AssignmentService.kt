@@ -6,6 +6,7 @@ import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
+import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Schedule
 import ar.edu.unsam.pds.models.User
@@ -14,7 +15,6 @@ import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.ScheduleRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
-import ar.edu.unsam.pds.utils.Mapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -29,12 +29,12 @@ class AssignmentService(
 
     fun getAll(): List<AssignmentResponseDto> {
         val assignments = assignmentRepository.findAll()
-        return assignments.map { Mapper.buildAssignmentDto(it) }
+        return assignments.map { AssignmentMapper.buildAssignmentDto(it) }
     }
 
     fun getAssignment(idAssignment: String): AssignmentResponseDto {
         val assignments = findAssignmentById(idAssignment)
-        return Mapper.buildAssignmentDto(assignments)
+        return AssignmentMapper.buildAssignmentDto(assignments)
     }
 
     @Transactional
@@ -46,7 +46,7 @@ class AssignmentService(
         assignment.addSubscribedUser(user)
 
         userRepository.save(user)
-        return Mapper.subscribeResponse(idUser, idAssignment)
+        return AssignmentMapper.subscribeResponse(idUser, idAssignment)
     }
 
     @Transactional
@@ -58,7 +58,7 @@ class AssignmentService(
         assignment.removeSubscribedUser(user)
 
         userRepository.save(user)
-        return Mapper.unsubscribeResponse(idUser, idAssignment)
+        return AssignmentMapper.unsubscribeResponse(idUser, idAssignment)
     }
 
     private fun findUserById(idUser: String): User {
@@ -104,7 +104,7 @@ class AssignmentService(
         course.addAssignment(newAssignment)
         courseRepository.save(course)
 
-        return Mapper.buildAssignmentDto(newAssignment)
+        return AssignmentMapper.buildAssignmentDto(newAssignment)
     }
 
     @Transactional
