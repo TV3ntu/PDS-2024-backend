@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.utils
 
 import ar.edu.unsam.pds.dto.response.*
+import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
@@ -10,28 +11,6 @@ import ar.edu.unsam.pds.models.Schedule
 import java.time.LocalDate
 
 object Mapper {
-    fun buildUserDto(user: User): UserResponseDto {
-        return UserResponseDto(
-            name = user.name,
-            lastName = user.lastName,
-            email = user.email,
-            image = user.image,
-            id = user.id.toString(),
-            isAdmin = user.isAdmin
-        )
-    }
-
-    fun buildUserDetailDto(user: User, nextClass: SubscriptionResponseDto?): UserDetailResponseDto {
-        return UserDetailResponseDto(
-            name = user.name,
-            lastName = user.lastName,
-            email = user.email,
-            image = user.image,
-            id = user.id.toString(),
-            isAdmin = user.isAdmin,
-            nextClass = nextClass
-        )
-    }
 
     fun buildInstitutionDto(institution: Institution): InstitutionResponseDto {
         return InstitutionResponseDto(
@@ -113,14 +92,6 @@ object Mapper {
         )
     }
 
-    fun patchUser(user: User, userDetail: UserResponseDto): User {
-        userDetail.name.let { user.name = it }
-        userDetail.lastName.let { user.lastName = it }
-        userDetail.email.let { user.email = it }
-        userDetail.image.let { user.image = it }
-        return user
-    }
-
     fun subscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
         return SubscribeResponseDto(idUser, idAssignment, "Suscripción exitosa", LocalDate.now())
     }
@@ -162,7 +133,7 @@ object Mapper {
             price = assignment.price,
             schedule = buildScheduleDto(assignment.schedule),
             name = assignment.name(),
-            subscribers = assignment.subscribedUsers.map { buildUserDto(it) }.toMutableSet(),
+            subscribers = assignment.subscribedUsers.map { UserMapper.buildUserDto(it) }.toMutableSet(),
             totalIncome = assignment.totalIncome(),
             status = assignment.status()
         )

@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -69,6 +70,17 @@ class AssignmentServiceTest : BootstrapNBTest() {
             assignmentService.subscribe(
                 idUser = UUID.randomUUID().toString(),
                 idAssignment = UUID.randomUUID().toString()
+            )
+        }
+    }
+
+    @Test
+    fun `test not enough credits to subscribe to assignment`() {
+        assertThrows<ValidationException> {
+            users[1].credits = 0.0
+            assignmentService.subscribe(
+                idUser = users[1].id.toString(),
+                idAssignment = assignments[0].id.toString()
             )
         }
     }

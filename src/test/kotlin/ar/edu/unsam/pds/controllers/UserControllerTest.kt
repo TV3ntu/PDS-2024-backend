@@ -4,9 +4,10 @@ import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
+import ar.edu.unsam.pds.dto.response.UserResponseDto
+import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.services.UserService
-import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -45,7 +46,7 @@ class UserControllerTest {
 
     @Test
     fun `test get all user`() {
-        val users = listOf(Mapper.buildUserDto(user))
+        val users = listOf(UserMapper.buildUserDto(user))
 
         `when`(userService.getUserAll()).thenReturn(users)
 
@@ -62,13 +63,13 @@ class UserControllerTest {
         val nextClass: SubscriptionResponseDto? = null
 
         `when`(userService.login(userForm, request)).thenReturn(
-            Mapper.buildUserDetailDto(user, nextClass)
+            UserMapper.buildUserDetailDto(user,nextClass)
         )
 
         val responseEntity = userController.login(userForm, request)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == Mapper.buildUserDetailDto(user, nextClass))
+        assert(responseEntity.body == UserMapper.buildUserDetailDto(user,nextClass))
     }
 
     @Test
@@ -84,7 +85,7 @@ class UserControllerTest {
 
     @Test
     fun `test register a particular user`() {
-        val expectedValue = Mapper.buildUserDto(user)
+        val expectedValue = UserMapper.buildUserDto(user)
         val userRegister = RegisterFormDto(
             name = user.name,
             lastName = user.lastName,
@@ -102,7 +103,7 @@ class UserControllerTest {
 
     @Test
     fun `test get a particular user`() {
-        val user = Mapper.buildUserDetailDto(user, null)
+        val user = UserMapper.buildUserDetailDto(user, null)
 
         `when`(userService.getUserDetail(uuid)).thenReturn(user)
 
@@ -114,7 +115,7 @@ class UserControllerTest {
 
     @Test
     fun `test update a particular user`() {
-        val user = Mapper.buildUserDto(user)
+        val user = UserMapper.buildUserDto(user)
 
         `when`(userService.updateDetail(uuid, user)).thenReturn(user)
 
@@ -122,6 +123,27 @@ class UserControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == user)
+    }
+
+    @Test
+    fun `test update a particular user with less fields`() {
+        val user = UserResponseDto (
+            name = "Juan",
+            lastName = "Perez",
+            email = "",
+            image = "",
+            id = "",
+            isAdmin = false,
+
+        )
+
+        `when`(userService.updateDetail(uuid, user)).thenReturn(user)
+
+        val responseEntity = userController.updateDetail(uuid, user)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == user)
+        assert(responseEntity.body?.credits == null)
     }
 
     @Test

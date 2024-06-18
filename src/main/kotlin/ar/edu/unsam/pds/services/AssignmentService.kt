@@ -33,7 +33,7 @@ class AssignmentService(
         val assignment = findAssignmentById(idAssignment)
         val user = findUserById(idUser)
 
-        user.addAssignment(assignment)
+        user.subscribe(assignment)
         assignment.addSubscribedUser(user)
 
         userRepository.save(user)

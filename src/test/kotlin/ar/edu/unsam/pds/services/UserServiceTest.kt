@@ -7,6 +7,7 @@ import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
+import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.security.models.Principal
@@ -82,7 +83,8 @@ class UserServiceTest : BootstrapNBTest() {
             image = "",
             id = obtainedValue.id,
             isAdmin = true,
-            nextClass = null
+            nextClass = null,
+            credits = 100000.0
         )
 
         assertEquals(obtainedValue, expectedValue)
@@ -144,7 +146,8 @@ class UserServiceTest : BootstrapNBTest() {
             image = "",
             id = id,
             isAdmin = false,
-            nextClass = null
+            nextClass = null,
+            credits = 0.0
         )
 
         assertEquals(obtainedValue, expectedValue)
@@ -163,7 +166,7 @@ class UserServiceTest : BootstrapNBTest() {
     fun `get all user`() {
         val obtainedValue = userService.getUserAll().toList()
         val expectedValue = users.map {
-            Mapper.buildUserDto(it)
+            UserMapper.buildUserDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -172,7 +175,7 @@ class UserServiceTest : BootstrapNBTest() {
     @Test
     fun `test get a particular user`() {
         val obtainedValue = userService.getUserDetail(users[0].id.toString())
-        val expectedValue = Mapper.buildUserDetailDto(users[0], null)
+        val expectedValue = UserMapper.buildUserDetailDto(users[0], null)
 
         assertEquals(obtainedValue, expectedValue)
     }
@@ -187,7 +190,7 @@ class UserServiceTest : BootstrapNBTest() {
     @Test
     fun `test update a particular user`() {
         val obtainedValuePre = userService.getUserDetail(users[0].id.toString())
-        val expectedValuePre = Mapper.buildUserDetailDto(users[0], null)
+        val expectedValuePre = UserMapper.buildUserDetailDto(users[0], null)
 
         assertEquals(obtainedValuePre, expectedValuePre)
 
@@ -197,7 +200,8 @@ class UserServiceTest : BootstrapNBTest() {
             email = "adan__@email.com",
             image = "__",
             id = users[0].id.toString(),
-            isAdmin = true
+            isAdmin = true,
+            credits = 100000.0
         )
 
         userService.updateDetail(
@@ -213,7 +217,8 @@ class UserServiceTest : BootstrapNBTest() {
             image = adanUpdate.image,
             id = adanUpdate.id,
             isAdmin = adanUpdate.isAdmin,
-            nextClass = null
+            nextClass = null,
+            credits = adanUpdate.credits
         )
 
         assertEquals(obtainedValuePos, expectedValuePos)
