@@ -104,7 +104,7 @@ class AssignmentService(
         course.addAssignment(newAssignment)
         courseRepository.save(course)
 
-        return Mapper.buildAssignmentDto(newAssignment)
+        return AssignmentMapper.buildAssignmentDto(newAssignment)
     }
 
     @Transactional
