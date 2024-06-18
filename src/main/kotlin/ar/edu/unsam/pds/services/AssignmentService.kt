@@ -8,21 +8,25 @@ import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.models.Assignment
-import ar.edu.unsam.pds.models.Schedule
+import ar.edu.unsam.pds.models.Payment
 import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.models.Schedule
 import ar.edu.unsam.pds.repository.AssignmentRepository
+import ar.edu.unsam.pds.repository.PaymentRepository
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.ScheduleRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.*
 
 @Service
 class AssignmentService(
     private val assignmentRepository: AssignmentRepository,
     private val userRepository: UserRepository,
+    private val paymentRepository: PaymentRepository,
     private val scheduleRepository: ScheduleRepository,
     private val courseRepository: CourseRepository
 ) {
@@ -44,8 +48,18 @@ class AssignmentService(
 
         user.subscribe(assignment)
         assignment.addSubscribedUser(user)
+        val payment = Payment(
+            amount = assignment.price,
+            date = LocalDate.now(),
+            status = "APPROVED",
+            paymentMethod = "CREDITS",
+            user = user,
+            assignment = assignment
+        )
 
         userRepository.save(user)
+        paymentRepository.save(payment)
+
         return AssignmentMapper.subscribeResponse(idUser, idAssignment)
     }
 
