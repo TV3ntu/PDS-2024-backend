@@ -10,8 +10,9 @@ import ar.edu.unsam.pds.dto.response.UserResponseDto
 import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.mappers.AssignmentMapper
+import ar.edu.unsam.pds.mappers.CourseMapper
 import ar.edu.unsam.pds.security.models.Principal
-import ar.edu.unsam.pds.utils.Mapper
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -237,7 +238,7 @@ class UserServiceTest : BootstrapNBTest() {
 
         assertEquals(
             userService.getSubscribedCourses(users[0].id.toString()),
-            mutableListOf(Mapper.buildCourseDto(assignments[0].course))
+            mutableListOf(CourseMapper.buildCourseDto(assignments[0].course))
         )
     }
 
@@ -254,7 +255,7 @@ class UserServiceTest : BootstrapNBTest() {
 
         assertEquals(
             userService.getSubscriptions(users[0].id.toString()),
-            mutableListOf(Mapper.buildSubscriptionDto(assignments[0], institutions[0]))
+            mutableListOf(AssignmentMapper.buildSubscriptionDto(assignments[0], institutions[0]))
         )
     }
 }

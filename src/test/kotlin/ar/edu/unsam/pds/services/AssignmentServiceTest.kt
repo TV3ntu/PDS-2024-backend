@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
+import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -27,7 +28,7 @@ class AssignmentServiceTest : BootstrapNBTest() {
     fun `test all assignments`() {
         val obtainedValue = assignmentService.getAll().toList()
         val expectedValue = assignments.map {
-            Mapper.buildAssignmentDto(it)
+            AssignmentMapper.buildAssignmentDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -36,7 +37,7 @@ class AssignmentServiceTest : BootstrapNBTest() {
     @Test
     fun `test get a particular user`() {
         val obtainedValue = assignmentService.getAssignment(assignments[0].id.toString())
-        val expectedValue = Mapper.buildAssignmentDto(assignments[0])
+        val expectedValue = AssignmentMapper.buildAssignmentDto(assignments[0])
 
         assertEquals(obtainedValue, expectedValue)
     }

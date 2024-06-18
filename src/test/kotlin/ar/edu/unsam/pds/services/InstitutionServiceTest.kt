@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.mappers.InstitutionMapper
 import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -20,7 +21,7 @@ class InstitutionServiceTest : BootstrapNBTest() {
     fun `test get all institutions`() {
         val obtainedValue = institutionService.getAll("").toList()
         val expectedValue = institutions.map {
-            Mapper.buildInstitutionDto(it)
+            InstitutionMapper.buildInstitutionDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -31,7 +32,7 @@ class InstitutionServiceTest : BootstrapNBTest() {
         val obtainedValue = institutionService.getAll("Enchanted Dance").toList()
 
         val expectedValue = listOf(institutions[0]).map {
-            Mapper.buildInstitutionDto(it)
+            InstitutionMapper.buildInstitutionDto(it)
         }
 
         assertEquals(expectedValue, obtainedValue)
@@ -42,7 +43,7 @@ class InstitutionServiceTest : BootstrapNBTest() {
         val obtainedValue = institutionService.getAll("mathematics ins").toList()
 
         val expectedValue = listOf(institutions[1]).map {
-            Mapper.buildInstitutionDto(it)
+            InstitutionMapper.buildInstitutionDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -53,7 +54,7 @@ class InstitutionServiceTest : BootstrapNBTest() {
         val obtainedValue = institutionService.getAll("yoga_category").toList()
 
         val expectedValue = listOf(institutions[2]).map {
-            Mapper.buildInstitutionDto(it)
+            InstitutionMapper.buildInstitutionDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -63,7 +64,7 @@ class InstitutionServiceTest : BootstrapNBTest() {
     fun `test get a particular institution`() {
         val uuid = institutions[0].id.toString()
         val obtainedValue = institutionService.getInstitution(uuid)
-        val expectedValue = Mapper.buildInstitutionDetailDto(institutions[0])
+        val expectedValue = InstitutionMapper.buildInstitutionDetailDto(institutions[0])
 
         assertEquals(obtainedValue, expectedValue)
     }

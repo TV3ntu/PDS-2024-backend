@@ -8,11 +8,11 @@ import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
+import ar.edu.unsam.pds.mappers.CourseMapper
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.security.models.Principal
-import ar.edu.unsam.pds.utils.Mapper
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.*
@@ -25,12 +25,12 @@ class CoursesService(
 
     fun getAll(query: String): List<CourseResponseDto> {
         val courses = courseRepository.getAllBy(query)
-        return courses.map { Mapper.buildCourseDto(it) }
+        return courses.map { CourseMapper.buildCourseDto(it) }
     }
 
     fun getCourse(idCourse: String): CourseDetailResponseDto {
         val course = findCourseById(idCourse)
-        return Mapper.buildCourseDetailDto(course)
+        return CourseMapper.buildCourseDetailDto(course)
     }
 
     @Transactional
@@ -80,12 +80,12 @@ class CoursesService(
         institution.addCourse(newCourse)
         institutionRepository.save(institution)
 
-        return Mapper.buildCourseDto(newCourse)
+        return CourseMapper.buildCourseDto(newCourse)
     }
 
     fun getCourseStats(idCourse: String): CourseStatsResponseDto? {
         val course = findCourseById(idCourse)
-        return Mapper.buildCourseStatsDto(course)
+        return CourseMapper.buildCourseStatsDto(course)
 
     }
 }

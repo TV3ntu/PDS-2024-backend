@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.mappers.InstitutionMapper
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.services.InstitutionService
 import ar.edu.unsam.pds.utils.Mapper
@@ -40,7 +41,7 @@ class InstitutionControllerTest {
 
     @Test
     fun `test get all institutions - no query`() {
-        val institutions = listOf(Mapper.buildInstitutionDto(institution))
+        val institutions = listOf(InstitutionMapper.buildInstitutionDto(institution))
 
         `when`(institutionService.getAll("")).thenReturn(institutions)
 
@@ -52,7 +53,7 @@ class InstitutionControllerTest {
 
     @Test
     fun `test get all institutions - query`() {
-        val institutions = listOf(Mapper.buildInstitutionDto(institution))
+        val institutions = listOf(InstitutionMapper.buildInstitutionDto(institution))
 
         `when`(institutionService.getAll("query")).thenReturn(institutions)
 
@@ -64,7 +65,7 @@ class InstitutionControllerTest {
 
     @Test
     fun `test get a particular institution`() {
-        val institution = Mapper.buildInstitutionDetailDto(institution)
+        val institution = InstitutionMapper.buildInstitutionDetailDto(institution)
 
         `when`(institutionService.getInstitution(uuid)).thenReturn(institution)
 
