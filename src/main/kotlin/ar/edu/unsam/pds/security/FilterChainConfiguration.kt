@@ -72,6 +72,8 @@ class FilterChainConfiguration {
                 antMatcher(POST, "/api/assignments/subscribe"),
                 antMatcher(PATCH, "/api/assignments/unsubscribe"),
                 antMatcher(PATCH, "/api/users/*"),
+                antMatcher(POST, "/api/assignments"),
+                antMatcher(DELETE, "/api/assignments/*")
             ).hasRole("ADMIN")
 
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

@@ -67,5 +67,16 @@ class RestExceptionHandler {
         return BodyResponse(HttpStatus.FORBIDDEN, request, exception.message)
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = [IllegalArgumentException::class])
+    fun customHandleIllegalArgumentException(
+        exception: IllegalArgumentException,
+        request: WebRequest
+    ): ResponseEntity<BodyResponse> {
+        val status = HttpStatus.BAD_REQUEST
+        val message = "Mensaje http no legible"
+        val body = BodyResponse(status, request, message)
+        return ResponseEntity(body, status)
+    }
 
 }
