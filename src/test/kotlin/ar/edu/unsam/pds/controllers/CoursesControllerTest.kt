@@ -6,14 +6,11 @@ import ar.edu.unsam.pds.mappers.CourseMapper
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.security.models.Principal
-import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import ar.edu.unsam.pds.services.CoursesService
-import ar.edu.unsam.pds.utils.Mapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
-import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
