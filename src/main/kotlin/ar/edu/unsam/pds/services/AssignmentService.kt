@@ -5,17 +5,21 @@ import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.models.Assignment
+import ar.edu.unsam.pds.models.Payment
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.AssignmentRepository
+import ar.edu.unsam.pds.repository.PaymentRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.*
 
 @Service
 class AssignmentService(
     private val assignmentRepository: AssignmentRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val paymentRepository: PaymentRepository
 ) {
 
     fun getAll(): List<AssignmentResponseDto> {
@@ -35,8 +39,18 @@ class AssignmentService(
 
         user.subscribe(assignment)
         assignment.addSubscribedUser(user)
+        val payment = Payment(
+            amount = assignment.price,
+            date = LocalDate.now(),
+            status = "APPROVED",
+            paymentMethod = "CREDITS",
+            user = user,
+            assignment = assignment
+        )
 
         userRepository.save(user)
+        paymentRepository.save(payment)
+
         return AssignmentMapper.subscribeResponse(idUser, idAssignment)
     }
 

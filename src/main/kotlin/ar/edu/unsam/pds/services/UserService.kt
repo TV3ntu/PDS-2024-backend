@@ -61,10 +61,7 @@ class UserService(
         if (principalRepository.findUserByEmail(form.email).isPresent) {
             throw InternalServerError("El correo ya está en uso.")
         }
-
-        // Encriptar la contraseña
-        val encoder = BCryptPasswordEncoder()
-        val encryptedPassword = encoder.encode(form.password)
+        val encryptedPassword = encryptPassword(form.password)
 
         // Crear y guardar el nuevo usuario
         val newUser = User(
@@ -76,13 +73,18 @@ class UserService(
 
         // Crear y guardar el principal asociado
         val principal = Principal().apply {
-            setUsername(form.email)
-            setPassword(encryptedPassword)
+            username = form.email
+            password = encryptedPassword
             initProperties()
             user = newUser
         }
         principalRepository.save(principal)
         return UserMapper.buildUserDto(newUser)
+    }
+
+    private fun encryptPassword(password: String): String {
+        val encoder = BCryptPasswordEncoder()
+        return encoder.encode(password)
     }
 
     fun getUserAll(): List<UserResponseDto> {
