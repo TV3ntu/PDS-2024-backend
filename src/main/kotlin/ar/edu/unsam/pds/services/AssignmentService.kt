@@ -26,7 +26,7 @@ import java.util.*
 class AssignmentService(
     private val assignmentRepository: AssignmentRepository,
     private val userRepository: UserRepository,
-    private val paymentRepository: PaymentRepository
+    private val paymentRepository: PaymentRepository,
     private val scheduleRepository: ScheduleRepository,
     private val courseRepository: CourseRepository
 ) {
