@@ -28,7 +28,9 @@ class CoursesServiceTest : BootstrapNBTest() {
 
         assignmentService = AssignmentService(
             assignmentRepository = assignmentRepository,
-            userRepository = userRepository
+            userRepository = userRepository,
+            scheduleRepository = scheduleRepository,
+            courseRepository = courseRepository
         )
     }
 
