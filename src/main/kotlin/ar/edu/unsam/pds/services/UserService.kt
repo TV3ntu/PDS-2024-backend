@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
+import ar.edu.unsam.pds.dto.request.UserRequestDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
@@ -99,7 +100,7 @@ class UserService(
     }
 
     @Transactional
-    fun updateDetail(idUser: String, userDetail: UserResponseDto): UserResponseDto {
+    fun updateDetail(idUser: String, userDetail: UserRequestDto): UserResponseDto {
         val user = findUserById(idUser)
         val updatedUser = UserMapper.patchUser(user, userDetail)
         userRepository.save(updatedUser)

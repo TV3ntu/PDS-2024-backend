@@ -3,15 +3,15 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
+import ar.edu.unsam.pds.dto.request.UserRequestDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
-import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.mappers.CourseMapper
+import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.security.models.Principal
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
@@ -24,7 +24,7 @@ import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import java.util.UUID
+import java.util.*
 
 class UserServiceTest : BootstrapNBTest() {
     @Mock
@@ -196,14 +196,15 @@ class UserServiceTest : BootstrapNBTest() {
 
         assertEquals(obtainedValuePre, expectedValuePre)
 
-        val adanUpdate = UserResponseDto(
+        val adanUpdate = UserRequestDto(
             name = "Adan__",
             lastName = "AdanAdan__",
             email = "adan__@email.com",
             image = "__",
             id = users[0].id.toString(),
             isAdmin = true,
-            credits = 100000.0
+            credits = 100000.0,
+            nextClass = null
         )
 
         userService.updateDetail(
