@@ -58,9 +58,9 @@ class FilterChainConfiguration {
 //                antMatcher(POST, "/api/courses/*"),
 //                antMatcher(DELETE, "/api/courses/*"),
 //                antMatcher(DELETE, "/api/courses"),
-//                antMatcher(POST, "/api/assignments/subscribe"),
+                antMatcher(POST, "/api/assignments/subscribe"),
 //                antMatcher(POST, "/api/assignments/unsubscribe"),
-//                antMatcher(PATCH, "/api/users/*"),
+                antMatcher(PATCH, "/api/users/*"),
             ).permitAll()
 
             // ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

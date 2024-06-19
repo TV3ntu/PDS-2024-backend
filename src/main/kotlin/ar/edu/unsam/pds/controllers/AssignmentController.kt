@@ -1,10 +1,8 @@
 package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
-import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
-import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.AssignmentService
