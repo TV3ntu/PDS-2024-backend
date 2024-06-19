@@ -52,34 +52,27 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/*"),
                 antMatcher(GET, "/api/users/*/courses"),
                 antMatcher(GET, "/api/users/*/subscriptions"),
-
-                // una vez puesta la seguridad en front quitar estos de aqui abajo
-//                antMatcher(POST, "/api/courses"),
-//                antMatcher(POST, "/api/courses/*"),
-//                antMatcher(DELETE, "/api/courses/*"),
-//                antMatcher(DELETE, "/api/courses"),
-//                antMatcher(POST, "/api/assignments/subscribe"),
-//                antMatcher(POST, "/api/assignments/unsubscribe"),
-//                antMatcher(PATCH, "/api/users/*"),
             ).permitAll()
 
-            // ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            // ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(
                 antMatcher(POST, "/api/courses"),
                 antMatcher(POST, "/api/courses/*"),
                 antMatcher(DELETE, "/api/courses/*"),
                 antMatcher(DELETE, "/api/courses"),
-                antMatcher(PATCH, "/api/users/*"),
                 antMatcher(POST, "/api/assignments"),
                 antMatcher(DELETE, "/api/assignments/*"),
                 antMatcher(DELETE, "/api/institutions/*"),
             ).hasRole("ADMIN")
-            // USER Y ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+            // USER Y ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(
                 antMatcher(POST, "/api/institutions"),
                 antMatcher(POST, "/api/assignments/subscribe"),
                 antMatcher(PATCH, "/api/assignments/unsubscribe"),
+                antMatcher(PATCH, "/api/users/*"),
             ).hasAnyRole("USER", "ADMIN")
+
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(
                 PathRequest.toH2Console()

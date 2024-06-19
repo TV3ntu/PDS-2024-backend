@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
+import ar.edu.unsam.pds.dto.request.UserRequestDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
@@ -25,6 +26,8 @@ class UserControllerTest {
     private lateinit var userController: UserController
 
     private lateinit var user: User
+    private lateinit var userReq: UserRequestDto
+    private lateinit var userRes: UserResponseDto
     private lateinit var uuid: String
 
     @BeforeEach
@@ -42,6 +45,27 @@ class UserControllerTest {
         }
 
         uuid = user.id.toString()
+
+        userReq = UserRequestDto(
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email,
+            image = user.image,
+            isAdmin = true,
+            credits = 1000.0,
+            id = user.id.toString(),
+            nextClass = "nextClass"
+        )
+
+        userRes = UserResponseDto(
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email,
+            image = user.image,
+            id = user.id.toString(),
+            credits = 1000.0,
+            isAdmin = true
+        )
     }
 
     @Test
@@ -115,35 +139,23 @@ class UserControllerTest {
 
     @Test
     fun `test update a particular user`() {
-        val user = UserMapper.buildUserDto(user)
+        `when`(userService.updateDetail(uuid, userReq)).thenReturn(userRes)
 
-        `when`(userService.updateDetail(uuid, user)).thenReturn(user)
-
-        val responseEntity = userController.updateDetail(uuid, user)
+        val responseEntity = userController.updateDetail(uuid, userReq)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == user)
+        assert(responseEntity.body == userRes)
     }
 
     @Test
     fun `test update a particular user with less fields`() {
-        val user = UserResponseDto (
-            name = "Juan",
-            lastName = "Perez",
-            email = "",
-            image = "",
-            id = "",
-            isAdmin = false,
+        `when`(userService.updateDetail(uuid, userReq)).thenReturn(userRes)
 
-        )
-
-        `when`(userService.updateDetail(uuid, user)).thenReturn(user)
-
-        val responseEntity = userController.updateDetail(uuid, user)
+        val responseEntity = userController.updateDetail(uuid, userReq)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == user)
-        assert(responseEntity.body?.credits == null)
+        assert(responseEntity.body == userRes)
+        assert(responseEntity.body?.credits == 1000.0)
     }
 
     @Test
