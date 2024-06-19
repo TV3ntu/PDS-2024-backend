@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
+import ar.edu.unsam.pds.dto.request.UserRequestDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
@@ -65,7 +66,7 @@ class UserController {
     @Operation(summary = "Update a user's details")
     fun updateDetail(
         @PathVariable @UUID idUser: String,
-        @RequestBody @Valid user: UserResponseDto
+        @RequestBody @Valid user: UserRequestDto
     ): ResponseEntity<UserResponseDto> {
         val originalUser = userService.updateDetail(idUser, user)
         return ResponseEntity.ok().body(originalUser)

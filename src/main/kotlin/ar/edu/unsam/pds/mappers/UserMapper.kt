@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.mappers
 
+import ar.edu.unsam.pds.dto.request.UserRequestDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
@@ -31,7 +32,7 @@ object UserMapper {
         )
     }
 
-    fun patchUser(user: User, userDetail: UserResponseDto): User {
+    fun patchUser(user: User, userDetail: UserRequestDto): User {
         user.name = userDetail.name
         user.lastName = userDetail.lastName
         user.email = userDetail.email
