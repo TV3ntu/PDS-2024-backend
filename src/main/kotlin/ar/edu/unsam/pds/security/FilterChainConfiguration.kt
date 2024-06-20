@@ -52,6 +52,15 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/*"),
                 antMatcher(GET, "/api/users/*/courses"),
                 antMatcher(GET, "/api/users/*/subscriptions"),
+
+                // una vez puesta la seguridad en front quitar estos de aqui abajo
+//                antMatcher(POST, "/api/courses"),
+//                antMatcher(POST, "/api/courses/*"),
+//                antMatcher(DELETE, "/api/courses/*"),
+//                antMatcher(DELETE, "/api/courses"),
+//                antMatcher(POST, "/api/assignments/subscribe"),
+//                antMatcher(POST, "/api/assignments/unsubscribe"),
+//                antMatcher(PATCH, "/api/users/*"),
             ).permitAll()
 
             // ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/users")
 @CrossOrigin("*")
-class UserController {
+class   UserController {
     @Autowired
     lateinit var userService: UserService
 

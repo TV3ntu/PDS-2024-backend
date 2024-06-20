@@ -32,8 +32,8 @@ import java.util.*
 class UserService(
     private val userRepository: UserRepository,
     private val principalRepository: PrincipalRepository,
-    @Autowired
-    private val institutionService: InstitutionService
+    private val institutionService: InstitutionService,
+    private val emailService: EmailService
 
 ) : UserDetailsService {
 
@@ -103,6 +103,9 @@ class UserService(
     fun updateDetail(idUser: String, userDetail: UserRequestDto): UserResponseDto {
         val user = findUserById(idUser)
         val updatedUser = UserMapper.patchUser(user, userDetail)
+        if (user.credits < updatedUser.credits) {
+            emailService.sendCreditsLoadedEmail(user.email, updatedUser.credits, user.name)
+        }
         userRepository.save(updatedUser)
         return UserMapper.buildUserDto(user)
     }

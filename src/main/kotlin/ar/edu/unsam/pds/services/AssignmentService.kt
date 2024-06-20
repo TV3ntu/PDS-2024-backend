@@ -28,7 +28,8 @@ class AssignmentService(
     private val userRepository: UserRepository,
     private val paymentRepository: PaymentRepository,
     private val scheduleRepository: ScheduleRepository,
-    private val courseRepository: CourseRepository
+    private val courseRepository: CourseRepository,
+    private val emailService: EmailService,
 ) {
 
     fun getAll(): List<AssignmentResponseDto> {
@@ -58,7 +59,9 @@ class AssignmentService(
         )
 
         userRepository.save(user)
+        emailService.sendSubscriptionConfirmationEmail(user.email, assignment.course.title, user.name)
         paymentRepository.save(payment)
+        emailService.sendPaymentConfirmationEmail(user.email, payment.amount, user.name, payment.id.toString())
 
         return AssignmentMapper.subscribeResponse(idUser, idAssignment)
     }
