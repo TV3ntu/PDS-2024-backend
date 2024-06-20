@@ -22,7 +22,7 @@ class MyTempCorsFilter : GenericFilterBean() {
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"))
         response.setHeader("Access-Control-Allow-Credentials", "true")
         response.setHeader("Access-Control-Allow-Headers", "authorization, X-Requested-With, content-type, xsrf-token")
-        response.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE")
+        response.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PATCH, PUT, DELETE")
 
         if ("OPTIONS" == request.method) {
             response.status = HttpServletResponse.SC_OK
