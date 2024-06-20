@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.services
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.context.annotation.Profile
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
@@ -19,7 +20,7 @@ class EmailService(
         val message = mailSender.createMimeMessage()
         val helper = MimeMessageHelper(message, true)
 
-        helper.setTo("venturini.ta@gmail.com")
+        helper.setTo(to)
         helper.setSubject(subject)
         helper.setText(htmlContent, true)
 
@@ -75,4 +76,14 @@ class EmailService(
         val htmlContent = replacePlaceholders(template, placeholders)
         sendEmail(to, subject, htmlContent)
     }
+}
+
+
+@Service
+@ConditionalOnProperty(name = ["email.enabled"], havingValue = "false", matchIfMissing = true)
+class NoOpEmailService(mailSender: JavaMailSender) : EmailService(mailSender) {
+    override fun sendEmail(to: String, subject: String, body: String) {}
+    override fun sendPaymentConfirmationEmail(to: String, amount: Double, userName: String, transactionId: String) {}
+    override fun sendSubscriptionConfirmationEmail(to: String, courseName: String, userName: String) {}
+    override fun sendCreditsLoadedEmail(to: String, credits: Double, userName: String) {}
 }

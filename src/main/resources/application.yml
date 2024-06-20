@@ -49,4 +49,4 @@ spring:
       mode: always
 
 email:
-  enabled: true  # Habilita el servicio de correo por defecto
+  enabled: false  # Deshabilita el servicio de correo por defecto
