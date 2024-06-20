@@ -12,8 +12,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
+@ActiveProfiles("test")
 @DataJpaTest
 class CoursesServiceTest : BootstrapNBTest() {
     private lateinit var courseServices: CoursesService
@@ -31,7 +33,8 @@ class CoursesServiceTest : BootstrapNBTest() {
             userRepository = userRepository,
             scheduleRepository = scheduleRepository,
             courseRepository = courseRepository,
-            paymentRepository = paymentRepository
+            paymentRepository = paymentRepository,
+            emailService = emailService
         )
     }
 

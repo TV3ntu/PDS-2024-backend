@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.services
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
@@ -8,6 +9,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 @Service
+@ConditionalOnProperty(name = ["email.enabled"], havingValue = "true", matchIfMissing = true)
 class EmailService(
     private val mailSender: JavaMailSender
 ) {
@@ -63,7 +65,7 @@ class EmailService(
     }
 
     @Async("taskExecutor")
-    fun sendCreditsLoadedEmail(to: String, credits: Int, userName : String) {
+    fun sendCreditsLoadedEmail(to: String, credits: Double, userName : String) {
         val subject = "Credits Loaded"
         val template = loadTemplate("src/main/resources/templates/credits_loaded.html")
         val placeholders = mapOf(

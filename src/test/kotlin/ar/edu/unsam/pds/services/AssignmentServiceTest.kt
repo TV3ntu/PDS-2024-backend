@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.util.*
 
+@ActiveProfiles("test")
 class AssignmentServiceTest : BootstrapNBTest() {
     private lateinit var assignmentService: AssignmentService
 
@@ -22,7 +24,8 @@ class AssignmentServiceTest : BootstrapNBTest() {
             userRepository = userRepository,
             scheduleRepository = scheduleRepository,
             courseRepository = courseRepository,
-            paymentRepository = paymentRepository
+            paymentRepository = paymentRepository,
+            emailService = emailService
         )
     }
 

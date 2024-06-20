@@ -47,3 +47,6 @@ spring:
   sql:
     init:
       mode: always
+
+email:
+  enabled: true  # Habilita el servicio de correo por defecto

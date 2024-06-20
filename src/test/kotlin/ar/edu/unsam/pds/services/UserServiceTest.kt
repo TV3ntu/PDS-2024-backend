@@ -24,8 +24,10 @@ import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.`when`
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.test.context.ActiveProfiles
 import java.util.UUID
 
+@ActiveProfiles("test")
 class UserServiceTest : BootstrapNBTest() {
     @Mock
     private lateinit var mockRequest: HttpServletRequest
@@ -43,7 +45,8 @@ class UserServiceTest : BootstrapNBTest() {
         userService = UserService(
             userRepository = userRepository,
             principalRepository = principalRepository,
-            institutionService = institutionService
+            institutionService = institutionService,
+            emailService = emailService
         )
     }
 

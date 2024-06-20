@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 
 @OpenAPIDefinition
 @EnableJpaAuditing
-@SpringBootApplication(scanBasePackages = ["ar.edu.unsam.pds"])
+@SpringBootApplication
 class ProjectApplication
 
 fun main(args: Array<String>) {
