@@ -95,7 +95,7 @@ class AssignmentService(
     fun createAssignment(assignment: AssignmentRequestDto): AssignmentResponseDto {
         val courseId = UUID.fromString(assignment.idCourse)
         val course = courseRepository.findById(courseId).orElseThrow {
-            NotFoundException("course no encontrado")
+            NotFoundException("Curso no encontrado")
         }
 
 
