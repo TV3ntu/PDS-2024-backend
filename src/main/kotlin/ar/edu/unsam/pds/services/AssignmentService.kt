@@ -19,7 +19,9 @@ import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -70,12 +72,23 @@ class AssignmentService(
     fun unsubscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
         val assignment = findAssignmentById(idAssignment)
         val user = findUserById(idUser)
+        val lastPayment = paymentRepository.findLastPaymentByUserIdAndAssignmentId(user.id, assignment.id)
 
+        //if (lastPayment != null) {
+        //    if (lessThanTwoHours(lastPayment)) {
+        //        user.credits += lastPayment.amount
+        //    }
+        //}
         user.removeAssignment(assignment)
         assignment.removeSubscribedUser(user)
-
         userRepository.save(user)
         return AssignmentMapper.unsubscribeResponse(idUser, idAssignment)
+    }
+
+    fun lessThanTwoHours(lastPayment: Payment): Boolean {
+        val now = LocalDateTime.now()
+        val hoursDifference = Duration.between(lastPayment.date, now).toHours()
+        return hoursDifference < 2
     }
 
     private fun findUserById(idUser: String): User {

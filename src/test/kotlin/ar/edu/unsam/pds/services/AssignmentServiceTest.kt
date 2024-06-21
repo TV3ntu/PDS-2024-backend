@@ -5,7 +5,9 @@ import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
+import ar.edu.unsam.pds.models.Payment
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -127,5 +129,39 @@ class AssignmentServiceTest : BootstrapNBTest() {
                 idAssignment = UUID.randomUUID().toString()
             )
         }
+    }
+
+    @Test
+    fun `test unsubscribe to assignment more than two hours`() {
+        val creditsBefore = users[0].credits
+        assignmentService.subscribe(
+            idUser = users[0].id.toString(),
+            idAssignment = assignments[0].id.toString()
+        )
+
+        val payment = Payment(
+            amount = assignments[0].price,
+            date = LocalDate.now().minusDays(1),
+            status = "APPROVED",
+            paymentMethod = "CREDITS",
+            user = users[0],
+            assignment = assignments[0]
+        )
+        paymentRepository.save(payment)
+
+        val obtainedValue = assignmentService.unsubscribe(
+            idUser = users[0].id.toString(),
+            idAssignment = assignments[0].id.toString()
+        )
+        val expectedValue = SubscribeResponseDto(
+            idUser = users[0].id.toString(),
+            idAssignment = assignments[0].id.toString(),
+            message = "Desuscripción exitosa",
+            date = LocalDate.now()
+        )
+        val creditsAfter = users[0].credits
+
+        assertEquals(obtainedValue, expectedValue)
+        assertTrue(creditsAfter < creditsBefore)
     }
 }
