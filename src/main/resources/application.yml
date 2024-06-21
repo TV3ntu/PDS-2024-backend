@@ -25,7 +25,7 @@ spring:
     serialization:
       fail-on-empty-beans: false
     deserialization:
-      fail-on-unknown-properties: true
+      fail-on-unknown-properties: false
   session:
     store-type: jdbc
     jdbc.initialize-schema: always
