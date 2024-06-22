@@ -27,6 +27,11 @@ class CoursesService(
         return courses.map { CourseMapper.buildCourseDto(it) }
     }
 
+    fun getAllByPrincipal(query: String, principal: Principal): List<CourseResponseDto> {
+        val courses = courseRepository.getAllByPrincipal(query, principal)
+        return courses.map { CourseMapper.buildCourseDto(it) }
+    }
+
     fun getCourse(idCourse: String): CourseDetailResponseDto {
         val course = findCourseById(idCourse)
         return CourseMapper.buildCourseDetailDto(course)

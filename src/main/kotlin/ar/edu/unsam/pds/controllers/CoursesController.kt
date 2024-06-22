@@ -28,6 +28,15 @@ class CoursesController {
         return ResponseEntity.ok(courseServices.getAll(query ?: ""))
     }
 
+    @GetMapping("admin")
+    @Operation(summary = "Get all courses")
+    fun getAllByPrincipal(
+        @RequestParam(required = false) query: String?,
+        @AuthenticationPrincipal principal: Principal
+    ): ResponseEntity<List<CourseResponseDto>> {
+        return ResponseEntity.ok(courseServices.getAllByPrincipal(query ?: "", principal))
+    }
+
     @DeleteMapping("")
     @Operation(summary = "Delete multiple courses by ids")
     fun deleteMultipleCourses(
