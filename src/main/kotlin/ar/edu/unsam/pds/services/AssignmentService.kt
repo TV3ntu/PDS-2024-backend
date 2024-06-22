@@ -95,6 +95,11 @@ class AssignmentService(
             NotFoundException("Curso no encontrado")
         }
 
+        if(assignment.schedule.startTime.isAfter(assignment.schedule.endTime)) throw ValidationException("La hora de inicio no puede ser posterior a la hora de fin")
+
+        if(assignment.schedule.startDate.isBefore(LocalDate.now())) throw ValidationException("La fecha de inicio no puede ser anterior a la fecha actual")
+
+        if (assignment.schedule.startDate.isAfter(assignment.schedule.endDate)) throw ValidationException("La fecha de inicio no puede ser posterior a la fecha de fin")
 
         val newSchedule = Schedule(
             days = assignment.schedule.days,
