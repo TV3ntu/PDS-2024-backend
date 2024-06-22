@@ -10,6 +10,8 @@ server:
     enabled: true
 
 spring:
+  profiles:
+    active: dev # Perfil por defecto
   application:
     name: PDS-2024-backend
   thymeleaf:
@@ -23,10 +25,44 @@ spring:
     serialization:
       fail-on-empty-beans: false
     deserialization:
-      fail-on-unknown-properties: true
+      fail-on-unknown-properties: false
   session:
     store-type: jdbc
     jdbc.initialize-schema: always
+
+email:
+  enabled: false  # Deshabilita el servicio de correo por defecto
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://45.152.46.1:3306/u739403516_weekbook
+    username: u739403516_weekbook_admin
+    password: +QZlK4>iL
+  jpa:
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+  sql:
+    init:
+      mode: always
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
   h2:
     console:
       enabled: true
@@ -47,6 +83,3 @@ spring:
   sql:
     init:
       mode: always
-
-email:
-  enabled: false  # Deshabilita el servicio de correo por defecto
