@@ -166,7 +166,8 @@ class UserControllerTest {
                 title = "title",
                 description = "description",
                 category = "category",
-                image = "image"
+                image = "image",
+                averageRating = 0.0
             )
         )
 
