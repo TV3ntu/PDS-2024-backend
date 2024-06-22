@@ -48,7 +48,7 @@ class AssignmentController : UUIDValid() {
         return ResponseEntity.ok(assignmentService.subscribe(idUser, idAssignment))
     }
 
-    @PostMapping("/unsubscribe")
+    @PatchMapping("/unsubscribe")
     @Operation(summary = "A user unsubscribes to a assignment")
     fun unsubscribeToAssignment(
         @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto

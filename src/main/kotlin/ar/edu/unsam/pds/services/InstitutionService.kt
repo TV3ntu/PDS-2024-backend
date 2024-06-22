@@ -44,15 +44,7 @@ class InstitutionService(
 
     @Transactional
     fun createInstitution(institution: InstitutionRequestDto, principal: Principal): InstitutionResponseDto {
-        val principalUser = principalRepository.findById(principal.id).orElseThrow {
-            NotFoundException("No se pudo crear la institucion")
-        }
-
-        if (principalUser.user == null) {
-            throw NotFoundException("No se pudo crear la institucion")
-        }
-
-        principalUser.user!!.isAdmin = true
+        principal.user!!.isAdmin = true
 
         val newInstitution = Institution(
             name = institution.name,
@@ -60,10 +52,10 @@ class InstitutionService(
             category = institution.category,
             image = institution.image
         ).apply {
-            addAdmin(principalUser.user!!)
+            addAdmin(principal.user!!)
         }
 
-        principalRepository.save(principalUser)
+        principalRepository.save(principal)
         institutionRepository.save(newInstitution)
 
         return InstitutionMapper.buildInstitutionDto(newInstitution)

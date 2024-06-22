@@ -7,6 +7,7 @@ import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.CoursesService
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -51,7 +52,7 @@ class CoursesController : UUIDValid() {
     @PostMapping("")
     @Operation(summary = "Create a course")
     fun createCourse(
-        @RequestBody course: CourseRequestDto
+        @RequestBody @Valid course: CourseRequestDto
     ): ResponseEntity<CourseResponseDto> {
         return ResponseEntity.ok(courseServices.createCourse(course))
     }

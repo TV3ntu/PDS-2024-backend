@@ -64,8 +64,8 @@ class CoursesService(
 
     @Transactional
     fun createCourse(course: CourseRequestDto): CourseResponseDto? {
-        val insitutionId = UUID.fromString(course.institutionId)
-        val institution = institutionRepository.findById(insitutionId).orElseThrow {
+        val institutionId = UUID.fromString(course.institutionId)
+        val institution = institutionRepository.findById(institutionId).orElseThrow {
             NotFoundException("Institución no encontrada para el uuid suministrado")
         }
 
