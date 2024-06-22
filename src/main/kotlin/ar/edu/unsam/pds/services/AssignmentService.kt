@@ -98,7 +98,6 @@ class AssignmentService(
             NotFoundException("Curso no encontrado para el uuid suministrado")
         }
 
-
         val newSchedule = Schedule(
             days = assignment.schedule.days,
             startTime = assignment.schedule.startTime,
