@@ -134,4 +134,13 @@ class UserService(
     private fun orderSubscriptionsByDate(subscriptions: List<SubscriptionResponseDto>): List<SubscriptionResponseDto> {
         return subscriptions.sortedBy { it.date }
     }
+
+    @Transactional
+    fun deleteAccount(principal: Principal, request: HttpServletRequest) {
+        val hasInscriptions = userRepository.hasInscriptions(principal.user!!.id)
+        if (hasInscriptions) throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
+        request.logout()
+        userRepository.delete(principal.user!!)
+        principalRepository.delete(principal)
+    }
 }
