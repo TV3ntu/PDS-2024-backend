@@ -72,9 +72,10 @@ class AssignmentControllerTest {
 
     @Test
     fun `test assignmentItem`() {
-        `when`(assignmentService.getAssignment("123")).thenReturn(assignment)
+        val uuid = UUID.randomUUID().toString()
+        `when`(assignmentService.getAssignment(uuid)).thenReturn(assignment)
 
-        val responseEntity = assignmentController.getAssignment("123")
+        val responseEntity = assignmentController.getAssignment(uuid)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == assignment)
@@ -83,16 +84,16 @@ class AssignmentControllerTest {
     @Test
     fun `test subscribe to assignment`() {
         val response = SubscribeResponseDto(
-            idUser = subscribeRequest.idUser,
-            idAssignment = subscribeRequest.idAssignment,
+            idUser = subscribeRequest.idUser!!,
+            idAssignment = subscribeRequest.idAssignment!!,
             message = "subscribe",
             date = LocalDate.now()
         )
 
         `when`(
             assignmentService.subscribe(
-                idUser = subscribeRequest.idUser,
-                idAssignment = subscribeRequest.idAssignment
+                idUser = subscribeRequest.idUser!!,
+                idAssignment = subscribeRequest.idAssignment!!
             )
         ).thenReturn(response)
 
@@ -105,16 +106,16 @@ class AssignmentControllerTest {
     @Test
     fun `test unsubscribe to assignment`() {
         val response = SubscribeResponseDto(
-            idUser = subscribeRequest.idUser,
-            idAssignment = subscribeRequest.idAssignment,
+            idUser = subscribeRequest.idUser!!,
+            idAssignment = subscribeRequest.idAssignment!!,
             message = "unsubscribe",
             date = LocalDate.now()
         )
 
         `when`(
             assignmentService.unsubscribe(
-                idUser = subscribeRequest.idUser,
-                idAssignment = subscribeRequest.idAssignment
+                idUser = subscribeRequest.idUser!!,
+                idAssignment = subscribeRequest.idAssignment!!
             )
         ).thenReturn(response)
 

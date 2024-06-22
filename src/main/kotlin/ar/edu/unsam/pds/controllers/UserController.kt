@@ -11,7 +11,6 @@ import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
-import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -19,9 +18,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/users")
 @CrossOrigin("*")
-class   UserController {
-    @Autowired
-    lateinit var userService: UserService
+class UserController : UUIDValid() {
+    @Autowired lateinit var userService: UserService
 
     @GetMapping("")
     @Operation(summary = "Get all users")
@@ -57,17 +55,19 @@ class   UserController {
     @GetMapping("/{idUser}")
     @Operation(summary = "Get user id")
     fun userItem(
-        @PathVariable @UUID idUser: String
+        @PathVariable idUser: String
     ): ResponseEntity<UserDetailResponseDto> {
+        this.validatedUUID(idUser)
         return ResponseEntity.ok(userService.getUserDetail(idUser))
     }
 
     @PatchMapping("/{idUser}")
     @Operation(summary = "Update a user's details")
     fun updateDetail(
-        @PathVariable @UUID idUser: String,
+        @PathVariable idUser: String,
         @RequestBody @Valid user: UserRequestDto
     ): ResponseEntity<UserResponseDto> {
+        this.validatedUUID(idUser)
         val originalUser = userService.updateDetail(idUser, user)
         return ResponseEntity.ok().body(originalUser)
     }
@@ -75,16 +75,18 @@ class   UserController {
     @GetMapping("/{idUser}/courses")
     @Operation(summary = "Get the user's subscribed courses")
     fun getSubscribedCourses(
-        @PathVariable @UUID idUser: String
+        @PathVariable idUser: String
     ): ResponseEntity<List<CourseResponseDto>> {
+        this.validatedUUID(idUser)
         return ResponseEntity.ok(userService.getSubscribedCourses(idUser))
     }
 
     @GetMapping("/{idUser}/subscriptions")
     @Operation(summary = "Get the user's subscriptions")
     fun getSubscriptions(
-        @PathVariable @UUID idUser: String
+        @PathVariable idUser: String
     ): ResponseEntity<List<SubscriptionResponseDto>> {
+        this.validatedUUID(idUser)
         return ResponseEntity.ok(userService.getSubscriptions(idUser))
     }
 }

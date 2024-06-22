@@ -18,7 +18,6 @@ import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -34,7 +33,6 @@ class UserService(
     private val principalRepository: PrincipalRepository,
     private val institutionService: InstitutionService,
     private val emailService: EmailService
-
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
@@ -118,7 +116,7 @@ class UserService(
     private fun findUserById(idUser: String): User {
         val uuid = UUID.fromString(idUser)
         return userRepository.findById(uuid).orElseThrow {
-            NotFoundException("Usuario no encontrado")
+            NotFoundException("Usuario no encontrado para el uuid suministrado")
         }
     }
 

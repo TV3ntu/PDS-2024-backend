@@ -160,6 +160,7 @@ class UserControllerTest {
 
     @Test
     fun `test get subscribed courses`() {
+        val uuid = UUID.randomUUID().toString()
         val subscribedCourses = listOf(
             CourseResponseDto(
                 id = "123",
@@ -170,9 +171,9 @@ class UserControllerTest {
             )
         )
 
-        `when`(userService.getSubscribedCourses("123")).thenReturn(subscribedCourses)
+        `when`(userService.getSubscribedCourses(uuid)).thenReturn(subscribedCourses)
 
-        val responseEntity = userController.getSubscribedCourses("123")
+        val responseEntity = userController.getSubscribedCourses(uuid)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == subscribedCourses)
@@ -180,6 +181,7 @@ class UserControllerTest {
 
     @Test
     fun `test get subscribed`() {
+        val uuid = UUID.randomUUID().toString()
         val subscriptions = listOf(
             SubscriptionResponseDto(
                 institutionName = "institutionName",
@@ -192,9 +194,9 @@ class UserControllerTest {
             )
         )
 
-        `when`(userService.getSubscriptions("123")).thenReturn(subscriptions)
+        `when`(userService.getSubscriptions(uuid)).thenReturn(subscriptions)
 
-        val responseEntity = userController.getSubscriptions("123")
+        val responseEntity = userController.getSubscriptions(uuid)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == subscriptions)
