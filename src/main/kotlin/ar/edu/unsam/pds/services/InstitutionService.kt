@@ -13,12 +13,14 @@ import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
 class InstitutionService(
     private val institutionRepository: InstitutionRepository,
-    private val principalRepository: PrincipalRepository
+    private val principalRepository: PrincipalRepository,
+    private val imageService: StorageService
 ) {
 
     fun getAll(query: String): List<InstitutionResponseDto> {
@@ -43,16 +45,18 @@ class InstitutionService(
     }
 
     @Transactional
-    fun createInstitution(institution: InstitutionRequestDto, principal: Principal): InstitutionResponseDto {
+    fun createInstitution(institution: InstitutionRequestDto, principal: Principal, file: MultipartFile): InstitutionResponseDto {
         val principalUser = principalRepository.findById(principal.id).orElseThrow { NotFoundException("No se pudo crear la institucion") }
         if (principalUser.user == null) throw NotFoundException("No se pudo crear la institucion")
         principalUser.user!!.isAdmin = true
+
+        val imageName = imageService.publicSave(null, institution.image, file)
 
         val newInstitution = Institution(
             name = institution.name,
             description = institution.description,
             category = institution.category,
-            image = institution.image
+            image = imageName
         ).apply {
             addAdmin(principalUser.user!!)
         }

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var userRepository: UserRepository
-    private val urlBase = "https://rafaeljosecalderon.github.io/PDS-2024-images/img"
+    private val urlBase = "http://localhost:8080/media/public"
 
     override fun doAfterPropertiesSet() {
         institutionRepository.save(
