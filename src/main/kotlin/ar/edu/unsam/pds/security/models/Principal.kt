@@ -31,7 +31,7 @@ class Principal : UserDetails {
     fun setUser(user: User) { this.user = user }
 
     fun getUser(): User {
-        if (user == null ) {
+        if (user == null) {
             throw InternalServerError("Error interno, principal carece de usuario")
         }
 

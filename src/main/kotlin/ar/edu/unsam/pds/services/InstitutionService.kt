@@ -44,7 +44,7 @@ class InstitutionService(
 
     @Transactional
     fun createInstitution(institution: InstitutionRequestDto, principal: Principal): InstitutionResponseDto {
-        principal.user!!.isAdmin = true
+        principal.getUser().isAdmin = true
 
         val newInstitution = Institution(
             name = institution.name,
@@ -52,7 +52,7 @@ class InstitutionService(
             category = institution.category,
             image = institution.image
         ).apply {
-            addAdmin(principal.user!!)
+            addAdmin(principal.getUser())
         }
 
         principalRepository.save(principal)

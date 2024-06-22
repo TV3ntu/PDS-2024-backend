@@ -49,7 +49,7 @@ class UserService(
         }
 
         val principal = (request.userPrincipal as Authentication).principal as Principal
-        val principalUser = principal.user!!
+        val principalUser = principal.getUser()
         val nextClass = getSubscriptions(principalUser.id.toString()).firstOrNull()
 
         return UserMapper.buildUserDetailDto(principalUser,nextClass)
