@@ -14,8 +14,8 @@ data class AssignmentRequestDto(
         message = "Course ID must be a valid UUID"
     )
     val idCourse: String,
-    @field: Min(message = "Minimo deberia ser 1 clase", value=1)
-    @field: Max(message = "Maximo deberia haber 10000 clases", value=10000)
+    @field: Min(message = "Mínimo deberia tener 1 alumno", value=1)
+    @field: Max(message = "Máximo deberia haber 10000 alumnos", value=10000)
     @field: NotNull(message = "Course ID cannot be null")
     val quotas: Int,
     @field: Min(message = "Minimo deberia ser 1 peso", value=1)
