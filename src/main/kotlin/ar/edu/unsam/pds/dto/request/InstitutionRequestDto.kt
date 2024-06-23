@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.dto.request
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
+import org.springframework.web.multipart.MultipartFile
 
 data class InstitutionRequestDto(
     @field: NotBlank(message = "El nombre no puede estar vacío")
@@ -20,8 +21,6 @@ data class InstitutionRequestDto(
     @field: Size(max = 250, message = "El nombre debe tener como máximo 250 caracteres")
     val category: String,
 
-    @field: NotBlank(message = "La URL de la imagen no puede estar vacía")
-    @field: NotNull(message = "La URL de la imagen no puede ser nulo")
-    @field: Size(max = 250, message = "El nombre debe tener como máximo 250 caracteres")
-    val image: String
+    @field: NotNull(message = "El archivo no puede estar vacio")
+    val file: MultipartFile
 )

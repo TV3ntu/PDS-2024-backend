@@ -43,11 +43,10 @@ class InstitutionController {
     @PostMapping(value = [""], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "Create a institution")
     fun createInstitution(
-        @RequestPart(required = false) file: MultipartFile,
-        @RequestBody @Valid institution: InstitutionRequestDto,
+        @ModelAttribute @Valid institution: InstitutionRequestDto,
         @AuthenticationPrincipal principal: Principal
     ): ResponseEntity<InstitutionResponseDto> {
-        return ResponseEntity.ok(institutionService.createInstitution(institution, principal, file))
+        return ResponseEntity.ok(institutionService.createInstitution(institution, principal))
     }
 
     @DeleteMapping("{idInstitution}")
