@@ -1,119 +1,74 @@
 package ar.edu.unsam.pds.services
 
-
-
 import ar.edu.unsam.pds.exceptions.InternalServerError
+import ar.edu.unsam.pds.exceptions.ValidationException
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 @Service
 class StorageService {
+
+    private var baseUrl = "http://localhost:8080/media"
     private val basePath: Path = Path.of("media").toAbsolutePath()
     private val privatePath: Path = Path.of("media/private").toAbsolutePath()
     private val publicPath: Path = Path.of("media/public").toAbsolutePath()
 
-    private fun delete(path: Path?) {
-        try {
-            this.deleteIfExists(path)
-        } catch (ex: IOException) {
-            throw InternalServerError("Storage Service Error")
+    init {
+        // Crear directorios si no existen
+        if (!Files.exists(basePath)) {
+            Files.createDirectories(basePath)
+        }
+        if (!Files.exists(privatePath)) {
+            Files.createDirectories(privatePath)
+        }
+        if (!Files.exists(publicPath)) {
+            Files.createDirectories(publicPath)
         }
     }
 
-    private fun save(oldPath: Path?, newPath: Path?, file: MultipartFile?): Path {
-        val safeName: Path
-        try {
-            if (newPath == null || file == null) {
-                throw IOException()
-            }
+    //public path
+    fun deletePublic(imageName: String) =  deleteImage(publicPath, imageName)
+    fun savePublic(file: MultipartFile) = saveImage(publicPath, file)
+    fun updatePublic(oldImageName: String, newImageFile: MultipartFile) = updateImage(publicPath, oldImageName, newImageFile)
 
-            if (oldPath != null && newPath != oldPath) {
-                this.deleteIfExists(oldPath)
-            }
+    //private path
+    fun deletePrivate(imageName: String)=  deleteImage(privatePath, imageName)
+    fun savePrivate(file: MultipartFile) = saveImage(privatePath, file)
+    fun updatePrivate(oldImageName: String, newImageFile: MultipartFile) = updateImage(privatePath, oldImageName, newImageFile)
 
-            safeName = safeName(newPath)
-            file.transferTo(safeName)
 
-            return safeName
-        } catch (ex: IOException) {
-            throw InternalServerError("Storage Service Error")
+    // Eliminar imagen
+    private fun deleteImage(directory: Path, imageName: String) {
+        val imagePath = directory.resolve(imageName)
+        if (Files.exists(imagePath)) {
+            Files.delete(imagePath)
+        } else {
+            throw InternalServerError("la imagen no existe")
         }
     }
 
-    // *****************************************************************************************************************
-    fun privateDelete(name: String?) {
-        val name_ = this.getFileName(privatePath, name)
-        this.delete(name_)
+    // Guardar imagen en el directorio especificado (public/private)
+    private fun saveImage(directory: Path, file: MultipartFile?): String {
+
+        if(file == null) throw ValidationException("la imagen es requerida")
+
+        val imageName = "${System.currentTimeMillis()}_${file.originalFilename}"
+        val destFile = directory.resolve(imageName).toFile()
+        file.transferTo(destFile)
+        return "${baseUrl}/${directory.fileName}/$imageName"
     }
 
-    fun privateSave(oldName: String?, newName: String?, file: MultipartFile?): String {
-        val oldName_ = this.getFileName(privatePath, oldName)
-        val newName_ = this.getFileName(privatePath, newName)
+    // Actualizar imagen
+    private fun updateImage(directory: Path, oldImageName: String, newImageFile: MultipartFile?): String {
 
-        return this.relativeze(this.save(oldName_, newName_, file))
+        if(newImageFile == null) throw ValidationException("la imagen es requerida")
+
+        deleteImage(directory, oldImageName)
+        return saveImage(directory, newImageFile)
     }
 
-    fun publicDelete(name: String?) {
-        val name_ = this.getFileName(publicPath, name)
-        this.delete(name_)
-    }
-
-    fun publicSave(oldName: String?, newName: String?, file: MultipartFile?): String {
-        val oldName_ = this.getFileName(publicPath, oldName)
-        val newName_ = this.getFileName(publicPath, newName)
-
-        return this.relativeze(this.save(oldName_, newName_, file))
-    }
-
-    // *****************************************************************************************************************
-    //##################################################################################################################
-    private fun getFileName(path: Path, name: String?): Path? {
-        return if ((name != null)) path.resolve(Path.of(name).fileName) else null
-    }
-
-    private fun relativeze(path: Path): String {
-        return basePath.relativize(path).toString()
-    }
-
-    @Throws(IOException::class)
-    private fun deleteIfExists(path: Path?) {
-        if (path != null && Files.isRegularFile(path)) Files.deleteIfExists(path)
-    }
-
-    private fun changePrefix(path: Path): Path {
-        val name = path.fileName.toString()
-        val random = Math.random().toString().substring(2, 10) + "_"
-
-        return path.parent.resolve(random + name)
-    }
-
-    @Throws(IOException::class)
-    private fun safeName(path: Path): Path {
-        var attempts = 0
-        var filePath = path
-
-        while (Files.exists(filePath) && attempts < 11) {
-            attempts = attempts + 1
-            filePath = changePrefix(filePath)
-        }
-
-        if (attempts == 11) throw IOException()
-
-        return filePath
-    }
-
-    companion object {
-        //##################################################################################################################
-        fun readFile(FILE_NAME: String?): String {
-            try {
-                val path = Path.of(FILE_NAME).toAbsolutePath()
-                return Files.readString(path)
-            } catch (e: IOException) {
-                throw RuntimeException("oops, there is a problem with the file!!!")
-            }
-        }
-    }
 }
