@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.mappers.InstitutionMapper
+import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,7 +14,7 @@ class InstitutionServiceTest : BootstrapNBTest() {
 
     @BeforeEach
     fun setUpInstitutionServiceTest() {
-        institutionService = InstitutionService(institutionRepository, principalRepository)
+        institutionService = InstitutionService(institutionRepository, principalRepository,userRepository)
     }
 
     @Test
