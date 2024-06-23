@@ -25,6 +25,9 @@ class User(
     )
     val assignmentsList = mutableSetOf<Assignment>()
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val reviews= mutableSetOf<Review>()
+
     fun subscribedCourses(): Set<Course> {
         return assignmentsList.map { it.course }.toSet()
     }

@@ -52,15 +52,6 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/*"),
                 antMatcher(GET, "/api/users/*/courses"),
                 antMatcher(GET, "/api/users/*/subscriptions"),
-
-                // una vez puesta la seguridad en front quitar estos de aqui abajo
-//                antMatcher(POST, "/api/courses"),
-//                antMatcher(POST, "/api/courses/*"),
-//                antMatcher(DELETE, "/api/courses/*"),
-//                antMatcher(DELETE, "/api/courses"),
-//                antMatcher(POST, "/api/assignments/subscribe"),
-//                antMatcher(POST, "/api/assignments/unsubscribe"),
-//                antMatcher(PATCH, "/api/users/*"),
             ).permitAll()
 
             // ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -74,6 +65,11 @@ class FilterChainConfiguration {
                 antMatcher(DELETE, "/api/institutions/*"),
             ).hasRole("ADMIN")
 
+            // USER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            .requestMatchers(
+                antMatcher(DELETE, "/api/users"),
+            ).hasRole("USER")
+
             // USER Y ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(
                 antMatcher(POST, "/api/institutions"),
@@ -81,6 +77,7 @@ class FilterChainConfiguration {
                 antMatcher(PATCH, "/api/assignments/unsubscribe"),
                 antMatcher(PATCH, "/api/users/*"),
             ).hasAnyRole("USER", "ADMIN")
+
 
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(

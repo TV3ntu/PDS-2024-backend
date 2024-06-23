@@ -81,22 +81,28 @@ class AssignmentService(
     private fun findUserById(idUser: String): User {
         val uuid = UUID.fromString(idUser)
         return userRepository.findById(uuid).orElseThrow {
-            NotFoundException("Usuario no encontrado para el uuid suministrado")
+            NotFoundException("Usuario no encontrado")
         }
     }
 
     private fun findAssignmentById(idAssignment: String): Assignment {
         val uuid = UUID.fromString(idAssignment)
         return assignmentRepository.findById(uuid).orElseThrow {
-            NotFoundException("Clase no encontrada para el uuid suministrado")
+            NotFoundException("Clase no encontrada")
         }
     }
 
     fun createAssignment(assignment: AssignmentRequestDto): AssignmentResponseDto {
         val courseId = UUID.fromString(assignment.idCourse)
         val course = courseRepository.findById(courseId).orElseThrow {
-            NotFoundException("Curso no encontrado para el uuid suministrado")
+            NotFoundException("Curso no encontrado")
         }
+
+        if(assignment.schedule.startTime.isAfter(assignment.schedule.endTime)) throw ValidationException("La hora de inicio no puede ser posterior a la hora de fin")
+
+        if(assignment.schedule.startDate.isBefore(LocalDate.now())) throw ValidationException("La fecha de inicio no puede ser anterior a la fecha actual")
+
+        if (assignment.schedule.startDate.isAfter(assignment.schedule.endDate)) throw ValidationException("La fecha de inicio no puede ser posterior a la fecha de fin")
 
         val newSchedule = Schedule(
             days = assignment.schedule.days,
@@ -125,22 +131,21 @@ class AssignmentService(
 
     @Transactional
     fun deleteAssignment(idAssignment: String, principal: Principal) {
+        val isOwner = assignmentRepository.isOwner(UUID.fromString(idAssignment), principal)
+        if (!isOwner) throw PermissionDeniedException("Acceso denegado")
+
         val assignment = findAssignmentById(idAssignment)
-        val uuid = UUID.fromString(idAssignment)
-
-        val course = courseRepository.findByAssigmentId(assignment.id).orElseThrow {
-            NotFoundException("Curso no encontrado para el uuid suministrado")
-        }
-
-        if (!assignmentRepository.isOwner(uuid, principal)) {
-            throw PermissionDeniedException("No se puede borrar una clase de la cual no se es propietrio")
-        }
 
         if (assignment.hasAnySubscribedUser()) {
             throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
         }
 
+        val course = courseRepository.findByAssigmentId(assignment.id).orElseThrow {
+            NotFoundException("curso no encontrado")
+        }
+
         course.removeAssignment(assignment)
         courseRepository.save(course)
     }
+
 }

@@ -7,12 +7,14 @@ import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
+import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -89,4 +91,15 @@ class UserController : UUIDValid() {
         this.validatedUUID(idUser)
         return ResponseEntity.ok(userService.getSubscriptions(idUser))
     }
+
+    @DeleteMapping("")
+    @Operation(summary = "Delete account")
+    fun deleteAccount(
+        @AuthenticationPrincipal principal : Principal,
+        request: HttpServletRequest
+    ): ResponseEntity<Map<String, String>> {
+        userService.deleteAccount(principal,request)
+        return ResponseEntity.ok(mapOf("message" to "Cuenta eliminada correctamente."))
+    }
+
 }

@@ -15,8 +15,8 @@ data class AssignmentRequestDto(
     )
     val idCourse: String?,
 
-    @field: Min(message = "Minimo deberia ser 1 clase", value=1)
-    @field: Max(message = "Maximo deberia haber 10000 clases", value=10000)
+    @field: Min(message = "Minimo deberia ser 1 alumno", value=1)
+    @field: Max(message = "Maximo deberia haber 10000 alumno", value=10000)
     @field: NotNull(message = "El campo clases no puede ser nulo")
     val quotas: Int = 0,
 
