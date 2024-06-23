@@ -26,6 +26,15 @@ class InstitutionController : UUIDValid() {
         return ResponseEntity.ok(institutionService.getAll(query ?: ""))
     }
 
+    @GetMapping("admin")
+    @Operation(summary = "Get all institutions")
+    fun getAllByPrincipal(
+        @RequestParam(required = false) query: String?,
+        @AuthenticationPrincipal principal: Principal
+    ): ResponseEntity<List<InstitutionResponseDto>> {
+        return ResponseEntity.ok(institutionService.getAllByPrincipal(query ?: "", principal))
+    }
+
     @GetMapping("{idInstitution}")
     @Operation(summary = "Get institution by id")
     fun getInstitution(
