@@ -7,7 +7,6 @@ import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.InstitutionService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
-import org.hibernate.validator.constraints.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -16,9 +15,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/institutions")
 @CrossOrigin("*")
-class InstitutionController {
-    @Autowired
-    lateinit var institutionService: InstitutionService
+class InstitutionController : UUIDValid() {
+    @Autowired lateinit var institutionService: InstitutionService
 
     @GetMapping("")
     @Operation(summary = "Get all institutions")
@@ -40,8 +38,9 @@ class InstitutionController {
     @GetMapping("{idInstitution}")
     @Operation(summary = "Get institution by id")
     fun getInstitution(
-        @PathVariable @UUID idInstitution: String
+        @PathVariable idInstitution: String
     ): ResponseEntity<InstitutionDetailResponseDto> {
+        this.validatedUUID(idInstitution)
         return ResponseEntity.ok(institutionService.getInstitution(idInstitution))
     }
 
@@ -57,9 +56,10 @@ class InstitutionController {
     @DeleteMapping("{idInstitution}")
     @Operation(summary = "Delete institution by id")
     fun deleteInstitution(
-        @PathVariable @UUID idInstitution: String,
+        @PathVariable idInstitution: String,
         @AuthenticationPrincipal principal: Principal
     ): ResponseEntity<Map<String, String>> {
+        this.validatedUUID(idInstitution)
         institutionService.deleteInstitution(idInstitution, principal)
         return ResponseEntity.ok(mapOf("message" to "Institution eliminado correctamente."))
     }

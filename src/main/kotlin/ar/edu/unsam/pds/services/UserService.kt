@@ -18,7 +18,6 @@ import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -34,7 +33,6 @@ class UserService(
     private val principalRepository: PrincipalRepository,
     private val institutionService: InstitutionService,
     private val emailService: EmailService
-
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
@@ -51,8 +49,9 @@ class UserService(
         }
 
         val principal = (request.userPrincipal as Authentication).principal as Principal
-        val principalUser = principal.user ?: throw InternalServerError("Internal Server Error")
+        val principalUser = principal.getUser()
         val nextClass = getSubscriptions(principalUser.id.toString()).firstOrNull()
+
         return UserMapper.buildUserDetailDto(principalUser,nextClass)
     }
 
@@ -118,7 +117,7 @@ class UserService(
     private fun findUserById(idUser: String): User {
         val uuid = UUID.fromString(idUser)
         return userRepository.findById(uuid).orElseThrow {
-            NotFoundException("Usuario no encontrado")
+            NotFoundException("Usuario no encontrado para el uuid suministrado")
         }
     }
 
@@ -133,5 +132,17 @@ class UserService(
 
     private fun orderSubscriptionsByDate(subscriptions: List<SubscriptionResponseDto>): List<SubscriptionResponseDto> {
         return subscriptions.sortedBy { it.date }
+    }
+
+    @Transactional
+    fun deleteAccount(principal: Principal, request: HttpServletRequest) {
+        if (userRepository.hasInscriptions(principal.getUser().id)) {
+            throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
+        }
+
+        request.logout()
+
+        userRepository.delete(principal.user!!)
+        principalRepository.delete(principal)
     }
 }

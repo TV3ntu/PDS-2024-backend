@@ -221,7 +221,7 @@ class UserServiceTest : BootstrapNBTest() {
             lastName = adanUpdate.lastName,
             email = adanUpdate.email,
             image = adanUpdate.image,
-            id = adanUpdate.id,
+            id = adanUpdate.id!!,
             isAdmin = adanUpdate.isAdmin,
             nextClass = null,
             credits = adanUpdate.credits
