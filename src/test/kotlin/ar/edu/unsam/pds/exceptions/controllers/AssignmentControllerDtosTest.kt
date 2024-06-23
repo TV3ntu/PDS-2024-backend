@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
@@ -80,7 +79,7 @@ class AssignmentControllerDtosTest {
     @Test
     fun `test unsubscribe to assignment - 1`() {
         mockMvc.perform(
-            patch("/api/assignments/unsubscribe").
+            post("/api/assignments/unsubscribe").
             contentType(APPLICATION_JSON).
             content("""
                 {
@@ -98,7 +97,7 @@ class AssignmentControllerDtosTest {
     @Test
     fun `test unsubscribe to assignment - 2`() {
         mockMvc.perform(
-            patch("/api/assignments/unsubscribe").
+            post("/api/assignments/unsubscribe").
             contentType(APPLICATION_JSON).
             content("""
                 {
