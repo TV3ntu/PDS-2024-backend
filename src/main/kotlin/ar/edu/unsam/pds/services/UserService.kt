@@ -136,9 +136,12 @@ class UserService(
 
     @Transactional
     fun deleteAccount(principal: Principal, request: HttpServletRequest) {
-        val hasInscriptions = userRepository.hasInscriptions(principal.user!!.id)
-        if (hasInscriptions) throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
+        if (userRepository.hasInscriptions(principal.getUser().id)) {
+            throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
+        }
+
         request.logout()
+
         userRepository.delete(principal.user!!)
         principalRepository.delete(principal)
     }

@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.dto.request
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
@@ -25,5 +26,6 @@ data class AssignmentRequestDto(
     @field: NotNull(message = "Elcampo precio o pued ser nulo")
     val price: Double = 0.0,
 
+    @field:Valid
     val schedule: ScheduleRequestDto
 )
