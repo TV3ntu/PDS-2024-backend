@@ -19,7 +19,8 @@ import java.util.*
 @Service
 class CoursesService(
     private val courseRepository: CourseRepository,
-    private val institutionRepository: InstitutionRepository
+    private val institutionRepository: InstitutionRepository,
+    private val imageService: StorageService
 ) {
 
     fun getAll(query: String): List<CourseResponseDto> {
@@ -49,8 +50,9 @@ class CoursesService(
         if (course.assignments.any { it.hasAnySubscribedUser() }) {
             throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
         }
-
+        val imageName = course.image
         courseRepository.delete(course)
+        imageService.deletePublic(imageName)
     }
 
     @Transactional
@@ -74,11 +76,13 @@ class CoursesService(
             NotFoundException("Institución no encontrada para el uuid suministrado")
         }
 
+        val imageName = imageService.savePublic(course.file)
+
         val newCourse = Course(
             course.title,
             course.description,
             course.category,
-            course.image,
+            imageName,
         )
         courseRepository.save(newCourse)
 

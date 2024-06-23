@@ -51,7 +51,7 @@ class InstitutionService(
     @Transactional
     fun createInstitution(institution: InstitutionRequestDto, principal: Principal): InstitutionResponseDto {
         principal.getUser().isAdmin = true
-        val imageName = imageService.savePrivate(institution.file)
+        val imageName = imageService.savePublic(institution.file)
         val newInstitution = Institution(
             name = institution.name,
             description = institution.description,
