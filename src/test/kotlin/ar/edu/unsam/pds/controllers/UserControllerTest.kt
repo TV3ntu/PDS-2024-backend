@@ -87,13 +87,13 @@ class UserControllerTest {
         val nextClass: SubscriptionResponseDto? = null
 
         `when`(userService.login(userForm, request)).thenReturn(
-            UserMapper.buildUserDetailDto(user,nextClass)
+            UserMapper.buildUserDetailDto(user, nextClass)
         )
 
         val responseEntity = userController.login(userForm, request)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
-        assert(responseEntity.body == UserMapper.buildUserDetailDto(user,nextClass))
+        assert(responseEntity.body == UserMapper.buildUserDetailDto(user, nextClass))
     }
 
     @Test

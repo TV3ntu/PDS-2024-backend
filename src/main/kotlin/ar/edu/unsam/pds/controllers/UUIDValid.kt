@@ -6,25 +6,25 @@ import java.util.UUID
 abstract class UUIDValid {
     fun validatedUUID(uuid: String?) {
         if (uuid == null) {
-            throw ValidationException("el uuid no debe ser nulo")
+            throw ValidationException("El uuid no debe ser nulo")
         }
 
         if (uuid.isEmpty()) {
-            throw ValidationException("el uuid no debe estar vacio")
+            throw ValidationException("El uuid no debe estar vacio")
         }
 
         if (uuid.isBlank()) {
-            throw ValidationException("el uuid no debe estar en blanco")
+            throw ValidationException("El uuid no debe estar en blanco")
         }
 
         if (uuid.length > 36) {
-            throw ValidationException("el uuid no debe tener 36caracteres")
+            throw ValidationException("El uuid no debe tener 36caracteres")
         }
 
         try {
             UUID.fromString(uuid)
         } catch (e: RuntimeException) {
-            throw ValidationException("el uuid es invalido")
+            throw ValidationException("El uuid es invalido")
         }
     }
 }
