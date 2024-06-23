@@ -82,7 +82,7 @@ class EmailService(
 @Service
 @ConditionalOnProperty(name = ["email.enabled"], havingValue = "false", matchIfMissing = true)
 class NoOpEmailService(mailSender: JavaMailSender) : EmailService(mailSender) {
-    override fun sendEmail(to: String, subject: String, body: String) {}
+    override fun sendEmail(to: String, subject: String, htmlContent: String) {}
     override fun sendPaymentConfirmationEmail(to: String, amount: Double, userName: String, transactionId: String) {}
     override fun sendSubscriptionConfirmationEmail(to: String, courseName: String, userName: String) {}
     override fun sendCreditsLoadedEmail(to: String, credits: Double, userName: String) {}
