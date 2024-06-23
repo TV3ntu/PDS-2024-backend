@@ -33,13 +33,16 @@ class ReviewService(
             NotFoundException("Curso inexistente con uuid provisto")
         }
 
+        if (!courseRepository.isSubscribed(course, principal)) {
+            throw NotFoundException("No se puede comentar a un curso al cual no se esta inscriptoo")
+        }
+
         if (reviewRepository.existsReviewBy(course, principal)) {
             throw NotFoundException("No se puede comentar dos veces elmismo curso")
         }
 
         val newReview = Review(
-//            user = principal.getUser(),
-            user = principal.user!!,
+            user = principal.getUser(),
             course = course,
             rating = review.rating,
             description = review.description

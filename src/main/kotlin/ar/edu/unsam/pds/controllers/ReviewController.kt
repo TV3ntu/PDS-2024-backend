@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/reviews")
 @CrossOrigin("*")
-class ReviewController /*: UUIDValid() */  {
+class ReviewController : UUIDValid() {
     @Autowired private lateinit var reviewService: ReviewService
 
     @GetMapping("user")
@@ -30,7 +30,7 @@ class ReviewController /*: UUIDValid() */  {
     fun getReviewsOfAllCourses(
         @PathVariable courseId: String
     ): ResponseEntity<List<ReviewResponseDto>> {
-//        this.validatedUUID(courseId)
+        this.validatedUUID(courseId)
         return ResponseEntity.ok(reviewService.getReviewsOfAllCourses(courseId))
     }
 

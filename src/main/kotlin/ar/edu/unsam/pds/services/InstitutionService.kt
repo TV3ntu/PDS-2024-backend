@@ -74,7 +74,7 @@ class InstitutionService(
             throw PermissionDeniedException("No se puede borrar un institucion de la cual no se es propietario")
         }
 
-        if (!institutionRepository.isDeleteable(UUID.fromString(idInstitution))) {
+        if (!institutionRepository.isDeletable(UUID.fromString(idInstitution))) {
             throw ValidationException("No se puede eliminar una Institucion con usuarios inscriptos")
         }
 

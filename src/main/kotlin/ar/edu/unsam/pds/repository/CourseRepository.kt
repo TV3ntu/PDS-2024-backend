@@ -55,5 +55,14 @@ interface CourseRepository : JpaRepository<Course, UUID> {
         JOIN c.assignments assigments
         WHERE assigments.id = :idAssigment
     """)
-    fun findByAssigmentId(@Param("idAssigment") id: UUID): Optional<Course>
+    fun findByAssignmentId(@Param("idAssigment") id: UUID): Optional<Course>
+
+    @Query("""
+        SELECT COUNT(u.id) = 1
+        FROM Course c
+        JOIN c.assignments a
+        LEFT JOIN a.subscribedUsers u
+        WHERE c.id = :#{#course.id} AND u.id = :#{#principal.user.id}
+    """)
+    fun isSubscribed(@Param("course") course: Course, @Param("principal") principal: Principal): Boolean
 }

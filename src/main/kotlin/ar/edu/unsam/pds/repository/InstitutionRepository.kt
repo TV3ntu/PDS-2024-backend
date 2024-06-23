@@ -50,5 +50,5 @@ interface InstitutionRepository : JpaRepository<Institution, UUID> {
         LEFT JOIN assignments.subscribedUsers users
         WHERE i.id = :idInstitution
     """)
-    fun isDeleteable(@Param("idInstitution") id: UUID): Boolean
+    fun isDeletable(@Param("idInstitution") id: UUID): Boolean
 }
