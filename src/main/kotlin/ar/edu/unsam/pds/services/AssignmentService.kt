@@ -81,28 +81,34 @@ class AssignmentService(
     private fun findUserById(idUser: String): User {
         val uuid = UUID.fromString(idUser)
         return userRepository.findById(uuid).orElseThrow {
-            NotFoundException("Usuario no encontrado")
+            NotFoundException("Usuario no encontrado, para el uuid suministrado")
         }
     }
 
     private fun findAssignmentById(idAssignment: String): Assignment {
         val uuid = UUID.fromString(idAssignment)
         return assignmentRepository.findById(uuid).orElseThrow {
-            NotFoundException("Clase no encontrada")
+            NotFoundException("Clase no encontrada, para el uuid suministrado")
         }
     }
 
     fun createAssignment(assignment: AssignmentRequestDto): AssignmentResponseDto {
         val courseId = UUID.fromString(assignment.idCourse)
         val course = courseRepository.findById(courseId).orElseThrow {
-            NotFoundException("Curso no encontrado")
+            NotFoundException("Curso no encontrado, para el uuid suministrado")
         }
 
-        if(assignment.schedule.startTime.isAfter(assignment.schedule.endTime)) throw ValidationException("La hora de inicio no puede ser posterior a la hora de fin")
+        if(assignment.schedule.startTime.isAfter(assignment.schedule.endTime)) {
+            throw ValidationException("La hora de inicio no puede ser posterior a la hora de fin")
+        }
 
-        if(assignment.schedule.startDate.isBefore(LocalDate.now())) throw ValidationException("La fecha de inicio no puede ser anterior a la fecha actual")
+        if(assignment.schedule.startDate.isBefore(LocalDate.now())) {
+            throw ValidationException("La fecha de inicio no puede ser anterior a la fecha actual")
+        }
 
-        if (assignment.schedule.startDate.isAfter(assignment.schedule.endDate)) throw ValidationException("La fecha de inicio no puede ser posterior a la fecha de fin")
+        if (assignment.schedule.startDate.isAfter(assignment.schedule.endDate)) {
+            throw ValidationException("La fecha de inicio no puede ser posterior a la fecha de fin")
+        }
 
         val newSchedule = Schedule(
             days = assignment.schedule.days,
@@ -131,8 +137,10 @@ class AssignmentService(
 
     @Transactional
     fun deleteAssignment(idAssignment: String, principal: Principal) {
-        val isOwner = assignmentRepository.isOwner(UUID.fromString(idAssignment), principal)
-        if (!isOwner) throw PermissionDeniedException("Acceso denegado")
+        val uuid = UUID.fromString(idAssignment)
+        if (!assignmentRepository.isOwner(uuid, principal)) {
+            throw PermissionDeniedException("Acceso denegado")
+        }
 
         val assignment = findAssignmentById(idAssignment)
 
