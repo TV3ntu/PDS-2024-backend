@@ -26,6 +26,11 @@ class InstitutionService(
         return institutions.map { InstitutionMapper.buildInstitutionDto(it) }
     }
 
+    fun getAllByPrincipal(query: String, principal: Principal): List<InstitutionResponseDto> {
+        val institutions = institutionRepository.getAllByPrincipal(query, principal)
+        return institutions.map { InstitutionMapper.buildInstitutionDto(it) }
+    }
+
     fun getInstitution(idInstitution: String): InstitutionDetailResponseDto {
         val institution = findInstitutionById(idInstitution)
         return InstitutionMapper.buildInstitutionDetailDto(institution)

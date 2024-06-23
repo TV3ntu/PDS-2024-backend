@@ -10,8 +10,7 @@ import java.util.*
 
 @RepositoryRestResource(exported = false)
 interface CourseRepository : JpaRepository<Course, UUID> {
-    @Query(
-        """
+    @Query("""
         SELECT c FROM Course c
         WHERE c.title LIKE concat('%', :query, '%')
         OR c.description LIKE concat('%', :query, '%')
@@ -22,28 +21,39 @@ interface CourseRepository : JpaRepository<Course, UUID> {
             WHEN c.category LIKE concat('%', :query, '%') THEN 2
             ELSE 3
         END
-    """
-    )
+    """)
     fun getAllBy(@Param("query") query: String): MutableList<Course>
 
-    @Query(
-        """
+    @Query("""
+        SELECT courses FROM Institution i
+        JOIN i.courses courses
+        JOIN i.admin admins
+        WHERE admins.id = :#{#principal.user.id}
+        AND (courses.title LIKE concat('%', :query, '%')
+        OR courses.description LIKE concat('%', :query, '%')
+        OR courses.category LIKE concat('%', :query, '%'))
+        ORDER BY 
+        CASE 
+            WHEN courses.title LIKE concat('%', :query, '%') THEN 1
+            WHEN courses.category LIKE concat('%', :query, '%') THEN 2
+            ELSE 3
+        END
+    """)
+    fun getAllByPrincipal(@Param("query")query: String, @Param("principal") principal: Principal): MutableList<Course>
+
+    @Query("""
         SELECT COUNT(cursos.id) = 1
-            FROM Institution i
-            JOIN i.courses cursos
-            JOIN i.admin admins
-            WHERE cursos.id = :idCourse AND admins.id = :#{#principal.user.id}
-            """
-    )
+        FROM Institution i
+        JOIN i.courses cursos
+        JOIN i.admin admins
+        WHERE cursos.id = :idCourse AND admins.id = :#{#principal.user.id}
+    """)
     fun isOwner(@Param("idCourse") idCourse: UUID, @Param("principal") principal: Principal): Boolean
 
-    @Query(
-        """
+    @Query("""
         SELECT c FROM Course c 
-            JOIN c.assignments assigments
-            WHERE assigments.id = :idAssigment
-            """
-    )
+        JOIN c.assignments assigments
+        WHERE assigments.id = :idAssigment
+    """)
     fun findByAssigmentId(@Param("idAssigment") id: UUID): Optional<Course>
-
 }

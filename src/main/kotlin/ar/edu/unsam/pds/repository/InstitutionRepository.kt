@@ -10,44 +10,45 @@ import java.util.*
 
 @RepositoryRestResource(exported = false)
 interface InstitutionRepository : JpaRepository<Institution, UUID> {
-    @Query(
-        """
+    @Query("""
         SELECT i FROM Institution i
         WHERE i.name LIKE concat('%', :query, '%')
         OR i.description LIKE concat('%', :query, '%')
         OR i.category LIKE concat('%', :query, '%')
-    """
-    )
+    """)
     fun getAllBy(@Param("query") query: String): MutableList<Institution>
 
-    @Query(
-        """
+    @Query("""
+        SELECT i FROM Institution i JOIN i.admin admins
+        WHERE admins.id = :#{#principal.user.id}
+        AND (i.name LIKE concat('%', :query, '%')
+        OR i.description LIKE concat('%', :query, '%')
+        OR i.category LIKE concat('%', :query, '%'))
+    """)
+    fun getAllByPrincipal(@Param("query")query: String, @Param("principal") principal: Principal): MutableList<Institution>
+
+    @Query("""
         SELECT i FROM Institution i
         JOIN i.courses c
         WHERE c.id = :courseId
-    """
-    )
+    """)
     fun findByCourseId(@Param("courseId") courseId: UUID): Institution
 
-    @Query(
-        """
+    @Query("""
         SELECT COUNT(i.id) = 1
-            FROM Institution i
-            JOIN i.admin admins
-            WHERE i.id = :idInstitution AND admins.id = :#{#principal.user.id}
-            """
-    )
+        FROM Institution i
+        JOIN i.admin admins
+        WHERE i.id = :idInstitution AND admins.id = :#{#principal.user.id}
+    """)
     fun isOwner(@Param("idInstitution") idCourse: UUID, @Param("principal") principal: Principal): Boolean
 
-    @Query(
-        """
+    @Query("""
         SELECT CASE WHEN COUNT(users) = 0 THEN true ELSE false END
         FROM Institution i
         JOIN i.courses courses
         JOIN courses.assignments assignments
         LEFT JOIN assignments.subscribedUsers users
         WHERE i.id = :idInstitution
-    """
-    )
+    """)
     fun isDeleteable(@Param("idInstitution") id: UUID): Boolean
 }
