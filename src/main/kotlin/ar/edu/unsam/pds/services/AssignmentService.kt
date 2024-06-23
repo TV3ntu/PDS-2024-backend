@@ -53,7 +53,7 @@ class AssignmentService(
         assignment.addSubscribedUser(user)
         val payment = Payment(
             amount = assignment.price,
-            date = LocalDate.now(),
+            date = LocalDateTime.now(),
             status = "APPROVED",
             paymentMethod = "CREDITS",
             user = user,
@@ -74,20 +74,20 @@ class AssignmentService(
         val user = findUserById(idUser)
         val lastPayment = paymentRepository.findLastPaymentByUserIdAndAssignmentId(user.id, assignment.id)
 
-        //if (lastPayment != null) {
-        //    if (lessThanTwoHours(lastPayment)) {
-        //        user.credits += lastPayment.amount
-        //    }
-        //}
+        if (lastPayment != null) {
+            if (lessThanTwoHours(lastPayment.date)) {
+                user.credits += lastPayment.amount
+            }
+        }
         user.removeAssignment(assignment)
         assignment.removeSubscribedUser(user)
         userRepository.save(user)
         return AssignmentMapper.unsubscribeResponse(idUser, idAssignment)
     }
 
-    fun lessThanTwoHours(lastPayment: Payment): Boolean {
+    fun lessThanTwoHours(timeToCompare: LocalDateTime): Boolean {
         val now = LocalDateTime.now()
-        val hoursDifference = Duration.between(lastPayment.date, now).toHours()
+        val hoursDifference = Duration.between(timeToCompare, now).toHours()
         return hoursDifference < 2
     }
 

@@ -10,5 +10,5 @@ import java.util.*
 interface PaymentRepository : JpaRepository<Payment, UUID> {
 
     @Query("SELECT p FROM Payment p WHERE p.user.id = :userId AND p.assignment.id = :assignmentId ORDER BY p.date DESC LIMIT 1")
-    fun findLastPaymentByUserIdAndAssignmentId(userId: UUID, assignmentId: UUID): Optional<Payment>
+    fun findLastPaymentByUserIdAndAssignmentId(userId: UUID, assignmentId: UUID): Payment?
 }
