@@ -33,7 +33,7 @@ class RestExceptionHandler {
         request: WebRequest
     ): ResponseEntity<BodyResponse> {
         val status = HttpStatus.BAD_REQUEST
-        val message = "Mensaje http no legible"
+        val message = "Mensaje http no legible, compruebe que su request este correctamente armado"
         val body = BodyResponse(status, request, message)
         return ResponseEntity(body, status)
     }
@@ -74,9 +74,18 @@ class RestExceptionHandler {
         request: WebRequest
     ): ResponseEntity<BodyResponse> {
         val status = HttpStatus.BAD_REQUEST
-        val message = "Mensaje http no legible"
-        val body = BodyResponse(status, request, message)
+        val body = BodyResponse(status, request, exception.message)
         return ResponseEntity(body, status)
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = [InternalServerError::class])
+    fun customHandleInternalServerError(
+        exception: IllegalArgumentException,
+        request: WebRequest
+    ): ResponseEntity<BodyResponse> {
+        val status = HttpStatus.BAD_REQUEST
+        val body = BodyResponse(status, request, exception.message)
+        return ResponseEntity(body, status)
+    }
 }

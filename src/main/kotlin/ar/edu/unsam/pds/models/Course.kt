@@ -21,6 +21,9 @@ class Course(
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "course", cascade = [CascadeType.ALL], orphanRemoval = true)
     val assignments = mutableSetOf<Assignment>()
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "course", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val reviews= mutableSetOf<Review>()
+
     fun addAssignment(assignment: Assignment) {
         assignments.add(assignment)
         assignment.attachCourse(this)
@@ -49,4 +52,14 @@ class Course(
     fun assigmentsNames(): Set<String> {
         return assignments.map { it.name() }.toSet()
     }
+
+    fun averageRating(): Double {
+        if (reviews.isEmpty()) {
+            return 0.0
+        }
+
+        val sum = reviews.sumOf { it.rating.toDouble() }
+        return sum / reviews.size
+    }
+
 }

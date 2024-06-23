@@ -27,6 +27,11 @@ class CoursesService(
         return courses.map { CourseMapper.buildCourseDto(it) }
     }
 
+    fun getAllByPrincipal(query: String, principal: Principal): List<CourseResponseDto> {
+        val courses = courseRepository.getAllByPrincipal(query, principal)
+        return courses.map { CourseMapper.buildCourseDto(it) }
+    }
+
     fun getCourse(idCourse: String): CourseDetailResponseDto {
         val course = findCourseById(idCourse)
         return CourseMapper.buildCourseDetailDto(course)
@@ -34,15 +39,17 @@ class CoursesService(
 
     @Transactional
     fun deleteCourse(idCourse: String, principal: Principal) {
-       val isOwner = courseRepository.isOwner(UUID.fromString(idCourse), principal)
-
         val course = findCourseById(idCourse)
+        val uuid = UUID.fromString(idCourse)
 
-        if (!isOwner) throw PermissionDeniedException("Acceso denegado")
+        if (!courseRepository.isOwner(uuid, principal)) {
+            throw PermissionDeniedException("No se puede borrar un curso del cual no es propietario")
+        }
 
         if (course.assignments.any { it.hasAnySubscribedUser() }) {
             throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
         }
+
         courseRepository.delete(course)
     }
 
@@ -56,17 +63,16 @@ class CoursesService(
     private fun findCourseById(idCourse: String): Course {
         val uuid = UUID.fromString(idCourse)
         return courseRepository.findById(uuid).orElseThrow {
-            NotFoundException("Curso no encontrado")
+            NotFoundException("Curso no encontrado para el uuid suministrado")
         }
     }
 
     @Transactional
     fun createCourse(course: CourseRequestDto): CourseResponseDto? {
-        val insitutionId = UUID.fromString(course.institutionId)
-        val institution = institutionRepository.findById(insitutionId).orElseThrow {
-            NotFoundException("Institución no encontrada")
+        val institutionId = UUID.fromString(course.institutionId)
+        val institution = institutionRepository.findById(institutionId).orElseThrow {
+            NotFoundException("Institución no encontrada para el uuid suministrado")
         }
-
 
         val newCourse = Course(
             course.title,
@@ -85,6 +91,5 @@ class CoursesService(
     fun getCourseStats(idCourse: String): CourseStatsResponseDto? {
         val course = findCourseById(idCourse)
         return CourseMapper.buildCourseStatsDto(course)
-
     }
 }
