@@ -11,7 +11,8 @@ object CourseMapper {
             title = course.title,
             description = course.description,
             category = course.category,
-            image = course.image
+            image = course.image,
+            averageRating = course.averageRating()
         )
     }
 
