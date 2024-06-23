@@ -1,7 +1,10 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.request.InstitutionRequestDto
 import ar.edu.unsam.pds.mappers.InstitutionMapper
 import ar.edu.unsam.pds.models.Institution
+import ar.edu.unsam.pds.models.User
+import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.InstitutionService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -10,7 +13,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
-import java.util.UUID
+import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class InstitutionControllerTest {
@@ -19,6 +22,8 @@ class InstitutionControllerTest {
     private lateinit var institutionController: InstitutionController
 
     private lateinit var institution: Institution
+    private lateinit var principal: Principal
+    private lateinit var user: User
     private lateinit var uuid: String
 
     @BeforeEach
@@ -36,6 +41,23 @@ class InstitutionControllerTest {
         }
 
         uuid = institution.id.toString()
+
+        user = User(
+            name = "Adam",
+            lastName = "AdamAdam",
+            email = "adam@email.com",
+            image = "",
+            credits = 100000.0,
+            isAdmin = true
+        )
+
+        principal = Principal().apply {
+            id = UUID.randomUUID()
+            username = this@InstitutionControllerTest.user.email
+            password = "123"
+            user = this@InstitutionControllerTest.user
+            this.initProperties()
+        }
     }
 
     @Test
@@ -72,5 +94,33 @@ class InstitutionControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == institution)
+    }
+
+    @Test
+    fun `test create a particular institution`() {
+        val institutionRes = InstitutionMapper.buildInstitutionDto(institution)
+        val institutionReq = InstitutionRequestDto(
+            name = institution.name,
+            description = institution.description,
+            category = institution.category,
+            image = institution.image
+        )
+
+        `when`(institutionService.createInstitution(institutionReq, principal)).thenReturn(institutionRes)
+
+        val responseEntity = institutionController.createInstitution(institutionReq, principal)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == institutionRes)
+    }
+
+    @Test
+    fun `test delete a particular institution`() {
+        `when`(institutionService.deleteInstitution(uuid, principal)).then { }
+
+        val responseEntity = institutionController.deleteInstitution(uuid, principal)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == mapOf("message" to "Institution eliminado correctamente."))
     }
 }
