@@ -9,6 +9,7 @@ import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.InstitutionMapper
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import org.springframework.stereotype.Service
@@ -18,7 +19,8 @@ import java.util.*
 @Service
 class InstitutionService(
     private val institutionRepository: InstitutionRepository,
-    private val principalRepository: PrincipalRepository
+    private val principalRepository: PrincipalRepository,
+    private val userRepository: UserRepository
 ) {
 
     fun getAll(query: String): List<InstitutionResponseDto> {
@@ -59,7 +61,7 @@ class InstitutionService(
         ).apply {
             addAdmin(principal.getUser())
         }
-
+        userRepository.save(principal.getUser())
         principalRepository.save(principal)
         institutionRepository.save(newInstitution)
 
