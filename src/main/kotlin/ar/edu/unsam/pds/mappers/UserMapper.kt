@@ -37,7 +37,7 @@ object UserMapper {
         user.lastName = userDetail.lastName
         user.email = userDetail.email
         user.image = userDetail.image
-        user.credits = userDetail.credits ?: user.credits
+        user.credits = userDetail.credits //?: user.credits
         return user
     }
 }

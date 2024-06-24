@@ -65,6 +65,9 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                 category = "Artes plasticas",
                 image = "$urlBase/el_rincon_creativo.png"
             )
+                .apply {
+                addAdmin(userByEmail("admin@admin.com"))
+            }
         )
     }
 
