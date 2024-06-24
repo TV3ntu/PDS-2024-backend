@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.controllers
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.request.UserRequestDto
+import ar.edu.unsam.pds.dto.request.UserRequestUpdateDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
@@ -27,6 +28,7 @@ class UserControllerTest {
 
     private lateinit var user: User
     private lateinit var userReq: UserRequestDto
+    private lateinit var userReqUpdate: UserRequestUpdateDto
     private lateinit var userRes: UserResponseDto
     private lateinit var uuid: String
 
@@ -55,6 +57,16 @@ class UserControllerTest {
             credits = 1000.0,
             id = user.id.toString(),
             nextClass = "nextClass"
+        )
+
+        userReqUpdate = UserRequestUpdateDto(
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email,
+            file = null,
+            credits = user.credits,
+            id = user.id.toString(),
+            nextClass = null
         )
 
         userRes = UserResponseDto(
@@ -139,9 +151,9 @@ class UserControllerTest {
 
     @Test
     fun `test update a particular user`() {
-        `when`(userService.updateDetail(uuid, userReq)).thenReturn(userRes)
+        `when`(userService.updateDetail(uuid, userReqUpdate)).thenReturn(userRes)
 
-        val responseEntity = userController.updateDetail(uuid, userReq)
+        val responseEntity = userController.updateDetail(uuid, userReqUpdate)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == userRes)
@@ -149,9 +161,9 @@ class UserControllerTest {
 
     @Test
     fun `test update a particular user with less fields`() {
-        `when`(userService.updateDetail(uuid, userReq)).thenReturn(userRes)
+        `when`(userService.updateDetail(uuid, userReqUpdate)).thenReturn(userRes)
 
-        val responseEntity = userController.updateDetail(uuid, userReq)
+        val responseEntity = userController.updateDetail(uuid, userReqUpdate)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == userRes)

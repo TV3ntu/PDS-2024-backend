@@ -3,7 +3,7 @@ package ar.edu.unsam.pds.services
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
-import ar.edu.unsam.pds.dto.request.UserRequestDto
+import ar.edu.unsam.pds.dto.request.UserRequestUpdateDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
@@ -211,15 +211,14 @@ class UserServiceTest : BootstrapNBTest() {
 
         assertEquals(obtainedValuePre, expectedValuePre)
 
-        val adanUpdate = UserRequestDto(
+        val adanUpdate = UserRequestUpdateDto(
             name = "Adan__",
             lastName = "AdanAdan__",
             email = "adan__@email.com",
-            image = "__",
             id = users[0].id.toString(),
-            isAdmin = true,
             credits = 100000.0,
-            nextClass = null
+            nextClass = null,
+            file = null
         )
 
         `when`(emailService.sendCreditsLoadedEmail(
@@ -238,9 +237,9 @@ class UserServiceTest : BootstrapNBTest() {
             name = adanUpdate.name,
             lastName = adanUpdate.lastName,
             email = adanUpdate.email,
-            image = adanUpdate.image,
+            image = "",
             id = adanUpdate.id!!,
-            isAdmin = adanUpdate.isAdmin,
+            isAdmin = true,
             nextClass = null,
             credits = adanUpdate.credits
         )
