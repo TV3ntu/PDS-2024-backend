@@ -141,10 +141,15 @@ class UserService(
         if (userRepository.hasInscriptions(principal.getUser().id)) {
             throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
         }
+        val avatar = principal.getUser().image
 
         request.logout()
 
         userRepository.delete(principal.user!!)
         principalRepository.delete(principal)
+
+        if(avatar!=storageService.defaultImage){
+            storageService.deletePrivate(principal.getUser().image)
+        }
     }
 }
