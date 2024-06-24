@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.request.CourseRequestDto
+import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
+import java.time.LocalDateTime
 import java.util.*
 
 @ActiveProfiles("test")
@@ -34,6 +36,7 @@ class CoursesServiceTest : BootstrapNBTest() {
             scheduleRepository = scheduleRepository,
             courseRepository = courseRepository,
             paymentRepository = paymentRepository,
+            subscriptionRepository = subscriptionRepository,
             emailService = emailService
         )
     }
@@ -121,11 +124,15 @@ class CoursesServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test throw delete a particular course`() {
-        val userId = users[0].id.toString()
         val courseId = courses[0].id.toString()
-        val assignmentId = assignments[0].id.toString()
 
-        assignmentService.subscribe(userId, assignmentId)
+        val subscribeRequestDto = SubscribeRequestDto(
+            idUser = users[0].id.toString(),
+            idAssignment = assignments[0].id.toString(),
+            startDate = LocalDateTime.now()
+        )
+
+        assignmentService.subscribe(subscribeRequestDto)
 
         assertThrows<ValidationException> {
             courseServices.deleteCourse(courseId, principals[0])

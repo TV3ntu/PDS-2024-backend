@@ -19,7 +19,11 @@ class Payment(
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="assignment_id", referencedColumnName = "id")
-    val assignment: Assignment
+    val assignment: Assignment,
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscription_id", referencedColumnName = "id", unique = true)
+    var subscription: Subscription? = null
 
 ) : Timestamp(), Serializable {
 

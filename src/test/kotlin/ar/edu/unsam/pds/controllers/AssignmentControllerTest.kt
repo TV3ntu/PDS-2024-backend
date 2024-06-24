@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.controllers
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
 import ar.edu.unsam.pds.dto.request.ScheduleRequestDto
 import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
+import ar.edu.unsam.pds.dto.request.UnsubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 
@@ -33,6 +35,7 @@ class AssignmentControllerTest {
     private lateinit var scheduleReq: ScheduleRequestDto
     private lateinit var scheduleRes: ScheduleResponseDto
     private lateinit var subscribeRequest: SubscribeRequestDto
+    private lateinit var unsubscribeRequest: UnsubscribeRequestDto
     private lateinit var principal: Principal
     private lateinit var user: User
 
@@ -77,6 +80,12 @@ class AssignmentControllerTest {
         )
 
         subscribeRequest = SubscribeRequestDto(
+            idUser = UUID.randomUUID().toString(),
+            idAssignment = assignmentRes.id,
+            startDate = LocalDateTime.now()
+        )
+
+        unsubscribeRequest = UnsubscribeRequestDto(
             idUser = UUID.randomUUID().toString(),
             idAssignment = assignmentRes.id
         )
@@ -131,11 +140,9 @@ class AssignmentControllerTest {
             date = LocalDate.now()
         )
 
+
         `when`(
-            assignmentService.subscribe(
-                idUser = subscribeRequest.idUser!!,
-                idAssignment = subscribeRequest.idAssignment!!
-            )
+            assignmentService.subscribe(subscribeRequest)
         ).thenReturn(response)
 
         val responseEntity = assignmentController.subscribeToAssignment(subscribeRequest)
@@ -154,13 +161,10 @@ class AssignmentControllerTest {
         )
 
         `when`(
-            assignmentService.unsubscribe(
-                idUser = subscribeRequest.idUser!!,
-                idAssignment = subscribeRequest.idAssignment!!
-            )
+            assignmentService.unsubscribe(unsubscribeRequest)
         ).thenReturn(response)
 
-        val responseEntity = assignmentController.unsubscribeToAssignment(subscribeRequest)
+        val responseEntity = assignmentController.unsubscribeToAssignment(unsubscribeRequest)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == response)

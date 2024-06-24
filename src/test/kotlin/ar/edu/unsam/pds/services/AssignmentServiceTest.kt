@@ -1,6 +1,8 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.BootstrapNBTest
+import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
+import ar.edu.unsam.pds.dto.request.UnsubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @ActiveProfiles("test")
@@ -25,6 +28,7 @@ class AssignmentServiceTest : BootstrapNBTest() {
             scheduleRepository = scheduleRepository,
             courseRepository = courseRepository,
             paymentRepository = paymentRepository,
+            subscriptionRepository = subscriptionRepository,
             emailService = emailService
         )
     }
@@ -49,10 +53,13 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test subscribe to assignment`() {
-        val obtainedValue = assignmentService.subscribe(
+        val subscribeRequestDto = SubscribeRequestDto(
             idUser = users[0].id.toString(),
-            idAssignment = assignments[0].id.toString()
+            idAssignment = assignments[0].id.toString(),
+            startDate = LocalDateTime.now()
         )
+        val obtainedValue = assignmentService.subscribe(subscribeRequestDto)
+
         val expectedValue = SubscribeResponseDto(
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString(),
@@ -65,43 +72,55 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test throw subscribe to assignment -1`() {
+        var subscribeRequestDto = SubscribeRequestDto(
+            idUser = UUID.randomUUID().toString(),
+            idAssignment = assignments[0].id.toString(),
+            startDate = LocalDateTime.now()
+        )
         assertThrows<NotFoundException> {
-            assignmentService.subscribe(
-                idUser = UUID.randomUUID().toString(),
-                idAssignment = assignments[0].id.toString()
+            assignmentService.subscribe(subscribeRequestDto
             )
         }
 
+        subscribeRequestDto = SubscribeRequestDto(
+            idUser = users[0].id.toString(),
+            idAssignment = UUID.randomUUID().toString(),
+            startDate = LocalDateTime.now()
+        )
         assertThrows<NotFoundException> {
-            assignmentService.subscribe(
-                idUser = UUID.randomUUID().toString(),
-                idAssignment = UUID.randomUUID().toString()
-            )
+            assignmentService.subscribe(subscribeRequestDto)
         }
     }
 
     @Test
     fun `test not enough credits to subscribe to assignment`() {
+
+        val subscribeRequestDto = SubscribeRequestDto(
+            idUser = users[1].id.toString(),
+            idAssignment = assignments[0].id.toString(),
+            startDate = LocalDateTime.now()
+        )
         assertThrows<ValidationException> {
             users[1].credits = 0.0
-            assignmentService.subscribe(
-                idUser = users[1].id.toString(),
-                idAssignment = assignments[0].id.toString()
-            )
+            assignmentService.subscribe(subscribeRequestDto)
         }
     }
 
     @Test
     fun `test unsubscribe to assignment`() {
-        assignmentService.subscribe(
+        val subscribeRequestDto = SubscribeRequestDto(
             idUser = users[0].id.toString(),
-            idAssignment = assignments[0].id.toString()
+            idAssignment = assignments[0].id.toString(),
+            startDate = LocalDateTime.now()
         )
+        assignmentService.subscribe(subscribeRequestDto)
 
-        val obtainedValue = assignmentService.unsubscribe(
+        val unsubscribeRequestDto = UnsubscribeRequestDto(
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString()
         )
+        val obtainedValue = assignmentService.unsubscribe(unsubscribeRequestDto)
+
         val expectedValue = SubscribeResponseDto(
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString(),
@@ -114,18 +133,20 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test throw unsubscribe to assignment`() {
+        var unsubscribeRequestDto = UnsubscribeRequestDto(
+            idUser = users[0].id.toString(),
+            idAssignment = assignments[0].id.toString()
+        )
         assertThrows<NotFoundException> {
-            assignmentService.unsubscribe(
-                idUser = UUID.randomUUID().toString(),
-                idAssignment = assignments[0].id.toString()
-            )
+            assignmentService.unsubscribe(unsubscribeRequestDto)
         }
 
+        unsubscribeRequestDto = UnsubscribeRequestDto(
+            idUser = UUID.randomUUID().toString(),
+            idAssignment = UUID.randomUUID().toString()
+        )
         assertThrows<NotFoundException> {
-            assignmentService.unsubscribe(
-                idUser = UUID.randomUUID().toString(),
-                idAssignment = UUID.randomUUID().toString()
-            )
+            assignmentService.unsubscribe(unsubscribeRequestDto)
         }
     }
 }

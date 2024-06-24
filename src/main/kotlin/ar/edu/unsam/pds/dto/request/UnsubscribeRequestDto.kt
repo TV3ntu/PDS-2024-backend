@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-data class SubscribeRequestDto(
+data class UnsubscribeRequestDto(
     @field: NotNull(message = "El ID de usuario no debe ser nulo")
     @field: NotBlank(message = "El ID de usuario no debe estar en blanco")
     @field: Pattern(
@@ -23,9 +23,4 @@ data class SubscribeRequestDto(
         message = "UUID de clase debe ser valido"
     )
     val idAssignment: String,
-
-    @field: DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @field: NotNull(message = "La fecha de inicio no debe ser nula")
-    @field: NotBlank(message = "La fecha de inicio no debe estar en blanco")
-    val startDate: LocalDateTime
 )

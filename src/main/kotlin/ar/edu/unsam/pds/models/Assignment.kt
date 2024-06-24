@@ -20,7 +20,7 @@ class Assignment(
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "assignmentsList")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "subscriptions")
     val subscribedUsers = mutableSetOf<User>()
 
     @ManyToOne(fetch = FetchType.EAGER)

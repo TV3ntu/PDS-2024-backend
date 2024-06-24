@@ -16,7 +16,7 @@ interface UserRepository : JpaRepository<User, UUID>{
         """
         SELECT CASE WHEN COUNT(assignmentsList) > 0 THEN true ELSE false END
         FROM User u
-        JOIN u.assignmentsList assignmentsList
+        JOIN u.subscriptions assignmentsList
         WHERE u.id = :idUser
     """
     )

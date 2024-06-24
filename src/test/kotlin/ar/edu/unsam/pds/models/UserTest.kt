@@ -44,13 +44,13 @@ class UserTest : BootstrapBasicTest() {
         users[0].addAssignment(assignments[0])
         users[0].addAssignment(assignments[1])
 
-        assertEquals(assignments.toSet(), users[0].assignmentsList)
+        assertEquals(assignments.toSet(), users[0].subscriptions)
     }
 
     @Test
     fun `Try adding assignment to the user`() {
         users[0].addAssignment(assignment)
-        assertEquals(setOf(assignment), users[0].assignmentsList)
+        assertEquals(setOf(assignment), users[0].subscriptions)
     }
 
     @Test
@@ -63,7 +63,7 @@ class UserTest : BootstrapBasicTest() {
 
     @Test fun `Try subscribing to an assignment`() {
         users[0].subscribe(assignment)
-        assertEquals(setOf(assignment), users[0].assignmentsList)
+        assertEquals(setOf(assignment), users[0].subscriptions)
     }
 
     @Test fun `Try subscribing with not enough credits`() {
@@ -78,11 +78,11 @@ class UserTest : BootstrapBasicTest() {
         users[0].addAssignment(assignments[0])
         users[0].addAssignment(assignments[1])
 
-        assertEquals(assignments.toMutableSet(), users[0].assignmentsList)
+        assertEquals(assignments.toMutableSet(), users[0].subscriptions)
 
         users[0].removeAssignment(assignments[0])
 
-        assertEquals(mutableSetOf(assignments[1]), users[0].assignmentsList)
+        assertEquals(mutableSetOf(assignments[1]), users[0].subscriptions)
     }
 
     @Test

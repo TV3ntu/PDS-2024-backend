@@ -52,8 +52,6 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/*"),
                 antMatcher(GET, "/api/users/*/courses"),
                 antMatcher(GET, "/api/users/*/subscriptions"),
-
-
                 antMatcher(GET, "/api/courses/*/reviews"),
             ).permitAll()
 
@@ -79,10 +77,9 @@ class FilterChainConfiguration {
             // USER Y ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             .requestMatchers(
                 antMatcher(POST, "/api/institutions"),
-                antMatcher(POST, "/api/assignments/subscribe"),
-                antMatcher(POST, "/api/assignments/unsubscribe"),
+                //antMatcher(POST, "/api/assignments/subscribe"),
+                //antMatcher(POST, "/api/assignments/unsubscribe"),
                 antMatcher(PATCH, "/api/users/*"),
-
                 antMatcher(GET, "/api/users/reviews"),
                 antMatcher(POST, "/api/courses/*/review"),
             ).hasAnyRole("USER", "ADMIN")

@@ -7,6 +7,7 @@ import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Institution
 import java.time.LocalDate
+import java.util.*
 
 object AssignmentMapper {
 
@@ -21,12 +22,12 @@ object AssignmentMapper {
         )
     }
 
-    fun subscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
-        return SubscribeResponseDto(idUser, idAssignment, "Suscripción exitosa", LocalDate.now())
+    fun subscribeResponse(idUser: UUID, idAssignment: UUID): SubscribeResponseDto {
+        return SubscribeResponseDto(idUser.toString(), idAssignment.toString(), "Suscripción exitosa", LocalDate.now())
     }
 
-    fun unsubscribeResponse(idUser: String, idAssignment: String): SubscribeResponseDto {
-        return SubscribeResponseDto(idUser, idAssignment, "Desuscripción exitosa", LocalDate.now())
+    fun unsubscribeResponse(idUser: UUID, idAssignment: UUID): SubscribeResponseDto {
+        return SubscribeResponseDto(idUser.toString(), idAssignment.toString(), "Desuscripción exitosa", LocalDate.now())
     }
 
     fun buildAssignmentStatsDto(assignment: Assignment): AssignmentStatsResponseDto {

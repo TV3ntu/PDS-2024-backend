@@ -123,7 +123,7 @@ class UserService(
 
     fun getSubscriptions(idUser: String): List<SubscriptionResponseDto> {
         val user = findUserById(idUser)
-        val subscriptions = user.assignmentsList.map { assignment ->
+        val subscriptions = user.subscriptions.map { assignment ->
             val institution = institutionService.findInstitutionByCourseId(assignment.course.id)
             AssignmentMapper.buildSubscriptionDto(assignment, institution)
         }

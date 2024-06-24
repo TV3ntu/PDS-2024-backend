@@ -19,32 +19,32 @@ class User(
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "app_user_assignment",
+        name = "APP_SUBSCRIPTION",
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "assignment_id")]
     )
-    val assignmentsList = mutableSetOf<Assignment>()
+    val subscriptions = mutableSetOf<Assignment>()
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val reviews= mutableSetOf<Review>()
 
     fun subscribedCourses(): Set<Course> {
-        return assignmentsList.map { it.course }.toSet()
+        return subscriptions.map { it.course }.toSet()
     }
 
     fun addAssignment(assignment: Assignment) {
-        if (assignmentsList.any { it.id == assignment.id }) {
+        if (subscriptions.any { it.id == assignment.id }) {
             throw ValidationException("El usuario ya está subscripto a esta asignación")
         } else {
-            assignmentsList.add(assignment)
+            subscriptions.add(assignment)
         }
     }
 
     fun removeAssignment(assignment: Assignment) {
-        if (!assignmentsList.any { it.id == assignment.id }) {
+        if (!subscriptions.any { it.id == assignment.id }) {
             throw ValidationException("El usuario no está subscripto a esta asignación")
         } else {
-            assignmentsList.removeIf { it.id == assignment.id }
+            subscriptions.removeIf { it.id == assignment.id }
         }
     }
 
