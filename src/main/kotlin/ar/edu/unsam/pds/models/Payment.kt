@@ -27,4 +27,8 @@ class Payment(
     @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscription_id", unique = true)
+    lateinit var subscription: Subscription
+
 }

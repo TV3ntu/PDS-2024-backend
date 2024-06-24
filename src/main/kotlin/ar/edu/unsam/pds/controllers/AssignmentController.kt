@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
 import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
+import ar.edu.unsam.pds.dto.request.UnsubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.security.models.Principal
@@ -39,27 +40,15 @@ class AssignmentController : UUIDValid() {
     fun subscribeToAssignment(
         @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto
     ): ResponseEntity<SubscribeResponseDto> {
-        this.validatedUUID(subscribeRequestDto.idUser)
-        this.validatedUUID(subscribeRequestDto.idAssignment)
-
-        val idUser = subscribeRequestDto.idUser!!
-        val idAssignment = subscribeRequestDto.idAssignment!!
-
-        return ResponseEntity.ok(assignmentService.subscribe(idUser, idAssignment))
+        return ResponseEntity.ok(assignmentService.subscribe(subscribeRequestDto))
     }
 
     @PostMapping("/unsubscribe")
     @Operation(summary = "A user unsubscribes to a assignment")
     fun unsubscribeToAssignment(
-        @RequestBody @Valid subscribeRequestDto: SubscribeRequestDto
+        @RequestBody @Valid unsubscribeRequestDto: UnsubscribeRequestDto
     ): ResponseEntity<SubscribeResponseDto> {
-        this.validatedUUID(subscribeRequestDto.idUser)
-        this.validatedUUID(subscribeRequestDto.idAssignment)
-
-        val idUser = subscribeRequestDto.idUser!!
-        val idAssignment = subscribeRequestDto.idAssignment!!
-
-        return ResponseEntity.ok(assignmentService.unsubscribe(idUser, idAssignment))
+        return ResponseEntity.ok(assignmentService.unsubscribe(unsubscribeRequestDto))
     }
 
     @PostMapping("")

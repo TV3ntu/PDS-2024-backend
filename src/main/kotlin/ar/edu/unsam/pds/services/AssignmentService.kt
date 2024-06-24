@@ -1,25 +1,21 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
+import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
+import ar.edu.unsam.pds.dto.request.UnsubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
-import ar.edu.unsam.pds.models.Assignment
-import ar.edu.unsam.pds.models.Payment
-import ar.edu.unsam.pds.models.User
-import ar.edu.unsam.pds.models.Schedule
-import ar.edu.unsam.pds.repository.AssignmentRepository
-import ar.edu.unsam.pds.repository.PaymentRepository
-import ar.edu.unsam.pds.repository.CourseRepository
-import ar.edu.unsam.pds.repository.ScheduleRepository
-import ar.edu.unsam.pds.repository.UserRepository
+import ar.edu.unsam.pds.models.*
+import ar.edu.unsam.pds.repository.*
 import ar.edu.unsam.pds.security.models.Principal
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -29,6 +25,7 @@ class AssignmentService(
     private val paymentRepository: PaymentRepository,
     private val scheduleRepository: ScheduleRepository,
     private val courseRepository: CourseRepository,
+    private val subscriptionRepository: SubscriptionRepository,
     private val emailService: EmailService,
 ) {
 
@@ -43,12 +40,31 @@ class AssignmentService(
     }
 
     @Transactional
-    fun subscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
-        val assignment = findAssignmentById(idAssignment)
-        val user = findUserById(idUser)
+    fun subscribe(subscribeRequestDto: SubscribeRequestDto): SubscribeResponseDto {
+        val assignment = findAssignmentById(subscribeRequestDto.idAssignment)
+        val user = findUserById(subscribeRequestDto.idUser)
 
         user.subscribe(assignment)
         assignment.addSubscribedUser(user)
+
+        val payment = createPayment(user, assignment)
+        val subscription = createSubscription(user, assignment, subscribeRequestDto.startDate, payment)
+
+        subscriptionRepository.save(subscription)
+        paymentRepository.save(payment)
+
+        sendSubscriptionEmails(user, assignment, payment)
+
+        return AssignmentMapper.subscribeResponse(user.id, assignment.id)
+    }
+
+    private fun sendSubscriptionEmails(user: User, assignment: Assignment, payment: Payment) {
+        emailService.sendSubscriptionConfirmationEmail(user.email, assignment.course.title, user.name)
+        emailService.sendPaymentConfirmationEmail(user.email, payment.amount, user.name, payment.id.toString())
+
+    }
+
+    private fun createPayment(user: User, assignment: Assignment): Payment {
         val payment = Payment(
             amount = assignment.price,
             date = LocalDate.now(),
@@ -57,25 +73,29 @@ class AssignmentService(
             user = user,
             assignment = assignment
         )
+        return payment
+    }
 
-        userRepository.save(user)
-        emailService.sendSubscriptionConfirmationEmail(user.email, assignment.course.title, user.name)
-        paymentRepository.save(payment)
-        emailService.sendPaymentConfirmationEmail(user.email, payment.amount, user.name, payment.id.toString())
-
-        return AssignmentMapper.subscribeResponse(idUser, idAssignment)
+    private fun createSubscription(user: User, assignment: Assignment, startDate: LocalDateTime, payment: Payment): Subscription {
+        val subscription = Subscription(
+            startDate = startDate,
+            user = user,
+            assignment = assignment,
+            payment = payment
+        )
+        return subscription
     }
 
     @Transactional
-    fun unsubscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
-        val assignment = findAssignmentById(idAssignment)
-        val user = findUserById(idUser)
+    fun unsubscribe(unsubscribeRequestDto: UnsubscribeRequestDto): SubscribeResponseDto {
+        val assignment = findAssignmentById(unsubscribeRequestDto.idAssignment)
+        val user = findUserById(unsubscribeRequestDto.idUser)
 
         user.removeAssignment(assignment)
         assignment.removeSubscribedUser(user)
 
         userRepository.save(user)
-        return AssignmentMapper.unsubscribeResponse(idUser, idAssignment)
+        return AssignmentMapper.unsubscribeResponse(user.id, assignment.id)
     }
 
     private fun findUserById(idUser: String): User {

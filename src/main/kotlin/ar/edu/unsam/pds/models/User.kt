@@ -19,7 +19,7 @@ class User(
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "app_user_assignment",
+        name = "app_subscriptions",
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "assignment_id")]
     )
