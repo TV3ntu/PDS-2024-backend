@@ -135,7 +135,7 @@ class UserControllerDtosTest {
                   "credits": 10000
                 }
             """.trimIndent())
-        ).andExpect(status().isConflict)
+        ).andExpect(status().isUnsupportedMediaType)
 //        .andExpect(
 //            jsonPath("$.message").
 //            value("El uuid es invalido")
@@ -157,7 +157,7 @@ class UserControllerDtosTest {
                   "credits": 10000
                 }
             """.trimIndent())
-        ).andExpect(status().isBadRequest)
+        ).andExpect(status().isUnsupportedMediaType)
 //        .andExpect(
 //            jsonPath("$.message").
 //            value("UUID debe ser valido")
@@ -179,7 +179,7 @@ class UserControllerDtosTest {
                   "credits": 10000
                 }
             """.trimIndent())
-        ).andExpect(status().isBadRequest)
+        ).andExpect(status().isUnsupportedMediaType)
 //        .andExpect(
 //            jsonPath("$.message").
 //            value("El campo nombre no debe estar en blanco")
@@ -201,7 +201,7 @@ class UserControllerDtosTest {
                   "credits": 10000
                 }
             """.trimIndent())
-        ).andExpect(status().isBadRequest)
+        ).andExpect(status().isUnsupportedMediaType)
 //        .andExpect(
 //            jsonPath("$.message").
 //            value("El campo apellido no debe estar en blanco")

@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.controllers
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
 import ar.edu.unsam.pds.dto.request.UserRequestDto
+import ar.edu.unsam.pds.dto.request.UserRequestUpdateDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -63,11 +65,11 @@ class UserController : UUIDValid() {
         return ResponseEntity.ok(userService.getUserDetail(idUser))
     }
 
-    @PatchMapping("/{idUser}")
+    @PatchMapping(value=["/{idUser}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "Update a user's details")
     fun updateDetail(
         @PathVariable idUser: String,
-        @RequestBody @Valid user: UserRequestDto
+        @ModelAttribute @Valid user: UserRequestUpdateDto
     ): ResponseEntity<UserResponseDto> {
         this.validatedUUID(idUser)
         val originalUser = userService.updateDetail(idUser, user)

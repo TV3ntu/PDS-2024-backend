@@ -2,7 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
-import ar.edu.unsam.pds.dto.request.UserRequestDto
+import ar.edu.unsam.pds.dto.request.UserRequestUpdateDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
@@ -101,13 +101,24 @@ class UserService(
     }
 
     @Transactional
-    fun updateDetail(idUser: String, userDetail: UserRequestDto): UserResponseDto {
+    fun updateDetail(idUser: String, userDetail: UserRequestUpdateDto): UserResponseDto {
         val user = findUserById(idUser)
-        val updatedUser = UserMapper.patchUser(user, userDetail)
-        if (user.credits < updatedUser.credits) {
-            emailService.sendCreditsLoadedEmail(user.email, updatedUser.credits, user.name)
+
+        if (userDetail.file != null) {
+            val imageName = storageService.updatePrivate(user.image,userDetail.file)
+
+            user.image = imageName
         }
-        userRepository.save(updatedUser)
+
+        user.name = userDetail.name
+        user.lastName = userDetail.lastName
+        user.email = userDetail.email
+
+        if (user.credits < userDetail.credits) {
+            emailService.sendCreditsLoadedEmail(user.email, userDetail.credits, user.name)
+        }
+        user.credits = userDetail.credits //?: user.credits
+        userRepository.save(user)
         return UserMapper.buildUserDto(user)
     }
 
