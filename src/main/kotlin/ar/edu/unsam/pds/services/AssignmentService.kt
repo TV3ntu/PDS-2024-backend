@@ -2,11 +2,13 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
+import ar.edu.unsam.pds.dto.response.AssignmentUsersSubscribedResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
+import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.models.Assignment
 import ar.edu.unsam.pds.models.Payment
 import ar.edu.unsam.pds.models.User
@@ -166,6 +168,17 @@ class AssignmentService(
 
         course.removeAssignment(assignment)
         courseRepository.save(course)
+    }
+
+    fun getAssignmentSuscribedUsers(idAssignment: String): AssignmentUsersSubscribedResponseDto {
+        val assignment = findAssignmentById(idAssignment)
+        val users = assignment.subscribedUsers.map { user ->
+            UserMapper.buildUserSuscribedDto(user)
+        }.toMutableList()
+        return AssignmentUsersSubscribedResponseDto(
+            assignment = AssignmentMapper.buildAssignmentDto(assignment),
+            users = users
+        )
     }
 
 }

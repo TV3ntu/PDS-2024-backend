@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.controllers
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
 import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
+import ar.edu.unsam.pds.dto.response.AssignmentUsersSubscribedResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.AssignmentService
@@ -80,4 +81,14 @@ class AssignmentController : UUIDValid() {
         assignmentService.deleteAssignment(idAssignment, principal)
         return ResponseEntity.ok(mapOf("message" to "Assignment eliminado correctamente."))
     }
+
+    @GetMapping("{idAssignment}/admin")
+    @Operation(summary = "get users subscribed to assignment for administrator")
+    fun getAssignmentSuscribedUsers(
+        @PathVariable idAssignment: String
+    ): ResponseEntity<AssignmentUsersSubscribedResponseDto> {
+        this.validatedUUID(idAssignment)
+        return ResponseEntity.ok(assignmentService.getAssignmentSuscribedUsers(idAssignment))
+    }
+
 }
