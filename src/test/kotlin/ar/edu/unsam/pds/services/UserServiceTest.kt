@@ -39,7 +39,8 @@ class UserServiceTest : BootstrapNBTest() {
     fun prepareTestData() {
         institutionService = InstitutionService(
             institutionRepository = institutionRepository,
-            principalRepository = principalRepository
+            principalRepository = principalRepository,
+            userRepository = userRepository
         )
 
         userService = UserService(
