@@ -2,14 +2,14 @@ package ar.edu.unsam.pds.models
 
 import jakarta.persistence.*
 import java.io.Serializable
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
 @Table(name = "APP_PAYMENT")
 class Payment(
     val amount: Double,
-    val date: LocalDate,
+    val date: LocalDateTime,
     val status: String,
     val paymentMethod: String,
 

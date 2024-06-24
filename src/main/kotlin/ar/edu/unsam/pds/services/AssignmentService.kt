@@ -14,6 +14,7 @@ import ar.edu.unsam.pds.repository.*
 import ar.edu.unsam.pds.security.models.Principal
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
@@ -67,7 +68,7 @@ class AssignmentService(
     private fun createPayment(user: User, assignment: Assignment): Payment {
         val payment = Payment(
             amount = assignment.price,
-            date = LocalDate.now(),
+            date = LocalDateTime.now(),
             status = "APPROVED",
             paymentMethod = "CREDITS",
             user = user,
@@ -91,11 +92,20 @@ class AssignmentService(
         val assignment = findAssignmentById(unsubscribeRequestDto.idAssignment)
         val user = findUserById(unsubscribeRequestDto.idUser)
 
+        paymentRepository.findLastPaymentByUserIdAndAssignmentId(user.id, assignment.id)?.let {
+            if (lessThanTwoHours(it.date)) user.credits += it.amount
+        }
+
         user.removeAssignment(assignment)
         assignment.removeSubscribedUser(user)
-
         userRepository.save(user)
         return AssignmentMapper.unsubscribeResponse(user.id, assignment.id)
+    }
+
+    fun lessThanTwoHours(timeToCompare: LocalDateTime): Boolean {
+        val now = LocalDateTime.now()
+        val hoursDifference = Duration.between(timeToCompare, now).toHours()
+        return hoursDifference < 2
     }
 
     private fun findUserById(idUser: String): User {
@@ -168,7 +178,7 @@ class AssignmentService(
             throw ValidationException("No se puede eliminar un curso con usuarios inscriptos")
         }
 
-        val course = courseRepository.findByAssigmentId(assignment.id).orElseThrow {
+        val course = courseRepository.findByAssignmentId(assignment.id).orElseThrow {
             NotFoundException("curso no encontrado")
         }
 
