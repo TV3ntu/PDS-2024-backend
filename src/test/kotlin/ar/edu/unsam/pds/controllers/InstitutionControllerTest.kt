@@ -13,6 +13,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockMultipartFile
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -25,6 +27,8 @@ class InstitutionControllerTest {
     private lateinit var principal: Principal
     private lateinit var user: User
     private lateinit var uuid: String
+
+    val fileImg: MultipartFile = MockMultipartFile("file", "filename.jpg", "text/plain", "some content".toByteArray())
 
     @BeforeEach
     fun setUp() {
@@ -103,7 +107,7 @@ class InstitutionControllerTest {
             name = institution.name,
             description = institution.description,
             category = institution.category,
-            image = institution.image
+            file = fileImg
         )
 
         `when`(institutionService.createInstitution(institutionReq, principal)).thenReturn(institutionRes)

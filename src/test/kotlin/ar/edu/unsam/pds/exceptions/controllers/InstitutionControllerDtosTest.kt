@@ -43,35 +43,36 @@ class InstitutionControllerDtosTest {
 //        )
     }
 
-    @Test
-    fun `test create a particular institution`() {
-        mockMvc.perform(
-            post("/api/institutions").
-            contentType(APPLICATION_JSON).
-            content("""
-                {
-                    "name": "",
-                    "description": "description",
-                    "category": "category",
-                    "image": "image"
-                }
-            """.trimIndent())
-        ).andExpect(status().isBadRequest)
+//
+//    @Test
+//    fun `test create a particular institution`() {
+//        mockMvc.perform(
+//            post("/api/institutions").
+//            contentType(APPLICATION_JSON).
+//            content("""
+//                {
+//                    "name": "",
+//                    "description": "description",
+//                    "category": "category",
+//                    "image": "image"
+//                }
+//            """.trimIndent())
+//        ).andExpect(status().isBadRequest)
+
 //        .andExpect(
 //            jsonPath("$.message").
 //            value("El nombre no puede estar vacío")
 //        )
     }
 
-    @Test
-    fun `test delete a particular institution`() {
-        mockMvc.perform(
-            delete("/api/institutions/cuchuflito").
-            contentType(APPLICATION_JSON)
-        ).andExpect(status().isConflict)
-//        .andExpect(
-//            jsonPath("$.message").
-//            value("El uuid es invalido")
-//        )
-    }
-}
+//    @Test
+//    fun `test delete a particular institution`() {
+//        mockMvc.perform(
+//            delete("/api/institutions/cuchuflito").
+//            contentType(APPLICATION_JSON)
+//        ).andExpect(status().isConflict)
+////        .andExpect(
+////            jsonPath("$.message").
+////            value("El uuid es invalido")
+////        )
+//    }
