@@ -54,7 +54,7 @@ class FilterChainConfiguration {
                 antMatcher(GET, "/api/users/*/subscriptions"),
 
 
-                antMatcher(GET, "/api/reviews/course/*"),
+                antMatcher(GET, "/api/courses/*/reviews"),
             ).permitAll()
 
             // ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -83,8 +83,8 @@ class FilterChainConfiguration {
                 antMatcher(POST, "/api/assignments/unsubscribe"),
                 antMatcher(PATCH, "/api/users/*"),
 
-                antMatcher(GET, "/api/reviews/user"),
-                antMatcher(POST, "/api/reviews"),
+                antMatcher(GET, "/api/users/reviews"),
+                antMatcher(POST, "/api/courses/*/review"),
             ).hasAnyRole("USER", "ADMIN")
 
             // H2 DataBase @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

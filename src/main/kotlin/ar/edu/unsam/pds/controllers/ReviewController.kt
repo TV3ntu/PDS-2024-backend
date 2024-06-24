@@ -12,12 +12,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("api/reviews")
-@CrossOrigin("*")
+@RequestMapping("") @CrossOrigin("*")
 class ReviewController : UUIDValid() {
-    @Autowired private lateinit var reviewService: ReviewService
+    @Autowired lateinit var reviewService: ReviewService
 
-    @GetMapping("user")
+    @GetMapping("api/users/reviews")
     @Operation(summary = "Get all user reviews")
     fun getAllUserReviews(
         @AuthenticationPrincipal principal: Principal
@@ -25,7 +24,7 @@ class ReviewController : UUIDValid() {
         return ResponseEntity.ok(reviewService.getAllUserReviews(principal))
     }
 
-    @GetMapping("course/{courseId}")
+    @GetMapping("api/courses/{courseId}/reviews")
     @Operation(summary = "Get reviews of all courses")
     fun getReviewsOfAllCourses(
         @PathVariable courseId: String
@@ -34,12 +33,14 @@ class ReviewController : UUIDValid() {
         return ResponseEntity.ok(reviewService.getReviewsOfAllCourses(courseId))
     }
 
-    @PostMapping("")
+    @PostMapping("api/courses/{courseId}/review")
     @Operation(summary = "Create reviews")
     fun createReviews(
+        @PathVariable courseId: String,
         @RequestBody @Valid review: ReviewRequestDto,
         @AuthenticationPrincipal principal: Principal
     ): ResponseEntity<ReviewResponseDto> {
-        return ResponseEntity.ok(reviewService.createReviews(principal, review))
+        this.validatedUUID(courseId)
+        return ResponseEntity.ok(reviewService.createReviews(principal, courseId, review))
     }
 }

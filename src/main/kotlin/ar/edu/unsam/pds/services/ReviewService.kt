@@ -27,8 +27,8 @@ class ReviewService(
         return reviews.map { ReviewMapper.buildReviewResponseDto(it) }
     }
 
-    fun createReviews(principal: Principal, review: ReviewRequestDto): ReviewResponseDto {
-        val uuid = UUID.fromString(review.courseId)
+    fun createReviews(principal: Principal, courseId: String, review: ReviewRequestDto): ReviewResponseDto {
+        val uuid = UUID.fromString(courseId)
         val course = courseRepository.findById(uuid).orElseThrow {
             NotFoundException("Curso inexistente con uuid provisto")
         }
