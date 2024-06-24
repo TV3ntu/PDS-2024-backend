@@ -16,7 +16,7 @@ class StorageService {
     private val basePath: Path = Path.of("media").toAbsolutePath()
     private val privatePath: Path = Path.of("media/private").toAbsolutePath()
     private val publicPath: Path = Path.of("media/public").toAbsolutePath()
-
+    public val defaultImage = "$baseUrl/private/default.png"
     init {
         // Crear directorios si no existen
         if (!Files.exists(basePath)) {
