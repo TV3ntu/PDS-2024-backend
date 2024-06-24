@@ -66,8 +66,9 @@ class StorageService {
     private fun updateImage(directory: Path, oldImageName: String, newImageFile: MultipartFile?): String {
 
         if(newImageFile == null) throw ValidationException("la imagen es requerida")
-
-        deleteImage(directory, oldImageName)
+        if(oldImageName != defaultImage){
+            deleteImage(directory, oldImageName)
+        }
         return saveImage(directory, newImageFile)
     }
 
