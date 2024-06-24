@@ -173,7 +173,7 @@ class AssignmentService(
     fun getAssignmentSuscribedUsers(idAssignment: String): AssignmentUsersSubscribedResponseDto {
         val assignment = findAssignmentById(idAssignment)
         val users = assignment.subscribedUsers.map { user ->
-            UserMapper.buildUserDto(user)
+            UserMapper.buildUserSuscribedDto(user)
         }.toMutableList()
         return AssignmentUsersSubscribedResponseDto(
             assignment = AssignmentMapper.buildAssignmentDto(assignment),

@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.dto.request.UserRequestDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
+import ar.edu.unsam.pds.dto.response.UserSubscribedResponseDto
 import ar.edu.unsam.pds.models.User
 
 object UserMapper {
@@ -40,4 +41,13 @@ object UserMapper {
         user.credits = userDetail.credits //?: user.credits
         return user
     }
+
+    fun buildUserSuscribedDto(user: User): UserSubscribedResponseDto {
+        return UserSubscribedResponseDto(
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email
+        )
+    }
+
 }
