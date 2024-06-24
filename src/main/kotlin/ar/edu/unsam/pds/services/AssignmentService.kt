@@ -72,16 +72,15 @@ class AssignmentService(
     fun unsubscribe(idUser: String, idAssignment: String): SubscribeResponseDto {
         val assignment = findAssignmentById(idAssignment)
         val user = findUserById(idUser)
-        val lastPayment = paymentRepository.findLastPaymentByUserIdAndAssignmentId(user.id, assignment.id)
 
-        if (lastPayment != null) {
-            if (lessThanTwoHours(lastPayment.date)) {
-                user.credits += lastPayment.amount
-            }
+        paymentRepository.findLastPaymentByUserIdAndAssignmentId(user.id, assignment.id)?.let {
+            if (lessThanTwoHours(it.date)) user.credits += it.amount
         }
+
         user.removeAssignment(assignment)
         assignment.removeSubscribedUser(user)
         userRepository.save(user)
+
         return AssignmentMapper.unsubscribeResponse(idUser, idAssignment)
     }
 
