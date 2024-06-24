@@ -5,11 +5,10 @@ import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import ar.edu.unsam.pds.services.EmailService
 import ar.edu.unsam.pds.services.StorageService
 import org.junit.jupiter.api.BeforeEach
+import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.mock.web.MockMultipartFile
-import org.springframework.web.multipart.MultipartFile
 
 @DataJpaTest
 class BootstrapNBTest : BootstrapBasicTest() {
@@ -20,10 +19,11 @@ class BootstrapNBTest : BootstrapBasicTest() {
     @Autowired lateinit var courseRepository: CourseRepository
     @Autowired lateinit var institutionRepository: InstitutionRepository
     @Autowired lateinit var paymentRepository: PaymentRepository
-    @Autowired @MockBean lateinit var emailService: EmailService
-    @Autowired lateinit var imageService: StorageService
 
-    val fileImg: MultipartFile = MockMultipartFile("file", "filename.jpg", "text/plain", "some content".toByteArray())
+    @Mock lateinit var imageService: StorageService
+    @Mock lateinit var emailService: EmailService
+
+    lateinit var file: MockMultipartFile
 
     @BeforeEach
     fun setUpBootstrapNBTest() {
@@ -33,5 +33,12 @@ class BootstrapNBTest : BootstrapBasicTest() {
         assignmentRepository.saveAll(assignments)
         courseRepository.saveAll(courses)
         institutionRepository.saveAll(institutions)
+
+        file = MockMultipartFile(
+            "filename",
+            "filename.jpg",
+            "image/jpeg",
+            "some content".toByteArray()
+        )
     }
 }

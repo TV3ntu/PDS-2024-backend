@@ -8,23 +8,17 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 @ExtendWith(MockitoExtension::class)
-class InstitutionControllerDtosTest {
-    private lateinit var mockMvc: MockMvc
-
+class InstitutionControllerDtosTest : ControllersDtosBasicTest() {
     @InjectMocks
     private lateinit var institutionController: InstitutionController
 
     @BeforeEach
-    fun setUp() {
+    fun setUpInstitutionControllerDtosTest() {
         mockMvc = MockMvcBuilders
             .standaloneSetup(institutionController)
             .setControllerAdvice(RestExceptionHandler())
@@ -34,8 +28,7 @@ class InstitutionControllerDtosTest {
     @Test
     fun `test get a particular institution`() {
         mockMvc.perform(
-            get("/api/institutions/cuchuflito").
-            contentType(APPLICATION_JSON)
+            get("/api/institutions/cuchuflito").contentType(APPLICATION_JSON)
         ).andExpect(status().isConflict)
 //        .andExpect(
 //            jsonPath("$.message").
@@ -43,36 +36,30 @@ class InstitutionControllerDtosTest {
 //        )
     }
 
-//
-//    @Test
-//    fun `test create a particular institution`() {
-//        mockMvc.perform(
-//            post("/api/institutions").
-//            contentType(APPLICATION_JSON).
-//            content("""
-//                {
-//                    "name": "",
-//                    "description": "description",
-//                    "category": "category",
-//                    "image": "image"
-//                }
-//            """.trimIndent())
-//        ).andExpect(status().isBadRequest)
-
+    @Test
+    fun `test create a particular institution`() {
+        mockMvc.perform(
+            multipart("/api/institutions")
+                .file(file)
+                .param("name", "")
+                .param("description", "description")
+                .param("category", "category")
+        ).andExpect(status().isBadRequest)
 //        .andExpect(
 //            jsonPath("$.message").
 //            value("El nombre no puede estar vacío")
 //        )
     }
 
-//    @Test
-//    fun `test delete a particular institution`() {
-//        mockMvc.perform(
-//            delete("/api/institutions/cuchuflito").
-//            contentType(APPLICATION_JSON)
-//        ).andExpect(status().isConflict)
-////        .andExpect(
-////            jsonPath("$.message").
-////            value("El uuid es invalido")
-////        )
-//    }
+    @Test
+    fun `test delete a particular institution`() {
+        mockMvc.perform(
+            delete("/api/institutions/cuchuflito").
+            contentType(APPLICATION_JSON)
+        ).andExpect(status().isConflict)
+//        .andExpect(
+//            jsonPath("$.message").
+//            value("El uuid es invalido")
+//        )
+    }
+}
