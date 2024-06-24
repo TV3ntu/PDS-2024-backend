@@ -3,8 +3,8 @@ package ar.edu.unsam.pds.controllers
 import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
 import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
-import ar.edu.unsam.pds.dto.response.AssignmentUsersSubscribedResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
+import ar.edu.unsam.pds.dto.response.UserSubscribedResponseDto
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.AssignmentService
 import io.swagger.v3.oas.annotations.Operation
@@ -86,7 +86,7 @@ class AssignmentController : UUIDValid() {
     @Operation(summary = "get users subscribed to assignment for administrator")
     fun getAssignmentSuscribedUsers(
         @PathVariable idAssignment: String
-    ): ResponseEntity<AssignmentUsersSubscribedResponseDto> {
+    ): ResponseEntity<List<UserSubscribedResponseDto>> {
         this.validatedUUID(idAssignment)
         return ResponseEntity.ok(assignmentService.getAssignmentSuscribedUsers(idAssignment))
     }
