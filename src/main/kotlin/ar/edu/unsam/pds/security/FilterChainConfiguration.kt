@@ -61,7 +61,6 @@ class FilterChainConfiguration {
             .requestMatchers(
                 antMatcher(GET, "/api/institutions/admin/*"),
                 antMatcher(GET, "/api/courses/admin/*"),
-
                 antMatcher(POST, "/api/courses"),
                 antMatcher(POST, "/api/courses/*"),
                 antMatcher(DELETE, "/api/courses/*"),
@@ -69,6 +68,7 @@ class FilterChainConfiguration {
                 antMatcher(POST, "/api/assignments"),
                 antMatcher(DELETE, "/api/assignments/*"),
                 antMatcher(DELETE, "/api/institutions/*"),
+                antMatcher(GET, "/api/assignments/*/admin"),
             ).hasRole("ADMIN")
 
             // USER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
