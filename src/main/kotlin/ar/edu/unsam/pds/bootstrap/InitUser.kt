@@ -3,6 +3,7 @@ package ar.edu.unsam.pds.bootstrap
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
+import ar.edu.unsam.pds.services.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component
 class InitUser : BootstrapGeneric("users") {
     @Autowired private lateinit var passwordEncoder: PasswordEncoder
     @Autowired private lateinit var principalRepository: PrincipalRepository
-
+    @Autowired private lateinit var storageService: StorageService
     override fun doAfterPropertiesSet() {
         // ADMIN
         principalRepository.save(
@@ -22,7 +23,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Admin",
                     lastName = "Admin",
                     email = "admin@admin.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     isAdmin = true,
                     credits = 1000.0
                 )
@@ -39,7 +40,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Adan",
                     lastName = "AdanAdan",
                     email = "adan@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 1000.0,
                     isAdmin = true
                 )
@@ -58,7 +59,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Eva",
                     lastName = "EvaEva",
                     email = "eva@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
                 )
 
@@ -76,7 +77,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Bonifacio",
                     lastName = "Gomez",
                     email = "bonifacio@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 1000.0
                 )
 
@@ -94,7 +95,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Clemente",
                     lastName = "Lopez",
                     email = "clemente@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
                 )
 
@@ -112,7 +113,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Dalmacio",
                     lastName = "Martinez",
                     email = "dalmacio@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
                 )
 
@@ -130,7 +131,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Emeterio",
                     lastName = "Garcia",
                     email = "emeterio@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
                 )
 
@@ -148,7 +149,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Taciana",
                     lastName = "Moyano",
                     email = "taciana@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
 
                 )
@@ -167,7 +168,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Ursula",
                     lastName = "Campos",
                     email = "ursula@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
 
                 )
@@ -186,7 +187,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Valentina",
                     lastName = "Soto",
                     email = "valentina@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
 
                 )
@@ -205,7 +206,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Zeferina",
                     lastName = "Chávez",
                     email = "zeferina@email.com",
-                    image = "",
+                    image = storageService.defaultImage,
                     credits = 10000.0
 
                 )

@@ -8,9 +8,11 @@ import ar.edu.unsam.pds.services.InstitutionService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("api/institutions")
@@ -44,10 +46,10 @@ class InstitutionController : UUIDValid() {
         return ResponseEntity.ok(institutionService.getInstitution(idInstitution))
     }
 
-    @PostMapping("")
+    @PostMapping(value = [""], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "Create a institution")
     fun createInstitution(
-        @RequestBody @Valid institution: InstitutionRequestDto,
+        @ModelAttribute @Valid institution: InstitutionRequestDto,
         @AuthenticationPrincipal principal: Principal
     ): ResponseEntity<InstitutionResponseDto> {
         return ResponseEntity.ok(institutionService.createInstitution(institution, principal))

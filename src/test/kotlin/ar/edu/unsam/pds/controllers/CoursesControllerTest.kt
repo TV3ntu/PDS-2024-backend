@@ -14,6 +14,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockMultipartFile
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -25,6 +26,7 @@ class CoursesControllerTest {
     private lateinit var uuid: String
 
     private lateinit var principal: Principal
+    private lateinit var fileImg: MockMultipartFile
 
     @BeforeEach
     fun setUp() {
@@ -55,6 +57,12 @@ class CoursesControllerTest {
             this.initProperties()
         }
 
+        fileImg = MockMultipartFile(
+            "file",
+            "filename.jpg",
+            "text/plain",
+            "some content".toByteArray()
+        )
     }
 
     @Test
@@ -108,7 +116,7 @@ class CoursesControllerTest {
             title = "title 1",
             description = "description",
             category = "category",
-            image = "",
+            file = fileImg,
             institutionId = "123"
         )
 

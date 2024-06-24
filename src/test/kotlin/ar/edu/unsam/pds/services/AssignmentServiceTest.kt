@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.`when`
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.util.*
@@ -49,10 +50,25 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test subscribe to assignment`() {
+
+        `when`(emailService.sendSubscriptionConfirmationEmail(
+            to = users[0].email,
+            courseName = assignments[0].course.title,
+            userName = users[0].name
+        )).then {  }
+
+        `when`(emailService.sendPaymentConfirmationEmail(
+            to = users[0].email,
+            amount = assignments[0].price,
+            userName = users[0].name,
+            transactionId = UUID.randomUUID().toString()
+        )).then {  }
+
         val obtainedValue = assignmentService.subscribe(
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString()
         )
+
         val expectedValue = SubscribeResponseDto(
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString(),

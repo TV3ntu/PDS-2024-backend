@@ -40,14 +40,16 @@ class UserServiceTest : BootstrapNBTest() {
         institutionService = InstitutionService(
             institutionRepository = institutionRepository,
             principalRepository = principalRepository,
-            userRepository = userRepository
+            userRepository = userRepository,
+            imageService = imageService
         )
 
         userService = UserService(
             userRepository = userRepository,
             principalRepository = principalRepository,
             institutionService = institutionService,
-            emailService = emailService
+            emailService = emailService,
+            storageService = imageService
         )
     }
 
@@ -100,7 +102,7 @@ class UserServiceTest : BootstrapNBTest() {
     fun `test login - not existed user`() {
         val userForm = LoginForm("adam@email.com", "0")
 
-        `when`(mockRequest.login("adam@email.com","0")).thenThrow(ServletException())
+        `when`(mockRequest.login("adam@email.com", "0")).thenThrow(ServletException())
 
         assertThrows<NotFoundException> {
             userService.login(userForm, mockRequest)
@@ -135,6 +137,10 @@ class UserServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test register a user`() {
+        `when`(imageService.defaultImage).thenReturn(
+            "https://mock.pirulo/media/private/default.png"
+        )
+
         val id = userService.register(
             RegisterFormDto(
                 name = "juán",
@@ -149,7 +155,7 @@ class UserServiceTest : BootstrapNBTest() {
             name = "juán",
             lastName = "perez",
             email = "juan_perez@email.com",
-            image = "",
+            image = "https://mock.pirulo/media/private/default.png",
             id = id,
             isAdmin = false,
             nextClass = null,
@@ -161,9 +167,14 @@ class UserServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test throw register a user`() {
-        assertThrows<InternalServerError>{
+        assertThrows<InternalServerError> {
             userService.register(
-                RegisterFormDto("juán", "perez", "adam@email.com", "123")
+                RegisterFormDto(
+                    name = "juán",
+                    lastName = "perez",
+                    email = "adam@email.com",
+                    password = "123"
+                )
             )
         }
     }
@@ -210,6 +221,12 @@ class UserServiceTest : BootstrapNBTest() {
             credits = 100000.0,
             nextClass = null
         )
+
+        `when`(emailService.sendCreditsLoadedEmail(
+            to = adanUpdate.email,
+            credits = adanUpdate.credits,
+            userName = adanUpdate.name
+        )).then {  }
 
         userService.updateDetail(
             idUser = users[0].id.toString(),

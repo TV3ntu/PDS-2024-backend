@@ -8,21 +8,18 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 @ExtendWith(MockitoExtension::class)
-class CourseControllerDtosTest {
-    private lateinit var mockMvc: MockMvc
-
+class CourseControllerDtosTest : ControllersDtosBasicTest() {
     @InjectMocks
     private lateinit var coursesController: CoursesController
 
     @BeforeEach
-    fun setUp() {
+    fun setUpCourseControllerDtosTest() {
         mockMvc = MockMvcBuilders
             .standaloneSetup(coursesController)
             .setControllerAdvice(RestExceptionHandler())
@@ -56,38 +53,28 @@ class CourseControllerDtosTest {
     @Test
     fun `test create a course - incorrect title body`() {
         mockMvc.perform(
-            post("/api/courses").
-            contentType(APPLICATION_JSON).
-            content("""
-                {
-                    "title": "",
-                    "description": "description",
-                    "category": "category",
-                    "image": "image",
-                    "institutionId": "88a014a8-95b5-40d1-9b67-92ad662e3c10"
-                }
-            """.trimIndent())
+            multipart("/api/courses")
+                .file(file)
+                .param("title", "")
+                .param("description", "description")
+                .param("category", "category")
+                .param("institutionId", "88a014a8-95b5-40d1-9b67-92ad662e3c10")
         ).andExpect(status().isBadRequest)
-//        .andExpect(
-//            jsonPath("$.message").
-//            value("El campo titulo no puede estar vacío")
-//        )
+        .andExpect(
+            jsonPath("$.message").
+            value("El campo titulo no puede estar vacío")
+        )
     }
 
     @Test
     fun `test create a course - incorrect id body`() {
         mockMvc.perform(
-            post("/api/courses").
-            contentType(APPLICATION_JSON).
-            content("""
-                {
-                    "title": "title",
-                    "description": "description",
-                    "category": "category",
-                    "image": "image",
-                    "institutionId": "cuchuflito"
-                }
-            """.trimIndent())
+            multipart("/api/courses")
+                .file(file)
+                .param("title", "title")
+                .param("description", "description")
+                .param("category", "category")
+                .param("institutionId", "cuchuflito")
         ).andExpect(status().isBadRequest)
 //        .andExpect(
 //            jsonPath("$.message").

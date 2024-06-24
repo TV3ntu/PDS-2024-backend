@@ -32,7 +32,8 @@ class UserService(
     private val userRepository: UserRepository,
     private val principalRepository: PrincipalRepository,
     private val institutionService: InstitutionService,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+    private val storageService: StorageService
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
@@ -68,6 +69,7 @@ class UserService(
             name = form.name,
             lastName = form.lastName,
             email = form.email,
+            image = storageService.defaultImage
         )
         userRepository.save(newUser)
 
@@ -139,10 +141,15 @@ class UserService(
         if (userRepository.hasInscriptions(principal.getUser().id)) {
             throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
         }
+        val avatar = principal.getUser().image
 
         request.logout()
 
         userRepository.delete(principal.user!!)
         principalRepository.delete(principal)
+
+        if(avatar!=storageService.defaultImage){
+            storageService.deletePrivate(principal.getUser().image)
+        }
     }
 }

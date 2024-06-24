@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.`when`
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
 import java.util.*
@@ -25,7 +26,8 @@ class CoursesServiceTest : BootstrapNBTest() {
     fun setUpCoursesServiceTest() {
         courseServices = CoursesService(
             courseRepository = courseRepository,
-            institutionRepository = institutionRepository
+            institutionRepository = institutionRepository,
+            imageService = imageService,
         )
 
         assignmentService = AssignmentService(
@@ -159,8 +161,12 @@ class CoursesServiceTest : BootstrapNBTest() {
             title = "new course",
             description = "new course description",
             category = "new category",
-            image = "",
+            file = file,
             institutionId = institutions[0].id.toString()
+        )
+
+        `when`(imageService.savePublic(file)).thenReturn(
+            "https://mock.pirulo/media/public/filename.jpg"
         )
 
         val obtainedValue = courseServices.createCourse(courseRequest)
@@ -176,7 +182,7 @@ class CoursesServiceTest : BootstrapNBTest() {
             title = "new course",
             description = "new course description",
             category = "new category",
-            image = "",
+            file = file,
             institutionId = "029ce681-9f90-45e7-af7f-e74a8cfb4b57"
         )
 

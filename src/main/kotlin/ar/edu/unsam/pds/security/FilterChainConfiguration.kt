@@ -30,7 +30,7 @@ class FilterChainConfiguration {
             // #########################################################################################################
             .requestMatchers(
                 antMatcher(OPTIONS, "/**"),
-                antMatcher(GET, "/media/public/*"),
+                antMatcher(GET, "/media/public/**"),
 
                 // swagger @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 antMatcher("/swagger-ui/**"),

@@ -20,7 +20,8 @@ import java.util.*
 class InstitutionService(
     private val institutionRepository: InstitutionRepository,
     private val principalRepository: PrincipalRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val imageService: StorageService
 ) {
 
     fun getAll(query: String): List<InstitutionResponseDto> {
@@ -52,12 +53,12 @@ class InstitutionService(
     @Transactional
     fun createInstitution(institution: InstitutionRequestDto, principal: Principal): InstitutionResponseDto {
         principal.getUser().isAdmin = true
-
+        val imageName = imageService.savePublic(institution.file)
         val newInstitution = Institution(
             name = institution.name,
             description = institution.description,
             category = institution.category,
-            image = institution.image
+            image = imageName
         ).apply {
             addAdmin(principal.getUser())
         }
@@ -84,6 +85,8 @@ class InstitutionService(
             NotFoundException("Institucion no encontrada")
         }
 
+        val imageName = institution.image
         institutionRepository.delete(institution)
+        imageService.deletePublic(imageName)
     }
 }

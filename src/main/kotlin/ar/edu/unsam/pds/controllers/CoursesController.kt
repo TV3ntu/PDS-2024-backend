@@ -9,6 +9,7 @@ import ar.edu.unsam.pds.services.CoursesService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -57,11 +58,11 @@ class CoursesController : UUIDValid() {
         courseServices.deleteCourse(idCourse, principal)
         return ResponseEntity.ok(mapOf("message" to "Curso eliminado correctamente."))
     }
-        
-    @PostMapping("")
+
+    @PostMapping(value = [""], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "Create a course")
     fun createCourse(
-        @RequestBody @Valid course: CourseRequestDto
+        @ModelAttribute @Valid course: CourseRequestDto
     ): ResponseEntity<CourseResponseDto> {
         return ResponseEntity.ok(courseServices.createCourse(course))
     }
