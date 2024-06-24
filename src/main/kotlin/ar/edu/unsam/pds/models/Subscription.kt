@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-@Table(name = "app_subscriptions")
+@Table(name = "APP_SUBSCRIPTION")
 class Subscription(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -19,17 +19,16 @@ class Subscription(
     @Column(name = "start_date")
     var startDate: LocalDateTime? = null,
 
+    @Column(name = "end_date")
+    var endDate: LocalDateTime? = null,
+
     @OneToOne(mappedBy = "subscription", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var payment: Payment? = null
+    var payment: Payment
 
 ) : Timestamp(), Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     lateinit var id: UUID
-
-    @Column(name = "end_date")
-    var endDate: LocalDateTime? = null
-    
 
 }

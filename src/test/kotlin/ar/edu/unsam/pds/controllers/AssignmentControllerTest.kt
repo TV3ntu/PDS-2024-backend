@@ -35,7 +35,7 @@ class AssignmentControllerTest {
     private lateinit var scheduleReq: ScheduleRequestDto
     private lateinit var scheduleRes: ScheduleResponseDto
     private lateinit var subscribeRequest: SubscribeRequestDto
-    private lateinit var unsubscribeRequestDto: UnsubscribeRequestDto
+    private lateinit var unsubscribeRequest: UnsubscribeRequestDto
     private lateinit var principal: Principal
     private lateinit var user: User
 
@@ -85,7 +85,7 @@ class AssignmentControllerTest {
             startDate = LocalDateTime.now()
         )
 
-        unsubscribeRequestDto = UnsubscribeRequestDto(
+        unsubscribeRequest = UnsubscribeRequestDto(
             idUser = UUID.randomUUID().toString(),
             idAssignment = assignmentRes.id
         )
@@ -161,10 +161,10 @@ class AssignmentControllerTest {
         )
 
         `when`(
-            assignmentService.unsubscribe(subscribeRequest)
+            assignmentService.unsubscribe(unsubscribeRequest)
         ).thenReturn(response)
 
-        val responseEntity = assignmentController.unsubscribeToAssignment(subscribeRequest)
+        val responseEntity = assignmentController.unsubscribeToAssignment(unsubscribeRequest)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == response)
