@@ -40,10 +40,14 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://45.152.46.1:3306/u739403516_weekbook
-    username: u739403516_weekbook_admin
-    password: +QZlK4>iL
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://45.152.46.1:3306/u739403516_weekbook
+#    username: u739403516_weekbook_admin
+#    password: +QZlK4>iL
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-cpq95s4s1f4s73ch1g7g-a.oregon-postgres.render.com:5432/weekbook_bd
+    username: admin
+    password: xAkFzg2Wa7e3frNxmgRHUFjFFaWs2Bhr
   jpa:
     open-in-view: false
     show-sql: false
@@ -52,7 +56,8 @@ spring:
     properties:
       hibernate:
         format_sql: false
-        dialect: org.hibernate.dialect.MySQLDialect
+#        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   sql:
     init:
       mode: always

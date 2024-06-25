@@ -50,6 +50,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
     implementation("mysql:mysql-connector-java:8.0.28")
+    runtimeOnly("org.postgresql:postgresql")
 
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
