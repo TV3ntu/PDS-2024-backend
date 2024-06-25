@@ -12,17 +12,25 @@ class Course(
     val description: String,
 
     var category: String,
+    @Column(length = 1024)
     var image: String
-) : Serializable {
+) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "course", cascade = [CascadeType.ALL], orphanRemoval = true)
     val assignments = mutableSetOf<Assignment>()
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "course", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val reviews= mutableSetOf<Review>()
+
     fun addAssignment(assignment: Assignment) {
         assignments.add(assignment)
         assignment.attachCourse(this)
+    }
+
+    fun removeAssignment(assignment: Assignment) {
+        assignments.removeIf{ it.id == assignment.id }
     }
 
     fun totalIncome(): Double {
@@ -45,5 +53,13 @@ class Course(
         return assignments.map { it.name() }.toSet()
     }
 
+    fun averageRating(): Double {
+        if (reviews.isEmpty()) {
+            return 0.0
+        }
+
+        val sum = reviews.sumOf { it.rating.toDouble() }
+        return sum / reviews.size
+    }
 
 }

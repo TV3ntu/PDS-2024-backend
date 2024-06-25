@@ -13,7 +13,7 @@ class Institution(
 
     val category: String,
     var image: String
-) : Serializable {
+) : Timestamp(), Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
@@ -21,7 +21,20 @@ class Institution(
     @JoinColumn(name="institution_id", referencedColumnName = "id")
     val courses: MutableSet<Course> = mutableSetOf()
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "app_user_institution",
+        joinColumns = [JoinColumn(name = "institution_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_id")]
+    )
+    val admin = mutableSetOf<User>()
+
     fun addCourse(course: Course) {
         courses.add(course)
     }
+
+    fun addAdmin(user: User) {
+        admin.add(user)
+    }
+
 }

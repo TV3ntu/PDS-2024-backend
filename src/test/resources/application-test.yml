@@ -1,0 +1,7 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+email:
+  enabled: false  # Desactiva el servicio de correo electrónico en los tests

@@ -1,175 +1,189 @@
 package ar.edu.unsam.pds.services
 
+import ar.edu.unsam.pds.BootstrapNBTest
+import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
+import ar.edu.unsam.pds.dto.request.UserRequestUpdateDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
-import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.models.*
-import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
-import ar.edu.unsam.pds.repository.*
-import ar.edu.unsam.pds.security.repository.PrincipalRepository
-import ar.edu.unsam.pds.utils.Mapper
+import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
+import ar.edu.unsam.pds.exceptions.InternalServerError
+import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.mappers.AssignmentMapper
+import ar.edu.unsam.pds.mappers.CourseMapper
+import ar.edu.unsam.pds.mappers.UserMapper
+import ar.edu.unsam.pds.security.models.Principal
+import jakarta.servlet.ServletException
+import jakarta.servlet.http.HttpServletRequest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
+import org.junit.jupiter.api.assertThrows
+import org.mockito.Mock
+import org.mockito.Mockito.doNothing
+import org.mockito.Mockito.`when`
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.test.context.ActiveProfiles
+import java.util.*
 
-@DataJpaTest
-class UserServiceTest {
-    @Autowired private lateinit var userRepository: UserRepository
-    @Autowired private lateinit var principalRepository: PrincipalRepository
-    @Autowired private lateinit var institutionRepository: InstitutionRepository
-
-    @Autowired private lateinit var  scheduleRepository: ScheduleRepository
-    @Autowired private lateinit var assignmentRepository: AssignmentRepository
-    @Autowired private lateinit var courseRepository: CourseRepository
+@ActiveProfiles("test")
+class UserServiceTest : BootstrapNBTest() {
+    @Mock
+    private lateinit var mockRequest: HttpServletRequest
 
     private lateinit var institutionService: InstitutionService
     private lateinit var userService: UserService
 
-    private var users = mutableListOf<User>()
-    private var schedules = mutableListOf<Schedule>()
-    private var assingnmets = mutableListOf<Assignment>()
-    private var courses = mutableListOf<Course>()
-    private var institutions = mutableListOf<Institution>()
-
     @BeforeEach
-    fun setUp() {
+    fun prepareTestData() {
         institutionService = InstitutionService(
-            institutionRepository = institutionRepository
+            institutionRepository = institutionRepository,
+            principalRepository = principalRepository,
+            userRepository = userRepository,
+            imageService = imageService
         )
 
         userService = UserService(
             userRepository = userRepository,
             principalRepository = principalRepository,
-            institutionService = institutionService
+            institutionService = institutionService,
+            emailService = emailService,
+            storageService = imageService
         )
-
-        users.add(User(
-            name = "Adan",
-            lastName = "AdanAdan",
-            email = "adan@email.com",
-            image = ""
-        ))
-
-        users.add(User(
-            name = "Eva",
-            lastName = "EvaEva",
-            email = "eva@email.com",
-            image = ""
-        ))
-
-        users.add(User(
-            name = "Bonifacio",
-            lastName = "Gomez",
-            email = "bonifacio@email.com",
-            image = "",
-        ))
-
-        userRepository.saveAll(users)
-
-        schedules.add(Schedule(
-            days = listOf(DayOfWeek.MONDAY),
-            startTime = LocalTime.of(19, 0),
-            endTime = LocalTime.of(20, 0),
-            startDate = LocalDate.of(2023, 3, 1),
-            endDate = LocalDate.of(2024, 10, 30),
-            recurrenceWeeks = RecurrenceWeeks.WEEKLY,
-        ))
-
-        schedules.add(Schedule(
-            days = listOf(DayOfWeek.TUESDAY),
-            startTime = LocalTime.of(19, 0),
-            endTime = LocalTime.of(21, 0),
-            startDate = LocalDate.of(2023, 3, 1),
-            endDate = LocalDate.of(2024, 12, 30),
-            recurrenceWeeks = RecurrenceWeeks.BIWEEKLY,
-        ))
-
-        scheduleRepository.saveAll(schedules)
-
-        assingnmets.add(
-            Assignment(
-                quotas = 100,
-                isActive = true,
-                price = 100.0,
-                schedule = schedules[0]
-        ))
-
-        assingnmets.add(
-            Assignment(
-                quotas = 100,
-                isActive = true,
-                price = 100.0,
-                schedule = schedules[1]
-        ))
-
-        assignmentRepository.saveAll(assingnmets)
-
-        courses.add(Course(
-            title = "classic dance",
-            description = "classical dance course",
-            category = "dance",
-            image = ""
-        ).apply {
-            addAssignment(assingnmets[0])
-        })
-
-        courses.add(Course(
-            title = "modern dance",
-            description = "modern dance course",
-            category = "dance",
-            image = ""
-        ).apply {
-            addAssignment(assingnmets[1])
-        })
-
-        courseRepository.saveAll(courses)
-
-        institutions.add(Institution(
-            name = "Enchanted Dance",
-            description = "dance institution",
-            category = "dance_category",
-            image = ""
-        ).apply {
-            addCourse(this@UserServiceTest.courses[0])
-            addCourse(this@UserServiceTest.courses[1])
-        })
-
-        institutionRepository.saveAll(institutions)
     }
 
     @Test
-    fun `test register a user`() {
-        val id = userService.register(RegisterFormDto(
-            name = "juán",
-            lastName = "perez",
-            email = "juan_perez@email.com",
-            password = "123"
-        )).id
+    fun `test load user by username`() {
+        val obtainedValue = userService.loadUserByUsername("adam@email.com")
+        val expectedValue = principals[0]
 
-        val obtainedValue = userService.getUserItem(id)
-        val expectedValue = UserResponseDto(
-            name = "juán",
-            lastName = "perez",
-            email = "juan_perez@email.com",
+        assertEquals(expectedValue, obtainedValue)
+    }
+
+    @Test
+    fun `test throw load user by username`() {
+        assertThrows<UsernameNotFoundException> {
+            userService.loadUserByUsername("juan_perez@email.com")
+        }
+    }
+
+    @Test
+    fun `test login`() {
+        val userForm = LoginForm("adam@email.com", "0")
+        `when`(mockRequest.userPrincipal).thenReturn(object : Authentication {
+            override fun getName() = principals[0].user?.name!!
+            override fun getAuthorities() = principals[0].authorities
+            override fun getCredentials(): Any? = null
+            override fun getDetails(): Any? = null
+            override fun getPrincipal() = principals[0]
+            override fun isAuthenticated() = true
+            override fun setAuthenticated(isAuthenticated: Boolean) {}
+        })
+
+        doNothing().`when`(mockRequest).login("adam@email.com", "0")
+
+        val obtainedValue = userService.login(userForm, mockRequest)
+        val expectedValue = UserDetailResponseDto(
+            name = "Adam",
+            lastName = "AdamAdam",
+            email = "adam@email.com",
             image = "",
-            id = id,
-            isAdmin = false
+            id = obtainedValue.id,
+            isAdmin = true,
+            nextClass = null,
+            credits = 100000.0
         )
 
         assertEquals(obtainedValue, expectedValue)
     }
 
     @Test
+    fun `test login - not existed user`() {
+        val userForm = LoginForm("adam@email.com", "0")
+
+        `when`(mockRequest.login("adam@email.com", "0")).thenThrow(ServletException())
+
+        assertThrows<NotFoundException> {
+            userService.login(userForm, mockRequest)
+        }
+    }
+
+    @Test
+    fun `test login - internal error`() {
+        val userForm = LoginForm("adam@email.com", "0")
+        val principal = Principal().apply {
+            id = UUID.randomUUID()
+            username = "juan perez"
+            password = "666"
+        }
+
+        `when`(mockRequest.userPrincipal).thenReturn(object : Authentication {
+            override fun getName() = "juan"
+            override fun getAuthorities() = principal.authorities
+            override fun getCredentials(): Any? = null
+            override fun getDetails(): Any? = null
+            override fun getPrincipal() = principal
+            override fun isAuthenticated() = true
+            override fun setAuthenticated(isAuthenticated: Boolean) {}
+        })
+
+        doNothing().`when`(mockRequest).login("adam@email.com", "0")
+
+        assertThrows<InternalServerError> {
+            userService.login(userForm, mockRequest)
+        }
+    }
+
+    @Test
+    fun `test register a user`() {
+        `when`(imageService.defaultImage).thenReturn(
+            "https://mock.pirulo/media/private/default.png"
+        )
+
+        val id = userService.register(
+            RegisterFormDto(
+                name = "juán",
+                lastName = "perez",
+                email = "juan_perez@email.com",
+                password = "123"
+            )
+        ).id
+
+        val obtainedValue = userService.getUserDetail(id)
+        val expectedValue = UserDetailResponseDto(
+            name = "juán",
+            lastName = "perez",
+            email = "juan_perez@email.com",
+            image = "https://mock.pirulo/media/private/default.png",
+            id = id,
+            isAdmin = false,
+            nextClass = null,
+            credits = 0.0
+        )
+
+        assertEquals(obtainedValue, expectedValue)
+    }
+
+    @Test
+    fun `test throw register a user`() {
+        assertThrows<InternalServerError> {
+            userService.register(
+                RegisterFormDto(
+                    name = "juán",
+                    lastName = "perez",
+                    email = "adam@email.com",
+                    password = "123"
+                )
+            )
+        }
+    }
+
+    @Test
     fun `get all user`() {
         val obtainedValue = userService.getUserAll().toList()
         val expectedValue = users.map {
-            Mapper.buildUserDto(it)
+            UserMapper.buildUserDto(it)
         }
 
         assertEquals(obtainedValue, expectedValue)
@@ -177,36 +191,60 @@ class UserServiceTest {
 
     @Test
     fun `test get a particular user`() {
-        val obtainedValue = userService.getUserItem(users[0].id.toString())
-        val expectedValue = Mapper.buildUserDto(users[0])
+        val obtainedValue = userService.getUserDetail(users[0].id.toString())
+        val expectedValue = UserMapper.buildUserDetailDto(users[0], null)
 
         assertEquals(obtainedValue, expectedValue)
     }
 
     @Test
+    fun `test throw get a particular user`() {
+        assertThrows<NotFoundException> {
+            userService.getUserDetail("029ce681-9f90-45e7-af7f-e74a8cfb4b57")
+        }
+    }
+
+    @Test
     fun `test update a particular user`() {
-        val obtainedValuePre = userService.getUserItem(users[0].id.toString())
-        val expectedValuePre = Mapper.buildUserDto(users[0])
+        val obtainedValuePre = userService.getUserDetail(users[0].id.toString())
+        val expectedValuePre = UserMapper.buildUserDetailDto(users[0], null)
 
         assertEquals(obtainedValuePre, expectedValuePre)
 
-        val adanUpdate = UserResponseDto(
+        val adanUpdate = UserRequestUpdateDto(
             name = "Adan__",
             lastName = "AdanAdan__",
             email = "adan__@email.com",
-            image = "__",
             id = users[0].id.toString(),
-            isAdmin = false
+            credits = 100000.0,
+            nextClass = null,
+            file = null
         )
+
+        `when`(emailService.sendCreditsLoadedEmail(
+            to = adanUpdate.email,
+            credits = adanUpdate.credits,
+            userName = adanUpdate.name
+        )).then {  }
 
         userService.updateDetail(
             idUser = users[0].id.toString(),
             userDetail = adanUpdate
         )
 
-        val obtainedValuePos = userService.getUserItem(users[0].id.toString())
+        val obtainedValuePos = userService.getUserDetail(users[0].id.toString())
+        val expectedValuePos = UserDetailResponseDto(
+            name = adanUpdate.name,
+            lastName = adanUpdate.lastName,
+            email = adanUpdate.email,
+            image = "",
+            id = adanUpdate.id!!,
+            isAdmin = true,
+            nextClass = null,
+            credits = adanUpdate.credits
+        )
 
-        assertEquals(obtainedValuePos, adanUpdate)
+        assertEquals(obtainedValuePos, expectedValuePos)
     }
 
     @Test
@@ -216,13 +254,13 @@ class UserServiceTest {
             mutableListOf<CourseResponseDto>()
         )
 
-        users[0].addAssignment(assingnmets[0])
-        assingnmets[0].addSubscribedUser(users[0])
+        users[0].addAssignment(assignments[0])
+        assignments[0].addSubscribedUser(users[0])
         userRepository.save(users[0])
 
         assertEquals(
             userService.getSubscribedCourses(users[0].id.toString()),
-            mutableListOf(Mapper.buildCourseDto(assingnmets[0].course))
+            mutableListOf(CourseMapper.buildCourseDto(assignments[0].course))
         )
     }
 
@@ -233,13 +271,13 @@ class UserServiceTest {
             mutableListOf<SubscriptionResponseDto>()
         )
 
-        users[0].addAssignment(assingnmets[0])
-        assingnmets[0].addSubscribedUser(users[0])
+        users[0].addAssignment(assignments[0])
+        assignments[0].addSubscribedUser(users[0])
         userRepository.save(users[0])
 
         assertEquals(
             userService.getSubscriptions(users[0].id.toString()),
-            mutableListOf(Mapper.buildSubscriptionDto(assingnmets[0], institutions[0]))
+            mutableListOf(AssignmentMapper.buildSubscriptionDto(assignments[0], institutions[0]))
         )
     }
 }

@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.models
 
 import ar.edu.unsam.pds.exceptions.ValidationException
+import ar.edu.unsam.pds.models.enums.Status
 import jakarta.persistence.*
 import java.io.Serializable
 import java.time.LocalDate
@@ -15,9 +16,8 @@ class Assignment(
     @ManyToOne(fetch = FetchType.EAGER)
     var schedule: Schedule
 
-) : Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+) : Timestamp(), Serializable {
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "assignmentsList")
@@ -74,8 +74,4 @@ class Assignment(
     fun name(): String {
         return schedule.days.joinToString(", ") { it.name }
     }
-}
-
-enum class Status {
-    CONFIRMED, FINISHED
 }

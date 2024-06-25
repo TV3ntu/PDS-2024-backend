@@ -4,19 +4,21 @@ import ar.edu.unsam.pds.dto.request.CourseRequestDto
 import ar.edu.unsam.pds.dto.response.CourseDetailResponseDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
+import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.CoursesService
 import io.swagger.v3.oas.annotations.Operation
-import org.hibernate.validator.constraints.UUID
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api/courses")
 @CrossOrigin("*")
-class CoursesController {
-    @Autowired
-    lateinit var courseServices: CoursesService
+class CoursesController : UUIDValid() {
+    @Autowired lateinit var courseServices: CoursesService
 
     @GetMapping("")
     @Operation(summary = "Get all courses")
@@ -26,28 +28,41 @@ class CoursesController {
         return ResponseEntity.ok(courseServices.getAll(query ?: ""))
     }
 
+    @GetMapping("admin")
+    @Operation(summary = "Get all courses")
+    fun getAllByPrincipal(
+        @RequestParam(required = false) query: String?,
+        @AuthenticationPrincipal principal: Principal
+    ): ResponseEntity<List<CourseResponseDto>> {
+        return ResponseEntity.ok(courseServices.getAllByPrincipal(query ?: "", principal))
+    }
+
     @DeleteMapping("")
     @Operation(summary = "Delete multiple courses by ids")
     fun deleteMultipleCourses(
-        @RequestBody @UUID idCourses: List<String>
-    ): ResponseEntity<Unit> {
-        courseServices.deleteAllById(idCourses)
-        return ResponseEntity.ok().build()
+        @RequestBody idCourses: List<String>,
+        @AuthenticationPrincipal principal : Principal
+    ): ResponseEntity<Map<String, String>> {
+        idCourses.map { this.validatedUUID(it) }
+        courseServices.deleteAllById(idCourses, principal)
+        return ResponseEntity.ok(mapOf("message" to "Cursos eliminados correctamente."))
     }
 
     @DeleteMapping("{idCourse}")
     @Operation(summary = "Delete course by id")
     fun deleteCourse(
-        @PathVariable @UUID idCourse: String
-    ): ResponseEntity<Unit> {
-        courseServices.deleteCourse(idCourse)
-        return ResponseEntity.ok().build()
+        @PathVariable idCourse: String,
+        @AuthenticationPrincipal principal : Principal
+    ): ResponseEntity<Map<String, String>> {
+        this.validatedUUID(idCourse)
+        courseServices.deleteCourse(idCourse, principal)
+        return ResponseEntity.ok(mapOf("message" to "Curso eliminado correctamente."))
     }
-        
-    @PostMapping("")
+
+    @PostMapping(value = [""], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "Create a course")
     fun createCourse(
-        @RequestBody course: CourseRequestDto
+        @ModelAttribute @Valid course: CourseRequestDto
     ): ResponseEntity<CourseResponseDto> {
         return ResponseEntity.ok(courseServices.createCourse(course))
     }
@@ -55,16 +70,18 @@ class CoursesController {
     @GetMapping("{idCourse}")
     @Operation(summary = "Get course by id")
     fun getCourse(
-        @PathVariable @UUID idCourse: String
+        @PathVariable idCourse: String
     ): ResponseEntity<CourseDetailResponseDto> {
+        this.validatedUUID(idCourse)
         return ResponseEntity.ok(courseServices.getCourse(idCourse))
     }
 
     @GetMapping("{idCourse}/stats")
     @Operation(summary = "Get course stats")
     fun getCourseStats(
-        @PathVariable @UUID idCourse: String
+        @PathVariable idCourse: String
     ): ResponseEntity<CourseStatsResponseDto> {
+        this.validatedUUID(idCourse)
         return ResponseEntity.ok(courseServices.getCourseStats(idCourse))
     }
 }

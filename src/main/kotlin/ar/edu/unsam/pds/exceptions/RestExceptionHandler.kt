@@ -19,12 +19,11 @@ class RestExceptionHandler {
     fun customHandleMethodArgumentNotValid(
         exception: MethodArgumentNotValidException,
         request: WebRequest
-    ): ResponseEntity<Map<String, String>> {
-        val errors = exception.bindingResult.fieldErrors.associate {
-            it.field to it.defaultMessage!!
-        }
-
-        return ResponseEntity(errors, HttpStatus.BAD_REQUEST)
+    ): ResponseEntity<BodyResponse> {
+        val status = HttpStatus.BAD_REQUEST
+        val message = exception.bindingResult.fieldErrors[0].defaultMessage
+        val body = BodyResponse(status, request, message)
+        return ResponseEntity(body, status)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -34,7 +33,7 @@ class RestExceptionHandler {
         request: WebRequest
     ): ResponseEntity<BodyResponse> {
         val status = HttpStatus.BAD_REQUEST
-        val message = "Mensaje http no legible"
+        val message = "Mensaje http no legible, compruebe que su request este correctamente armado"
         val body = BodyResponse(status, request, message)
         return ResponseEntity(body, status)
     }
@@ -62,4 +61,31 @@ class RestExceptionHandler {
         return BodyResponse(HttpStatus.CONFLICT, request, exception.message)
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = [PermissionDeniedException::class])
+    fun denied(exception: PermissionDeniedException, request: WebRequest): BodyResponse{
+        return BodyResponse(HttpStatus.FORBIDDEN, request, exception.message)
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = [IllegalArgumentException::class])
+    fun customHandleIllegalArgumentException(
+        exception: IllegalArgumentException,
+        request: WebRequest
+    ): ResponseEntity<BodyResponse> {
+        val status = HttpStatus.BAD_REQUEST
+        val body = BodyResponse(status, request, exception.message)
+        return ResponseEntity(body, status)
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = [InternalServerError::class])
+    fun customHandleInternalServerError(
+        exception: IllegalArgumentException,
+        request: WebRequest
+    ): ResponseEntity<BodyResponse> {
+        val status = HttpStatus.BAD_REQUEST
+        val body = BodyResponse(status, request, exception.message)
+        return ResponseEntity(body, status)
+    }
 }

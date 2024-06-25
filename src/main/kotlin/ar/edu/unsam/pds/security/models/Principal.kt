@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.security.models
 
+import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.models.User
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.PERSIST
@@ -22,11 +23,20 @@ class Principal : UserDetails {
     private var enabled: Boolean? = null                   // This is done by the system administrator
 
     @OneToOne(fetch = EAGER, cascade = [PERSIST])
-    var user: User? = null
+    internal var user: User? = null
 
     // region UserDetails @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     fun setUsername(username: String) { this.username = username }
     fun setPassword(password: String) { this.password = password }
+    fun setUser(user: User) { this.user = user }
+
+    fun getUser(): User {
+        if (user == null) {
+            throw InternalServerError("Error interno, principal carece de usuario")
+        }
+
+        return user!!
+    }
 
     override fun getUsername(): String = username!!
     override fun getPassword(): String = password!!
@@ -36,7 +46,8 @@ class Principal : UserDetails {
     override fun isEnabled(): Boolean = enabled!!
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority("ROLE_UNKNOWN"))
+        val role = if (this.getUser().isAdmin) "ROLE_ADMIN" else "ROLE_USER"
+        return mutableListOf(SimpleGrantedAuthority(role))
     }
     // endregion @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

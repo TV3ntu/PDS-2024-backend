@@ -1,14 +1,21 @@
 package ar.edu.unsam.pds.bootstrap
 
+import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.models.Institution
+import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import ar.edu.unsam.pds.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 
 @Component(value = "InitInstitutions.beanName")
+@DependsOn(value = ["InitUsers.beanName"])
+
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
-    private val urlBase = "https://rafaeljosecalderon.github.io/PDS-2024-images/img"
+    @Autowired private lateinit var userRepository: UserRepository
+    private val urlBase = "http://localhost:8080/media/public"
 
     override fun doAfterPropertiesSet() {
         institutionRepository.save(
@@ -22,8 +29,10 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                     como estrellas en el firmamento de la danza.
                 """.trimIndent(),
                 category = "Danza",
-                image = "$urlBase/estrella_en_movimiento.png"
-            )
+                image = "$urlBase/estrella_en_movimiento.png",
+            ).apply {
+                addAdmin(userByEmail("admin@admin.com"))
+            }
         )
 
         institutionRepository.save(
@@ -37,8 +46,10 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                      de la actuación.
                 """.trimIndent(),
                 category = "Teatro",
-                image = "$urlBase/escenario_encantado.png"
-            )
+                image = "$urlBase/escenario_encantado.png",
+            ).apply {
+                addAdmin(userByEmail("admin@admin.com"))
+            }
         )
 
         institutionRepository.save(
@@ -54,6 +65,16 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                 category = "Artes plasticas",
                 image = "$urlBase/el_rincon_creativo.png"
             )
+                .apply {
+                addAdmin(userByEmail("admin@admin.com"))
+            }
         )
     }
+
+    fun userByEmail(mail : String): User {
+        return userRepository.findByEmail(mail).orElseThrow {
+            NotFoundException("usuario no encontrado")
+        }
+    }
+
 }
