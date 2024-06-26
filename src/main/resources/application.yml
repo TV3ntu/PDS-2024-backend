@@ -30,9 +30,6 @@ spring:
     store-type: jdbc
     jdbc.initialize-schema: always
 
-email:
-  enabled: true  # Deshabilita el servicio de correo por defecto
-
 ---
 
 spring:
@@ -61,6 +58,8 @@ spring:
   sql:
     init:
       mode: always
+email:
+  enabled: true  # Deshabilita el servicio de correo por defecto
 
 ---
 
@@ -88,3 +87,5 @@ spring:
   sql:
     init:
       mode: always
+email:
+  enabled: false  # Deshabilita el servicio de correo por defecto
