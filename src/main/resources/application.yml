@@ -58,6 +58,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 email:
   enabled: true
+images:
+  base: https://raw.githubusercontent.com/TV3ntu/PDS-2024-backend/master/media
+  default: https://raw.githubusercontent.com/TV3ntu/PDS-2024-backend/master/media/private/default.png
 
 ---
 
@@ -84,3 +87,6 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
 email:
   enabled: false
+images:
+  base: http://localhost:8080/media
+  default: http://localhost:8080/media/private/default.png

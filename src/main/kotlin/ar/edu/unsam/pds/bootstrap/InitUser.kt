@@ -13,6 +13,7 @@ class InitUser : BootstrapGeneric("users") {
     @Autowired private lateinit var passwordEncoder: PasswordEncoder
     @Autowired private lateinit var principalRepository: PrincipalRepository
     @Autowired private lateinit var storageService: StorageService
+
     override fun doAfterPropertiesSet() {
         // ADMIN
         principalRepository.save(

@@ -5,19 +5,21 @@ import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.repository.UserRepository
+import ar.edu.unsam.pds.services.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 
 @Component(value = "InitInstitutions.beanName")
 @DependsOn(value = ["InitUsers.beanName"])
-
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var userRepository: UserRepository
-    private val urlBase = "https://raw.githubusercontent.com/TV3ntu/PDS-2024-backend/master/media/public"
+    @Autowired private lateinit var storageService: StorageService
 
     override fun doAfterPropertiesSet() {
+        val urlBase = storageService.publicPath()
+
         institutionRepository.save(
             Institution(
                 name = "Estrellas en Movimiento: Academia de Danza Mágica",
@@ -76,5 +78,4 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
             NotFoundException("usuario no encontrado")
         }
     }
-
 }

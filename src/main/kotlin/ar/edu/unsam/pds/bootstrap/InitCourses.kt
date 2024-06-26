@@ -4,6 +4,7 @@ import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.InstitutionRepository
+import ar.edu.unsam.pds.services.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Component
 class InitCourses : BootstrapGeneric("Courses") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var courseRepository: CourseRepository
-    private val urlBase = "https://raw.githubusercontent.com/TV3ntu/PDS-2024-backend/master/media/public"
+    @Autowired private lateinit var storageService: StorageService
 
     override fun doAfterPropertiesSet() {
+        val urlBase = storageService.publicPath()
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         val estrellasEnMovimiento = this.findByName("Estrellas en Movimiento")
 

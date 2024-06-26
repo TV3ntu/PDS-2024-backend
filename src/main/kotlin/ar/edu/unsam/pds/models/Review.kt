@@ -1,6 +1,7 @@
 package ar.edu.unsam.pds.models
 
 import jakarta.persistence.*
+import java.io.Serializable
 import java.util.*
 
 @Entity
@@ -14,7 +15,7 @@ class Review(
 
     val rating: Int,
     val description: String
-) {
+): Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     lateinit var id: UUID
 }
