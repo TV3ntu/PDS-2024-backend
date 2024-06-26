@@ -12,11 +12,11 @@ import java.nio.file.Path
 @Service
 class StorageService {
 
-    private var baseUrl = "http://localhost:8080/media"
+    private var baseUrl = "https://raw.githubusercontent.com/TV3ntu/PDS-2024-backend/master/media/private"
     private val basePath: Path = Path.of("media").toAbsolutePath()
     private val privatePath: Path = Path.of("media/private").toAbsolutePath()
     private val publicPath: Path = Path.of("media/public").toAbsolutePath()
-    public val defaultImage = "$baseUrl/private/default.png"
+    public val defaultImage = "$baseUrl/default.png"
     init {
         // Crear directorios si no existen
         if (!Files.exists(basePath)) {
