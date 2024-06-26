@@ -20,7 +20,7 @@ spring:
     throw-exception-if-no-handler-found: true
   web:
     resources:
-      add-mappings: true # true | false
+      add-mappings: true
   jackson:
     serialization:
       fail-on-empty-beans: false
@@ -29,9 +29,9 @@ spring:
   session:
     store-type: jdbc
     jdbc.initialize-schema: always
-
-email:
-  enabled: false  # Deshabilita el servicio de correo por defecto
+  sql:
+    init:
+      mode: always
 
 ---
 
@@ -39,11 +39,10 @@ spring:
   config:
     activate:
       on-profile: prod
+  h2:
+    console:
+      enabled: false
   datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://45.152.46.1:3306/u739403516_weekbook
-#    username: u739403516_weekbook_admin
-#    password: +QZlK4>iL
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://dpg-cpq95s4s1f4s73ch1g7g-a.oregon-postgres.render.com:5432/weekbook_bd
     username: admin
@@ -56,11 +55,9 @@ spring:
     properties:
       hibernate:
         format_sql: false
-#        dialect: org.hibernate.dialect.MySQLDialect
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  sql:
-    init:
-      mode: always
+email:
+  enabled: true
 
 ---
 
@@ -79,12 +76,11 @@ spring:
     password: pds
   jpa:
     open-in-view: false
-    show-sql: false # true | false
+    show-sql: false
     properties:
       hibernate:
         format_sql: false
         ddl-auto: create-drop
         dialect: org.hibernate.dialect.H2Dialect
-  sql:
-    init:
-      mode: always
+email:
+  enabled: false
