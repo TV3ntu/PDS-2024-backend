@@ -39,23 +39,21 @@ spring:
   config:
     activate:
       on-profile: prod
-  h2:
-    console:
-      enabled: false
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://dpg-cpq95s4s1f4s73ch1g7g-a.oregon-postgres.render.com:5432/weekbook_bd
+    url: jdbc:postgresql://postgres-db:5432/weekbook
     username: admin
-    password: xAkFzg2Wa7e3frNxmgRHUFjFFaWs2Bhr
+    password: 1234
+    driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false
     show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        format_sql: false
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+  h2:
+    console:
+      enabled: false
+      path: /h2
 email:
   enabled: true
 
