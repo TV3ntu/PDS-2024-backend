@@ -21,7 +21,6 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
       BOOTSTRAP: false
-      IMAGES_PATH: /var/lib/images
     ports:
       - "8080:8080"
     depends_on:
