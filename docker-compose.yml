@@ -14,9 +14,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   spring-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: spring-app
     environment:
       SPRING_PROFILES_ACTIVE: prod
@@ -26,6 +24,8 @@ services:
     depends_on:
       - postgres
     restart: always
+    volumes:
+      - ./media:/media
 
 volumes:
   postgres_data:
