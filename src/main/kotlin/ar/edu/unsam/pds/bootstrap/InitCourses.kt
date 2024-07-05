@@ -14,7 +14,8 @@ import javax.swing.Spring
 class InitCourses : BootstrapGeneric("Courses") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var courseRepository: CourseRepository
-    val dominio = if (System.getenv("DOMAIN").equals("remote")) "149.50.141.196"
+    val domain = System.getenv("DOMAIN")
+    val dominio = if (domain != null && domain.equals("remote")) "149.50.141.196"
     else "localhost"
     private val urlBase = "http://${dominio}:8080/media/public"
 
