@@ -53,7 +53,6 @@ spring:
   h2:
     console:
       enabled: false
-      path: /h2
 email:
   enabled: true
 
@@ -63,22 +62,43 @@ spring:
   config:
     activate:
       on-profile: dev
-  h2:
-    console:
-      enabled: true
-      path: /h2
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:my_db;COLLATION=ENGLISH STRENGTH PRIMARY
-    username: pds
-    password: pds
+    url: jdbc:postgresql://localhost:5432/weekbook
+    username: admin
+    password: 1234
+    driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false
     show-sql: false
-    properties:
-      hibernate:
-        format_sql: false
-        ddl-auto: create-drop
-        dialect: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: false
 email:
   enabled: false
+
+#spring:
+#  config:
+#    activate:
+#      on-profile: dev
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:my_db;COLLATION=ENGLISH STRENGTH PRIMARY
+#    username: pds
+#    password: pds
+#  jpa:
+#    open-in-view: false
+#    show-sql: false
+#    properties:
+#      hibernate:
+#        format_sql: false
+#        ddl-auto: create-drop
+#        dialect: org.hibernate.dialect.H2Dialect
+#email:
+#  enabled: false
