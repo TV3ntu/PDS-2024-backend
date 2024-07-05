@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var userRepository: UserRepository
-    private val urlBase = "http://localhost:8080/media/public"
+    val dominio = if (System.getenv("DOMAIN").equals("remote")) "149.50.141.196"
+    else "localhost"
+    private val urlBase = "http://${dominio}:8080/media/public"
 
     override fun doAfterPropertiesSet() {
         institutionRepository.save(

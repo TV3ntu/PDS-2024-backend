@@ -7,13 +7,16 @@ import ar.edu.unsam.pds.repository.InstitutionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
+import javax.swing.Spring
 
 @Component(value = "InitCourses.beanName")
 @DependsOn(value = ["InitInstitutions.beanName"])
 class InitCourses : BootstrapGeneric("Courses") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var courseRepository: CourseRepository
-    private val urlBase = "http://localhost:8080/media/public"
+    val dominio = if (System.getenv("DOMAIN").equals("remote")) "149.50.141.196"
+    else "localhost"
+    private val urlBase = "http://${dominio}:8080/media/public"
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

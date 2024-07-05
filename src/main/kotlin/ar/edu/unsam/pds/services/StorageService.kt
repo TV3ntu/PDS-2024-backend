@@ -12,7 +12,9 @@ import java.nio.file.Path
 @Service
 class StorageService {
 
-    private var baseUrl = "http://localhost:8080/media"
+    var dominio = if (System.getenv("DOMAIN").equals("remote")) "149.50.141.196"
+    else "localhost"
+    private var baseUrl = "http://${dominio}:8080/media"
     private val basePath: Path = Path.of("media").toAbsolutePath()
     private val privatePath: Path = Path.of("media/private").toAbsolutePath()
     private val publicPath: Path = Path.of("media/public").toAbsolutePath()
