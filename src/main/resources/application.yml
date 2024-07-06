@@ -54,7 +54,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   h2:
     console:
-      enabled: false
+      enabled: true
 email:
   enabled: true
 
