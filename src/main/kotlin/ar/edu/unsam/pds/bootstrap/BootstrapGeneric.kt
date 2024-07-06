@@ -14,8 +14,8 @@ abstract class BootstrapGeneric(private val message: String) : InitializingBean 
     private lateinit var transactionManager: PlatformTransactionManager
     private val log: Logger = LoggerFactory.getLogger(ProjectApplication::class.java)
 
-    @Value("\${spring.profiles.active:Unknown}")
-    private val activeProfile: String? = null
+    @Value("\${spring.profiles.active}")
+    private lateinit var activeProfile: String
 
     override fun afterPropertiesSet() {
         if ( !activeProfile.equals("prod") ) {

@@ -69,7 +69,7 @@ class UserService(
             name = form.name,
             lastName = form.lastName,
             email = form.email,
-            image = storageService.defaultImage
+            image = storageService.defaultImage()
         )
         userRepository.save(newUser)
 
@@ -159,7 +159,7 @@ class UserService(
         userRepository.delete(principal.user!!)
         principalRepository.delete(principal)
 
-        if(avatar!=storageService.defaultImage){
+        if(avatar!=storageService.defaultImage()){
             storageService.deletePrivate(principal.getUser().image)
         }
     }

@@ -2,7 +2,9 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.ValidationException
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
+import org.springframework.core.env.Profiles
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -12,16 +14,12 @@ import java.nio.file.Path
 
 @Service
 class StorageService {
+    @Autowired private lateinit var environment: Environment
 
-    @Value("\${spring.profiles.active:Unknown}")
-    private val activeProfile: String? = null
-    val dominio = if ( !activeProfile.equals("prod") ) "localhost"
-    else "149.50.141.196"
-    private var baseUrl = "http://${dominio}:8080/media"
     private val basePath: Path = Path.of("media").toAbsolutePath()
     private val privatePath: Path = Path.of("media/private").toAbsolutePath()
     private val publicPath: Path = Path.of("media/public").toAbsolutePath()
-    public val defaultImage = "$baseUrl/private/default.png"
+
     init {
         // Crear directorios si no existen
         if (!Files.exists(basePath)) {
@@ -34,6 +32,14 @@ class StorageService {
             Files.createDirectories(publicPath)
         }
     }
+
+    public fun defaultImage() = "${this.baseUrl()}/private/default.png"
+
+    fun baseUrl() = "http://${this.getDomain()}:8080/media"
+
+    fun getDomain() =
+        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.141.196"
+        else "localhost"
 
     //public path
     fun deletePublic(imageName: String) =  deleteImage(publicPath, imageName)
@@ -64,14 +70,14 @@ class StorageService {
         val imageName = "${System.currentTimeMillis()}_${file.originalFilename}"
         val destFile = directory.resolve(imageName).toFile()
         file.transferTo(destFile)
-        return "${baseUrl}/${directory.fileName}/$imageName"
+        return "${this.baseUrl()}/${directory.fileName}/$imageName"
     }
 
     // Actualizar imagen
     private fun updateImage(directory: Path, oldImageName: String, newImageFile: MultipartFile?): String {
 
         if(newImageFile == null) throw ValidationException("la imagen es requerida")
-        if(oldImageName != defaultImage){
+        if(oldImageName != this.defaultImage()){
             deleteImage(directory, oldImageName)
         }
         return saveImage(directory, newImageFile)
