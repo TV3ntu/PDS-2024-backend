@@ -14,8 +14,8 @@ abstract class BootstrapGeneric(private val message: String) : InitializingBean 
     private val log: Logger = LoggerFactory.getLogger(ProjectApplication::class.java)
 
     override fun afterPropertiesSet() {
-        val profile = System.getenv("SPRING_PROFILES_ACTIVE")
-        if (profile == null || !profile.equals("prod")) {
+        val profile = System.getProperty("spring.profiles.active")
+        if (!profile.equals("prod")) {
             log.info("####################################################################################################")
             log.info(String.format("%-99s", "# Loading $message ...") + "#")
             log.info("####################################################################################################")

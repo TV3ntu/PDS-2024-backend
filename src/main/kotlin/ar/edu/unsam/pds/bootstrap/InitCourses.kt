@@ -14,8 +14,8 @@ import javax.swing.Spring
 class InitCourses : BootstrapGeneric("Courses") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var courseRepository: CourseRepository
-    val profile = System.getenv("SPRING_PROFILES_ACTIVE")
-    val dominio = if (profile == null || !profile.equals("prod")) "localhost"
+    val profile = System.getProperty("spring.profiles.active")
+    val dominio = if (!profile.equals("prod")) "localhost"
     else "149.50.141.196"
     private val urlBase = "http://${dominio}:8080/media/public"
 
