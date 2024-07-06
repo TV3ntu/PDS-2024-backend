@@ -2,6 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.ValidationException
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -12,8 +13,9 @@ import java.nio.file.Path
 @Service
 class StorageService {
 
-    val profile = System.getProperty("spring.profiles.active")
-    val dominio = if (!profile.equals("prod")) "localhost"
+    @Value("\${spring.profiles.active:Unknown}")
+    private val activeProfile: String? = null
+    val dominio = if ( !activeProfile.equals("prod") ) "localhost"
     else "149.50.141.196"
     private var baseUrl = "http://${dominio}:8080/media"
     private val basePath: Path = Path.of("media").toAbsolutePath()

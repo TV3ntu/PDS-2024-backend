@@ -6,6 +6,7 @@ import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 
@@ -15,8 +16,9 @@ import org.springframework.stereotype.Component
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var userRepository: UserRepository
-    val profile = System.getProperty("spring.profiles.active")
-    val dominio = if (!profile.equals("prod")) "localhost"
+    @Value("\${spring.profiles.active:Unknown}")
+    private val activeProfile: String? = null
+    val dominio = if ( !activeProfile.equals("prod") ) "localhost"
     else "149.50.141.196"
     private val urlBase = "http://${dominio}:8080/media/public"
 

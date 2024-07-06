@@ -5,6 +5,7 @@ import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 import javax.swing.Spring
@@ -14,8 +15,9 @@ import javax.swing.Spring
 class InitCourses : BootstrapGeneric("Courses") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var courseRepository: CourseRepository
-    val profile = System.getProperty("spring.profiles.active")
-    val dominio = if (!profile.equals("prod")) "localhost"
+    @Value("\${spring.profiles.active:Unknown}")
+    private val activeProfile: String? = null
+    val dominio = if ( !activeProfile.equals("prod") ) "localhost"
     else "149.50.141.196"
     private val urlBase = "http://${dominio}:8080/media/public"
 
