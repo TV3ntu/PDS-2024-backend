@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres-db
+    container_name: postgres
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 1234
@@ -13,19 +13,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-#  spring-app:
-#    build: .
-#    container_name: spring-app
-#    environment:
-#      SPRING_PROFILES_ACTIVE: prod
-#      BOOTSTRAP: false
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - postgres
-#    restart: always
-#    volumes:
-#      - ./media:/media
+  backend:
+    build: .
+    container_name: backend
+    image: backend
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - ./media:/media
 
 volumes:
   postgres_data:
