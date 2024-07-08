@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  postgres-service:
+  postgres:
     image: postgres:latest
     container_name: postgres
     environment:
@@ -13,7 +13,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  backend-service:
+  backend:
     build: .
     image: backend:latest
     container_name: backend
@@ -21,11 +21,11 @@ services:
       SPRING_PROFILES_ACTIVE: prod
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
+    restart: always
     volumes:
       - ./media:/media
-    depends_on:
-      - postgres-service
-    restart: always
 
 volumes:
   postgres_data:
