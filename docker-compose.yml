@@ -24,7 +24,7 @@ services:
     volumes:
       - ./media:/media
     depends_on:
-      - postgres
+      - postgres-service
     restart: always
 
 volumes:
