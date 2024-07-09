@@ -23,7 +23,7 @@ data class UserRequestUpdateDto(
     // máximo de internet explorer, por compatibilidad, el más largo del más corto
     val file: MultipartFile?,
 
-    @field:Positive(message = "Los créditos deben ser un número positivo o cero")
+    @field:PositiveOrZero(message = "Los créditos deben ser un número positivo o cero")
     val credits: Double = -1.0,
 
     @field: NotNull(message = "El ID no debe ser nulo")
