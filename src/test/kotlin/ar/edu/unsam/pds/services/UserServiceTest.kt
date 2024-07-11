@@ -83,7 +83,7 @@ class UserServiceTest : BootstrapNBTest() {
 
         doNothing().`when`(mockRequest).login("adam@email.com", "0")
 
-        val obtainedValue = userService.login(userForm, mockRequest)
+        val obtainedValue = userService.login(userForm, mockRequest, response)
         val expectedValue = UserDetailResponseDto(
             name = "Adam",
             lastName = "AdamAdam",
@@ -105,7 +105,7 @@ class UserServiceTest : BootstrapNBTest() {
         `when`(mockRequest.login("adam@email.com", "0")).thenThrow(ServletException())
 
         assertThrows<NotFoundException> {
-            userService.login(userForm, mockRequest)
+            userService.login(userForm, mockRequest, response)
         }
     }
 
@@ -131,7 +131,7 @@ class UserServiceTest : BootstrapNBTest() {
         doNothing().`when`(mockRequest).login("adam@email.com", "0")
 
         assertThrows<InternalServerError> {
-            userService.login(userForm, mockRequest)
+            userService.login(userForm, mockRequest, response)
         }
     }
 

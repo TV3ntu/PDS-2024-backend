@@ -98,7 +98,7 @@ class UserControllerTest {
         val userForm = LoginForm(user.email, "666")
         val nextClass: SubscriptionResponseDto? = null
 
-        `when`(userService.login(userForm, request)).thenReturn(
+        `when`(userService.login(userForm, request, response)).thenReturn(
             UserMapper.buildUserDetailDto(user, nextClass)
         )
 
