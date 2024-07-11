@@ -9,6 +9,7 @@ import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.mock.web.MockMultipartFile
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 
 @DataJpaTest
 class BootstrapNBTest : BootstrapBasicTest() {
@@ -22,6 +23,7 @@ class BootstrapNBTest : BootstrapBasicTest() {
 
     @Mock lateinit var imageService: StorageService
     @Mock lateinit var emailService: EmailService
+    @Mock lateinit var rememberMeServices: TokenBasedRememberMeServices
 
     lateinit var file: MockMultipartFile
 

@@ -18,6 +18,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletRequest
+import org.springframework.mock.web.MockHttpServletResponse
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -95,6 +96,7 @@ class UserControllerTest {
     @Test
     fun `test login user`() {
         val request = MockHttpServletRequest()
+        val response = MockHttpServletResponse()
         val userForm = LoginForm(user.email, "666")
         val nextClass: SubscriptionResponseDto? = null
 
@@ -102,7 +104,7 @@ class UserControllerTest {
             UserMapper.buildUserDetailDto(user, nextClass)
         )
 
-        val responseEntity = userController.login(userForm, request)
+        val responseEntity = userController.login(userForm, request, response)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == UserMapper.buildUserDetailDto(user, nextClass))

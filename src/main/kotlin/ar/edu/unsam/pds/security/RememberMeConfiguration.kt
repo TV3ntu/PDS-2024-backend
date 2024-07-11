@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 
 @Configuration
-class RememberMeProviderConfiguration {
+class RememberMeConfiguration {
     @Autowired private lateinit var userService: AppUserDetailsService
 
     @Bean
