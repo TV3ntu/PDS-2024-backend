@@ -14,5 +14,7 @@ data class LoginForm(
     @field: NotEmpty(message = "El campo password es requerido")
     @field: NotBlank(message = "El campo password no debe estar en blanco")
     @field: Size(max = 128, message = "El password no debe superar los 128 caracteres")
-    val password: String = ""
+    val password: String = "",
+
+    val rememberMe: Boolean = true
 )

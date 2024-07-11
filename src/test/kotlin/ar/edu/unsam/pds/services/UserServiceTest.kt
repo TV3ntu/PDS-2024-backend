@@ -13,6 +13,7 @@ import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.mappers.CourseMapper
 import ar.edu.unsam.pds.mappers.UserMapper
 import ar.edu.unsam.pds.security.models.Principal
+import ar.edu.unsam.pds.security.services.AppUserDetailsService
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mock
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.`when`
+import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.test.context.ActiveProfiles
@@ -33,6 +35,7 @@ class UserServiceTest : BootstrapNBTest() {
     private lateinit var mockRequest: HttpServletRequest
 
     private lateinit var institutionService: InstitutionService
+    private lateinit var userDetailsService: AppUserDetailsService
     private lateinit var userService: UserService
 
     @BeforeEach
@@ -48,14 +51,20 @@ class UserServiceTest : BootstrapNBTest() {
             userRepository = userRepository,
             principalRepository = principalRepository,
             institutionService = institutionService,
+
             emailService = emailService,
-            storageService = imageService
+            storageService = imageService,
+            rememberMeServices = rememberMeServices
+        )
+
+        userDetailsService = AppUserDetailsService(
+            principalRepository = principalRepository
         )
     }
 
     @Test
     fun `test load user by username`() {
-        val obtainedValue = userService.loadUserByUsername("adam@email.com")
+        val obtainedValue = userDetailsService.loadUserByUsername("adam@email.com")
         val expectedValue = principals[0]
 
         assertEquals(expectedValue, obtainedValue)
@@ -64,13 +73,15 @@ class UserServiceTest : BootstrapNBTest() {
     @Test
     fun `test throw load user by username`() {
         assertThrows<UsernameNotFoundException> {
-            userService.loadUserByUsername("juan_perez@email.com")
+            userDetailsService.loadUserByUsername("juan_perez@email.com")
         }
     }
 
     @Test
     fun `test login`() {
         val userForm = LoginForm("adam@email.com", "0")
+        val response = MockHttpServletResponse()
+
         `when`(mockRequest.userPrincipal).thenReturn(object : Authentication {
             override fun getName() = principals[0].user?.name!!
             override fun getAuthorities() = principals[0].authorities
@@ -83,7 +94,7 @@ class UserServiceTest : BootstrapNBTest() {
 
         doNothing().`when`(mockRequest).login("adam@email.com", "0")
 
-        val obtainedValue = userService.login(userForm, mockRequest)
+        val obtainedValue = userService.login(userForm, mockRequest, response)
         val expectedValue = UserDetailResponseDto(
             name = "Adam",
             lastName = "AdamAdam",
@@ -101,17 +112,20 @@ class UserServiceTest : BootstrapNBTest() {
     @Test
     fun `test login - not existed user`() {
         val userForm = LoginForm("adam@email.com", "0")
+        val response = MockHttpServletResponse()
 
         `when`(mockRequest.login("adam@email.com", "0")).thenThrow(ServletException())
 
         assertThrows<NotFoundException> {
-            userService.login(userForm, mockRequest)
+            userService.login(userForm, mockRequest, response)
         }
     }
 
     @Test
     fun `test login - internal error`() {
         val userForm = LoginForm("adam@email.com", "0")
+        val response = MockHttpServletResponse()
+
         val principal = Principal().apply {
             id = UUID.randomUUID()
             username = "juan perez"
@@ -131,7 +145,7 @@ class UserServiceTest : BootstrapNBTest() {
         doNothing().`when`(mockRequest).login("adam@email.com", "0")
 
         assertThrows<InternalServerError> {
-            userService.login(userForm, mockRequest)
+            userService.login(userForm, mockRequest, response)
         }
     }
 

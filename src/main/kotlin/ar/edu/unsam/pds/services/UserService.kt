@@ -18,11 +18,10 @@ import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -32,39 +31,38 @@ class UserService(
     private val userRepository: UserRepository,
     private val principalRepository: PrincipalRepository,
     private val institutionService: InstitutionService,
+
     private val emailService: EmailService,
-    private val storageService: StorageService
-) : UserDetailsService {
+    private val storageService: StorageService,
+    private val rememberMeServices: TokenBasedRememberMeServices
+) {
 
-    override fun loadUserByUsername(email: String): UserDetails {
-        return principalRepository.findUserByEmail(email).orElseThrow {
-            UsernameNotFoundException("El usuario no existe.")
-        }
-    }
-
-    fun login(user: LoginForm, request: HttpServletRequest): UserDetailResponseDto {
+    fun login(user: LoginForm, request: HttpServletRequest, response: HttpServletResponse): UserDetailResponseDto {
         try {
             request.login(user.email, user.password)
         } catch (e: ServletException) {
             throw NotFoundException("Usuario y/o contraseña invalidos.")
         }
 
-        val principal = (request.userPrincipal as Authentication).principal as Principal
-        val principalUser = principal.getUser()
+        val auth: Authentication = request.userPrincipal as Authentication
+
+        if (user.rememberMe) {
+            rememberMeServices.loginSuccess(request, response, auth)
+        }
+
+        val principalUser = (auth.principal as Principal).getUser()
         val nextClass = getSubscriptions(principalUser.id.toString()).firstOrNull()
 
-        return UserMapper.buildUserDetailDto(principalUser,nextClass)
+        return UserMapper.buildUserDetailDto(principalUser, nextClass)
     }
 
     @Transactional
     fun register(form: RegisterFormDto): UserResponseDto {
-        // Verificar si el correo ya está en uso
         if (principalRepository.findUserByEmail(form.email).isPresent) {
             throw InternalServerError("El correo ya está en uso.")
         }
         val encryptedPassword = encryptPassword(form.password)
 
-        // Crear y guardar el nuevo usuario
         val newUser = User(
             name = form.name,
             lastName = form.lastName,
@@ -73,7 +71,6 @@ class UserService(
         )
         userRepository.save(newUser)
 
-        // Crear y guardar el principal asociado
         val principal = Principal().apply {
             username = form.email
             password = encryptedPassword
@@ -81,6 +78,7 @@ class UserService(
             user = newUser
         }
         principalRepository.save(principal)
+
         return UserMapper.buildUserDto(newUser)
     }
 
@@ -105,7 +103,7 @@ class UserService(
         val user = findUserById(idUser)
 
         if (userDetail.file != null) {
-            val imageName = storageService.updatePrivate(user.image,userDetail.file)
+            val imageName = storageService.updatePrivate(user.image, userDetail.file)
 
             user.image = imageName
         }
@@ -159,7 +157,7 @@ class UserService(
         userRepository.delete(principal.user!!)
         principalRepository.delete(principal)
 
-        if(avatar!=storageService.defaultImage()){
+        if (avatar != storageService.defaultImage()) {
             storageService.deletePrivate(principal.getUser().image)
         }
     }
