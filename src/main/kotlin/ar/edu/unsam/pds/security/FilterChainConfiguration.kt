@@ -18,18 +18,22 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMa
 class FilterChainConfiguration {
 
     @Bean
-    fun filterChain(http: HttpSecurity, rememberMeServices: TokenBasedRememberMeServices): SecurityFilterChain {
+    fun filterChain(
+        http: HttpSecurity,
+        rememberMeServices: TokenBasedRememberMeServices,
+    ): SecurityFilterChain {
         // #############################################################################################################
         // # filters for exceptions                                                                                    #
         // #############################################################################################################
         http.addFilterAfter(MyTempCorsFilter(), DigestAuthenticationFilter::class.java)
 
-//        http.sessionManagement { sm ->
-//            sm.sessionConcurrency { sc ->
-//                sc.maximumSessions(10)
-//                  .expiredUrl("http://localhost:4200/ingresar")
+//        http.sessionManagement { sm -> sm
+//            .sessionConcurrency { sc -> sc
+//                .maximumSessions(10)
+//                .sessionRegistry(sessionRegistry())
+//                .expiredUrl("http://localhost:4200/ingresar")
 //            }
-//               .invalidSessionUrl("http://localhost:4200/ingresar")
+//            .invalidSessionUrl("http://localhost:4200/ingresar")
 //        }
 
         // #############################################################################################################

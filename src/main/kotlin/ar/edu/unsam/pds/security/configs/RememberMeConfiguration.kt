@@ -1,4 +1,4 @@
-package ar.edu.unsam.pds.security
+package ar.edu.unsam.pds.security.configs
 
 import ar.edu.unsam.pds.security.services.AppUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired

@@ -16,6 +16,7 @@ import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
+import ar.edu.unsam.pds.tools.clearCookies
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -146,19 +147,18 @@ class UserService(
     }
 
     @Transactional
-    fun deleteAccount(principal: Principal, request: HttpServletRequest) {
-        if (userRepository.hasInscriptions(principal.getUser().id)) {
-            throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
-        }
-        val avatar = principal.getUser().image
+    fun deleteAccount(request: HttpServletRequest, response: HttpServletResponse) {
+        val auth: Authentication = request.userPrincipal as Authentication
+        val id = (auth.principal as Principal).id
 
-        request.logout()
+        principalRepository.findById(id).map { principal ->
 
-        userRepository.delete(principal.user!!)
-        principalRepository.delete(principal)
-
-        if (avatar != storageService.defaultImage) {
+            principalRepository.deleteWithDestructionOfAllSessions(principal)
             storageService.deletePrivate(principal.getUser().image)
+            clearCookies(request, response)
+
+        }.orElseThrow {
+            NotFoundException("Usuario no encontrado para el uuid suministrado")
         }
     }
 }
