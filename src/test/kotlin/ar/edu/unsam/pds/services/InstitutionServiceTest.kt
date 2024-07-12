@@ -4,22 +4,12 @@ import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.mappers.InstitutionMapper
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Autowired
 
 class InstitutionServiceTest : BootstrapNBTest() {
-    private lateinit var institutionService: InstitutionService
-
-    @BeforeEach
-    fun setUpInstitutionServiceTest() {
-        institutionService = InstitutionService(
-            institutionRepository = institutionRepository,
-            principalRepository = principalRepository,
-            userRepository = userRepository,
-            imageService = imageService
-        )
-    }
+    @Autowired private lateinit var institutionService: InstitutionService
 
     @Test
     fun `test get all institutions`() {

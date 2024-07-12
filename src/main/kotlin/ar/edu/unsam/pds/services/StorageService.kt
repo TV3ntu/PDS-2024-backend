@@ -32,14 +32,11 @@ class StorageService {
 
     fun deletePublic(imageName: String) = deleteImage(publicPath, imageName)
     fun savePublic(file: MultipartFile) = saveImage(publicPath, file)
-    fun updatePublic(oldImageName: String, newImageFile: MultipartFile) =
-        updateImage(publicPath, oldImageName, newImageFile)
+    fun updatePublic(oldImageName: String, newImageFile: MultipartFile) = updateImage(publicPath, oldImageName, newImageFile)
 
     fun deletePrivate(imageName: String) = deleteImage(privatePath, imageName)
     fun savePrivate(file: MultipartFile) = saveImage(privatePath, file)
-    fun updatePrivate(oldImageName: String, newImageFile: MultipartFile) =
-        updateImage(privatePath, oldImageName, newImageFile)
-
+    fun updatePrivate(oldImageName: String, newImageFile: MultipartFile) = updateImage(privatePath, oldImageName, newImageFile)
 
     private fun deleteImage(directory: Path, imageName: String) {
         val imagePath = directory.resolve(imageName.substringAfterLast("/"))
@@ -76,5 +73,4 @@ class StorageService {
 
         return saveImage(directory, newImageFile)
     }
-
 }

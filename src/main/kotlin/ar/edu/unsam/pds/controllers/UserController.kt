@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/users")
 @CrossOrigin("*")
 class UserController : UUIDValid() {
-    @Autowired
-    lateinit var userService: UserService
+    @Autowired lateinit var userService: UserService
 
     @GetMapping("")
     @Operation(summary = "Get all users")

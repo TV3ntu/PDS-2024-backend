@@ -60,7 +60,7 @@ class UserService(
     @Transactional
     fun register(form: RegisterFormDto): UserResponseDto {
         if (principalRepository.findUserByEmail(form.email).isPresent) {
-            throw InternalServerError("El correo ya está en uso.")
+            throw InternalServerError("El correo ya está en uso. Si elimino su cuenta y quiere recuperarla dirijase a @pirulo")
         }
         val encryptedPassword = encryptPassword(form.password)
 
@@ -89,7 +89,7 @@ class UserService(
     }
 
     fun getUserAll(): List<UserResponseDto> {
-        val user = userRepository.findAll()
+        val user = userRepository.findAllEnabled()
         return user.map { UserMapper.buildUserDto(it) }
     }
 

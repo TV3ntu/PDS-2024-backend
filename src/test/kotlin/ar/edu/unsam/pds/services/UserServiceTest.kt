@@ -17,57 +17,32 @@ import ar.edu.unsam.pds.security.services.AppUserDetailsService
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mock
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.`when`
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
-@ActiveProfiles("test")
 class UserServiceTest : BootstrapNBTest() {
-    @Mock
-    private lateinit var mockRequest: HttpServletRequest
+    @Autowired private lateinit var institutionService: InstitutionService
+    @Autowired private lateinit var userDetailsService: AppUserDetailsService
+    @Autowired private lateinit var userService: UserService
 
-    private lateinit var institutionService: InstitutionService
-    private lateinit var userDetailsService: AppUserDetailsService
-    private lateinit var userService: UserService
-
-    @BeforeEach
-    fun prepareTestData() {
-        institutionService = InstitutionService(
-            institutionRepository = institutionRepository,
-            principalRepository = principalRepository,
-            userRepository = userRepository,
-            imageService = imageService
-        )
-
-        userService = UserService(
-            userRepository = userRepository,
-            principalRepository = principalRepository,
-            institutionService = institutionService,
-
-            emailService = emailService,
-            storageService = imageService,
-            rememberMeServices = rememberMeServices
-        )
-
-        userDetailsService = AppUserDetailsService(
-            principalRepository = principalRepository
-        )
-    }
+    @Mock private lateinit var mockRequest: HttpServletRequest
 
     @Test
     fun `test load user by username`() {
-        val obtainedValue = userDetailsService.loadUserByUsername("adam@email.com")
+        val obtainedValue = userDetailsService.loadUserByUsername("adam@email.com") as Principal
         val expectedValue = principals[0]
 
-        assertEquals(expectedValue, obtainedValue)
+        assertEquals(expectedValue.id, obtainedValue.id)
+        assertEquals(expectedValue.username, obtainedValue.username)
+        assertEquals(expectedValue.password, obtainedValue.password)
     }
 
     @Test

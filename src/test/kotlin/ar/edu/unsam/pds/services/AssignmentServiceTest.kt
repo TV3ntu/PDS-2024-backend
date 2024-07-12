@@ -6,29 +6,16 @@ import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.`when`
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.util.*
 
-@ActiveProfiles("test")
 class AssignmentServiceTest : BootstrapNBTest() {
-    private lateinit var assignmentService: AssignmentService
-
-    @BeforeEach
-    fun prepareTestData() {
-        assignmentService = AssignmentService(
-            assignmentRepository = assignmentRepository,
-            userRepository = userRepository,
-            scheduleRepository = scheduleRepository,
-            courseRepository = courseRepository,
-            paymentRepository = paymentRepository,
-            emailService = emailService
-        )
-    }
+    @Autowired private lateinit var assignmentService: AssignmentService
 
     @Test
     fun `test all assignments`() {

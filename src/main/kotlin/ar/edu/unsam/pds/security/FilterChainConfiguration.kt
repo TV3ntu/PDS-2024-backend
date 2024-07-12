@@ -18,10 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMa
 class FilterChainConfiguration {
 
     @Bean
-    fun filterChain(
-        http: HttpSecurity,
-        rememberMeServices: TokenBasedRememberMeServices,
-    ): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity, rememberMeServices: TokenBasedRememberMeServices): SecurityFilterChain {
         // #############################################################################################################
         // # filters for exceptions                                                                                    #
         // #############################################################################################################
@@ -115,6 +112,9 @@ class FilterChainConfiguration {
             .anyRequest().authenticated()
         }
 
+        // #############################################################################################################
+        // # remember me implementation                                                                                #
+        // #############################################################################################################
         http.rememberMe { remember -> remember
             .rememberMeServices(rememberMeServices)
         }
