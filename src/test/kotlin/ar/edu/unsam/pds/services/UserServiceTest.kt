@@ -26,7 +26,6 @@ import org.mockito.Mockito.`when`
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
 class UserServiceTest : BootstrapNBTest() {
@@ -61,6 +60,18 @@ class UserServiceTest : BootstrapNBTest() {
         )
     }
 
+    private fun buildAuthentication(principal: Principal): Authentication {
+        return object : Authentication {
+            override fun getName() = principal.user?.name!!
+            override fun getAuthorities() = principal.authorities
+            override fun getCredentials(): Any? = null
+            override fun getDetails(): Any? = null
+            override fun getPrincipal() = principal
+            override fun isAuthenticated() = true
+            override fun setAuthenticated(isAuthenticated: Boolean) {}
+        }
+    }
+
     @Test
     fun `test load user by username`() {
         val obtainedValue = userDetailsService.loadUserByUsername("adam@email.com")
@@ -81,15 +92,9 @@ class UserServiceTest : BootstrapNBTest() {
         val userForm = LoginForm("adam@email.com", "0")
         val response = MockHttpServletResponse()
 
-        `when`(mockRequest.userPrincipal).thenReturn(object : Authentication {
-            override fun getName() = principals[0].user?.name!!
-            override fun getAuthorities() = principals[0].authorities
-            override fun getCredentials(): Any? = null
-            override fun getDetails(): Any? = null
-            override fun getPrincipal() = principals[0]
-            override fun isAuthenticated() = true
-            override fun setAuthenticated(isAuthenticated: Boolean) {}
-        })
+        `when`(mockRequest.userPrincipal).thenReturn(
+            this.buildAuthentication(principals[0])
+        )
 
         doNothing().`when`(mockRequest).login("adam@email.com", "0")
 
@@ -98,7 +103,7 @@ class UserServiceTest : BootstrapNBTest() {
             name = "Adam",
             lastName = "AdamAdam",
             email = "adam@email.com",
-            image = "",
+            image = defaultImage,
             id = obtainedValue.id,
             isAdmin = true,
             nextClass = null,
@@ -131,15 +136,9 @@ class UserServiceTest : BootstrapNBTest() {
             password = "666"
         }
 
-        `when`(mockRequest.userPrincipal).thenReturn(object : Authentication {
-            override fun getName() = "juan"
-            override fun getAuthorities() = principal.authorities
-            override fun getCredentials(): Any? = null
-            override fun getDetails(): Any? = null
-            override fun getPrincipal() = principal
-            override fun isAuthenticated() = true
-            override fun setAuthenticated(isAuthenticated: Boolean) {}
-        })
+        `when`(mockRequest.userPrincipal).thenReturn(
+            this.buildAuthentication(principal)
+        )
 
         doNothing().`when`(mockRequest).login("adam@email.com", "0")
 
@@ -150,9 +149,7 @@ class UserServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test register a user`() {
-        `when`(imageService.defaultImage).thenReturn(
-            "https://mock.pirulo/media/private/default.png"
-        )
+        `when`(imageService.defaultImage).thenReturn(defaultImage)
 
         val id = userService.register(
             RegisterFormDto(
@@ -168,7 +165,7 @@ class UserServiceTest : BootstrapNBTest() {
             name = "juán",
             lastName = "perez",
             email = "juan_perez@email.com",
-            image = "https://mock.pirulo/media/private/default.png",
+            image = defaultImage,
             id = id,
             isAdmin = false,
             nextClass = null,
@@ -218,7 +215,55 @@ class UserServiceTest : BootstrapNBTest() {
     }
 
     @Test
-    fun `test update a particular user`() {
+    fun `update test for a particular user - with image`() {
+        val obtainedValuePre = userService.getUserDetail(users[0].id.toString())
+        val expectedValuePre = UserMapper.buildUserDetailDto(users[0], null)
+
+        assertEquals(obtainedValuePre, expectedValuePre)
+
+        val adanUpdate = UserRequestUpdateDto(
+            name = "Adan__",
+            lastName = "AdanAdan__",
+            email = "adan__@email.com",
+            id = users[0].id.toString(),
+            credits = 200000.0,
+            nextClass = null,
+            file = mockFile
+        )
+
+        `when`(imageService.updatePrivate(
+            oldImageName = defaultImage,
+            newImageFile = mockFile
+        )).thenReturn(mockFileName)
+
+        `when`(emailService.sendCreditsLoadedEmail(
+            to = adanUpdate.email,
+            credits = adanUpdate.credits,
+            userName = adanUpdate.name
+        )).then {  }
+
+        userService.updateDetail(
+            idUser = users[0].id.toString(),
+            userDetail = adanUpdate
+        )
+
+        val obtainedValuePos = userService.getUserDetail(users[0].id.toString())
+        val expectedValuePos = UserDetailResponseDto(
+            name = adanUpdate.name,
+            lastName = adanUpdate.lastName,
+            email = adanUpdate.email,
+            image = mockFileName,
+            id = adanUpdate.id!!,
+            isAdmin = true,
+            nextClass = null,
+            credits = adanUpdate.credits
+        )
+
+        assertEquals(obtainedValuePos, expectedValuePos)
+    }
+
+    @Test
+    fun `update test for a particular user - no image`() {
         val obtainedValuePre = userService.getUserDetail(users[0].id.toString())
         val expectedValuePre = UserMapper.buildUserDetailDto(users[0], null)
 
@@ -250,7 +295,7 @@ class UserServiceTest : BootstrapNBTest() {
             name = adanUpdate.name,
             lastName = adanUpdate.lastName,
             email = adanUpdate.email,
-            image = "",
+            image = defaultImage,
             id = adanUpdate.id!!,
             isAdmin = true,
             nextClass = null,
@@ -292,5 +337,37 @@ class UserServiceTest : BootstrapNBTest() {
             userService.getSubscriptions(users[0].id.toString()),
             mutableListOf(AssignmentMapper.buildSubscriptionDto(assignments[0], institutions[0]))
         )
+    }
+
+    @Test
+    fun `test delete account`() {
+        val request = mockRequest
+        val response = MockHttpServletResponse()
+
+        `when`(mockRequest.userPrincipal).thenReturn(
+            this.buildAuthentication(principals[0])
+        )
+
+        userService.deleteAccount(request, response)
+    }
+
+    @Test
+    fun `test delete account - invalid id`() {
+        val request = mockRequest
+        val response = MockHttpServletResponse()
+
+        val principal = Principal().apply {
+            id = UUID.randomUUID()
+            username = "juan perez"
+            password = "666"
+        }
+
+        `when`(mockRequest.userPrincipal).thenReturn(
+            this.buildAuthentication(principal)
+        )
+
+        assertThrows<NotFoundException> {
+            userService.deleteAccount(request, response)
+        }
     }
 }

@@ -13,8 +13,9 @@ import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 import org.springframework.session.FindByIndexNameSessionRepository
 import org.springframework.session.Session
+import org.springframework.test.context.ActiveProfiles
 
-@DataJpaTest
+@DataJpaTest @ActiveProfiles("test")
 class BootstrapNBTest : BootstrapBasicTest() {
     @Autowired lateinit var principalRepository: PrincipalRepository
     @Autowired lateinit var userRepository: UserRepository
@@ -30,7 +31,8 @@ class BootstrapNBTest : BootstrapBasicTest() {
 
     @MockBean lateinit var sessionRepository: FindByIndexNameSessionRepository<Session>
 
-    lateinit var file: MockMultipartFile
+    lateinit var mockFile: MockMultipartFile
+    lateinit var mockFileName: String
 
     @BeforeEach
     fun setUpBootstrapNBTest() {
@@ -41,7 +43,9 @@ class BootstrapNBTest : BootstrapBasicTest() {
         courseRepository.saveAll(courses)
         institutionRepository.saveAll(institutions)
 
-        file = MockMultipartFile(
+        mockFileName = "https://mock.pirulo/media/private/filename.jpg"
+
+        mockFile = MockMultipartFile(
             "filename",
             "filename.jpg",
             "image/jpeg",

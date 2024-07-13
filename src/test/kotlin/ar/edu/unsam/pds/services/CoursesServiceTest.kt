@@ -157,11 +157,11 @@ class CoursesServiceTest : BootstrapNBTest() {
             title = "new course",
             description = "new course description",
             category = "new category",
-            file = file,
+            file = mockFile,
             institutionId = institutions[0].id.toString()
         )
 
-        `when`(imageService.savePublic(file)).thenReturn(
+        `when`(imageService.savePublic(mockFile)).thenReturn(
             "https://mock.pirulo/media/public/filename.jpg"
         )
 
@@ -178,7 +178,7 @@ class CoursesServiceTest : BootstrapNBTest() {
             title = "new course",
             description = "new course description",
             category = "new category",
-            file = file,
+            file = mockFile,
             institutionId = "029ce681-9f90-45e7-af7f-e74a8cfb4b57"
         )
 

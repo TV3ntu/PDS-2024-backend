@@ -20,6 +20,8 @@ open class BootstrapBasicTest {
     var courses = mutableListOf<Course>()
     var institutions = mutableListOf<Institution>()
 
+    val defaultImage = "https://mock.pirulo/media/private/default.png"
+
     private fun encode(clave: String): String {
         return passwordEncoder.encode(clave)
     }
@@ -31,7 +33,7 @@ open class BootstrapBasicTest {
                 name = "Adam",
                 lastName = "AdamAdam",
                 email = "adam@email.com",
-                image = "",
+                image = defaultImage,
                 credits = 100000.0,
                 isAdmin = true
             )
@@ -42,8 +44,8 @@ open class BootstrapBasicTest {
                 name = "Eve",
                 lastName = "Eve",
                 email = "eve@email.com",
-                image = "",
-                credits = 100000.0
+                image = defaultImage,
+                credits = 100001.0
             )
         )
 
@@ -52,7 +54,8 @@ open class BootstrapBasicTest {
                 name = "Boniface",
                 lastName = "Gomez",
                 email = "boniface@email.com",
-                image = "",
+                image = defaultImage,
+                credits = 100002.0
             )
         )
 
