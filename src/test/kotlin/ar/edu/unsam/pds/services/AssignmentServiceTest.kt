@@ -55,12 +55,12 @@ class AssignmentServiceTest : BootstrapNBTest() {
             userName = users[0].name
         )).then {  }
 
-//        `when`(emailService.sendPaymentConfirmationEmail(
-//            to = users[0].email,
-//            amount = assignments[0].price,
-//            userName = users[0].name,
-//            transactionId = UUID.randomUUID().toString()
-//        )).then {  }
+        `when`(emailService.sendPaymentConfirmationEmail(
+            to = users[0].email,
+            amount = assignments[0].price,
+            userName = users[0].name,
+            transactionId = "ID_GENERADO_POR_OTRO_METODO"
+        )).then {  }
 
         val obtainedValue = assignmentService.subscribe(
             idUser = users[0].id.toString(),
