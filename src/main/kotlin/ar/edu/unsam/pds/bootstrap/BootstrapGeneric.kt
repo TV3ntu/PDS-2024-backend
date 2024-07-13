@@ -16,10 +16,9 @@ abstract class BootstrapGeneric(private val message: String) : InitializingBean 
 
     @Value("\${spring.config.activate.on-profile}")
     private lateinit var onProfile: String
-    private val profilesActive = System.getenv("SPRING_PROFILES_ACTIVE")
 
     override fun afterPropertiesSet() {
-        if (onProfile != "test" && (profilesActive == null || profilesActive != "prod")) {
+        if (onProfile.equals("dev")) {
             log.info("#".repeat(110))
             log.info(String.format("# %-106s #", "Loading $message ..."))
             log.info("#".repeat(110))
