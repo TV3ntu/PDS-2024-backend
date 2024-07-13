@@ -88,7 +88,18 @@ class CoursesControllerTest {
     }
 
     @Test
-    fun `test get all by principal`() {
+    fun `test get all courses by principal - not query`() {
+        val courses = listOf(CourseMapper.buildCourseDto(course))
+
+        `when`(courseServices.getAllByPrincipal("", principal)).thenReturn(courses)
+        val responseEntity = coursesController.getAllByPrincipal(null, principal)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == courses)
+    }
+
+    @Test
+    fun `test get all courses by principal  - query`() {
         val courses = listOf(CourseMapper.buildCourseDto(course))
 
         `when`(courseServices.getAllByPrincipal("query", principal)).thenReturn(courses)
