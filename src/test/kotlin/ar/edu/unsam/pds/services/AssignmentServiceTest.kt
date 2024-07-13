@@ -1,16 +1,25 @@
 package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.BootstrapNBTest
+import ar.edu.unsam.pds.dto.request.AssignmentRequestDto
+import ar.edu.unsam.pds.dto.request.ScheduleRequestDto
+import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
+import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
+import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.*
 
 class AssignmentServiceTest : BootstrapNBTest() {
@@ -39,7 +48,7 @@ class AssignmentServiceTest : BootstrapNBTest() {
     }
 
     @Test
-    fun `test get a particular user`() {
+    fun `test get a particular assignments`() {
         val obtainedValue = assignmentService.getAssignment(assignments[0].id.toString())
         val expectedValue = AssignmentMapper.buildAssignmentDto(assignments[0])
 
@@ -127,6 +136,46 @@ class AssignmentServiceTest : BootstrapNBTest() {
     }
 
     @Test
+    fun `test unsubscribe to assignment - credit check with refund`() {
+        val userId = users[0].id.toString()
+        val assignmentId = assignments[0].id.toString()
+
+        // #############################################################################################################
+        assertEquals(users[0].credits, 100000.0)
+
+        // #############################################################################################################
+        assignmentService.subscribe(userId, assignmentId)
+        assertEquals(users[0].credits, 99900.0)
+
+        // #############################################################################################################
+        assignmentService.unsubscribe(userId, assignmentId)
+        assertEquals(users[0].credits, 100000.0)
+    }
+
+    @Test
+    fun `test unsubscribe to assignment - credit check no refund`() {
+        val userId = users[0].id.toString()
+        val assignmentId = assignments[0].id.toString()
+
+        // #############################################################################################################
+        assertEquals(users[0].credits, 100000.0)
+
+        // #############################################################################################################
+        assignmentService.subscribe(userId, assignmentId)
+        assertEquals(users[0].credits, 99900.0)
+
+        // #############################################################################################################
+        val futureDateTime = LocalDateTime.now().plusMonths(1)
+
+        Mockito.mockStatic(LocalDateTime::class.java, Mockito.CALLS_REAL_METHODS).use {
+            it.`when`<LocalDateTime> { LocalDateTime.now() }.thenReturn(futureDateTime)
+            assignmentService.unsubscribe(userId, assignmentId)
+        }
+
+        assertEquals(users[0].credits, 99900.0)
+    }
+
+    @Test
     fun `test throw unsubscribe to assignment`() {
         assertThrows<NotFoundException> {
             assignmentService.unsubscribe(
@@ -141,5 +190,182 @@ class AssignmentServiceTest : BootstrapNBTest() {
                 idAssignment = UUID.randomUUID().toString()
             )
         }
+    }
+
+    @Test
+    fun `test throw unsubscribe to assignment - no exist subscription`() {
+        val userId = users[0].id.toString()
+        val assignmentId = assignments[0].id.toString()
+
+        assertThrows<ValidationException> {
+            assignmentService.unsubscribe(userId, assignmentId)
+        }
+    }
+
+    @Test
+    fun `test create assignment`() {
+        val startTime = LocalTime.now()
+        val endTime = LocalTime.now().plusHours(5)
+        val startDate = LocalDate.now().plusMonths(1)
+        val endDate = LocalDate.now().plusMonths(5)
+
+        val assignmentRequest = AssignmentRequestDto(
+            idCourse = courses[0].id.toString(),
+            quotas = 10,
+            price = 1000.0,
+            schedule = ScheduleRequestDto(
+                days = listOf(DayOfWeek.MONDAY),
+                startTime = startTime,
+                endTime = endTime,
+                startDate = startDate,
+                endDate = endDate,
+                recurrenceWeeks = RecurrenceWeeks.WEEKLY
+            )
+        )
+
+        val obtainedValue =  assignmentService.createAssignment(assignmentRequest)
+        val expectedValue = AssignmentResponseDto(
+            id = obtainedValue.id,
+            quotas = 10,
+            quantityAvailable = 10,
+            isActive = true,
+            price = 1000.0,
+            schedule = ScheduleResponseDto(
+                days = listOf(DayOfWeek.MONDAY),
+                startTime = startTime,
+                endTime = endTime,
+                startDate = startDate,
+                endDate = endDate,
+                recurrenceWeeks = RecurrenceWeeks.WEEKLY.name,
+                listDates = obtainedValue.schedule.listDates
+            )
+        )
+
+        assertEquals(obtainedValue, expectedValue)
+    }
+
+    @Test
+    fun `test create assignment - no exist course`() {
+        val startTime = LocalTime.now()
+        val endTime = LocalTime.now().plusHours(5)
+        val startDate = LocalDate.now().plusMonths(1)
+        val endDate = LocalDate.now().plusMonths(5)
+
+        val assignmentRequest = AssignmentRequestDto(
+            idCourse = UUID.randomUUID().toString(),
+            quotas = 10,
+            price = 1000.0,
+            schedule = ScheduleRequestDto(
+                days = listOf(DayOfWeek.MONDAY),
+                startTime = startTime,
+                endTime = endTime,
+                startDate = startDate,
+                endDate = endDate,
+                recurrenceWeeks = RecurrenceWeeks.WEEKLY
+            )
+        )
+
+        assertThrows<NotFoundException> {
+            assignmentService.createAssignment(assignmentRequest)
+        }
+    }
+
+    @Test
+    fun `test create assignment - startTime is after endTime`() {
+        val endTime = LocalTime.now()
+        val startTime = LocalTime.now().plusHours(5)
+        val startDate = LocalDate.now().plusMonths(1)
+        val endDate = LocalDate.now().plusMonths(5)
+
+        val assignmentRequest = AssignmentRequestDto(
+            idCourse = courses[0].id.toString(),
+            quotas = 10,
+            price = 1000.0,
+            schedule = ScheduleRequestDto(
+                days = listOf(DayOfWeek.MONDAY),
+                startTime = startTime,
+                endTime = endTime,
+                startDate = startDate,
+                endDate = endDate,
+                recurrenceWeeks = RecurrenceWeeks.WEEKLY
+            )
+        )
+
+        assertThrows<ValidationException> {
+            assignmentService.createAssignment(assignmentRequest)
+        }
+    }
+
+    @Test
+    fun `test create assignment - startDate is before now)`() {
+        val startTime = LocalTime.now()
+        val endTime = LocalTime.now().plusHours(5)
+        val startDate = LocalDate.now().minusMonths(1)
+        val endDate = LocalDate.now().plusMonths(5)
+
+        val assignmentRequest = AssignmentRequestDto(
+            idCourse = courses[0].id.toString(),
+            quotas = 10,
+            price = 1000.0,
+            schedule = ScheduleRequestDto(
+                days = listOf(DayOfWeek.MONDAY),
+                startTime = startTime,
+                endTime = endTime,
+                startDate = startDate,
+                endDate = endDate,
+                recurrenceWeeks = RecurrenceWeeks.WEEKLY
+            )
+        )
+
+        assertThrows<ValidationException> {
+            assignmentService.createAssignment(assignmentRequest)
+        }
+    }
+
+    @Test
+    fun `test create assignment - startDate is after endDate)`() {
+        val startTime = LocalTime.now()
+        val endTime = LocalTime.now().plusHours(5)
+        val startDate = LocalDate.now().plusMonths(5)
+        val endDate = LocalDate.now().plusMonths(1)
+
+        val assignmentRequest = AssignmentRequestDto(
+            idCourse = courses[0].id.toString(),
+            quotas = 10,
+            price = 1000.0,
+            schedule = ScheduleRequestDto(
+                days = listOf(DayOfWeek.MONDAY),
+                startTime = startTime,
+                endTime = endTime,
+                startDate = startDate,
+                endDate = endDate,
+                recurrenceWeeks = RecurrenceWeeks.WEEKLY
+            )
+        )
+
+        assertThrows<ValidationException> {
+            assignmentService.createAssignment(assignmentRequest)
+        }
+    }
+
+    @Test
+    fun `test delete assignment`() {
+        val uuid = assignments[1].id.toString()
+
+        val obtainedValuePre = assignmentService.getAll().toList()
+        val expectedValuePre = assignments.map {
+            AssignmentMapper.buildAssignmentDto(it)
+        }
+
+        assertEquals(obtainedValuePre, expectedValuePre)
+
+        assignmentService.deleteAssignment(uuid, principals[0])
+
+        val obtainedValuePos = assignmentService.getAll().toList()
+        val expectedValuePos = listOf(assignments[0]).map {
+            AssignmentMapper.buildAssignmentDto(it)
+        }
+
+        assertEquals(obtainedValuePos, expectedValuePos)
     }
 }

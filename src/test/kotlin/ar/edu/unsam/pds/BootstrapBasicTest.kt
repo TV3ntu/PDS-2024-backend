@@ -73,8 +73,8 @@ open class BootstrapBasicTest {
                 days = listOf(DayOfWeek.MONDAY),
                 startTime = LocalTime.of(19, 0),
                 endTime = LocalTime.of(20, 0),
-                startDate = LocalDate.of(2023, 3, 1),
-                endDate = LocalDate.of(2024, 10, 30),
+                startDate = LocalDate.now().minusMonths(1),
+                endDate = LocalDate.now().plusMonths(5),
                 recurrenceWeeks = RecurrenceWeeks.WEEKLY,
             )
         )
@@ -84,8 +84,8 @@ open class BootstrapBasicTest {
                 days = listOf(DayOfWeek.TUESDAY),
                 startTime = LocalTime.of(19, 0),
                 endTime = LocalTime.of(21, 0),
-                startDate = LocalDate.of(2023, 3, 1),
-                endDate = LocalDate.of(2024, 12, 30),
+                startDate = LocalDate.now().minusMonths(1),
+                endDate = LocalDate.now().plusMonths(5),
                 recurrenceWeeks = RecurrenceWeeks.BIWEEKLY,
             )
         )
