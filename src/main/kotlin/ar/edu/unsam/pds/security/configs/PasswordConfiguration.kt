@@ -1,4 +1,4 @@
-package ar.edu.unsam.pds.security
+package ar.edu.unsam.pds.security.configs
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

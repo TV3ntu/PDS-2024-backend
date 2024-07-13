@@ -7,12 +7,18 @@ import ar.edu.unsam.pds.services.StorageService
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.TransactionTemplate
 
-@DataJpaTest
+@ActiveProfiles("test")
+@SpringBootTest(classes = [ProjectApplication::class])
 class BootstrapNBTest : BootstrapBasicTest() {
+    @Autowired private lateinit var transactionManager: PlatformTransactionManager
+
     @Autowired lateinit var principalRepository: PrincipalRepository
     @Autowired lateinit var userRepository: UserRepository
     @Autowired lateinit var scheduleRepository: ScheduleRepository
@@ -29,12 +35,16 @@ class BootstrapNBTest : BootstrapBasicTest() {
 
     @BeforeEach
     fun setUpBootstrapNBTest() {
-        userRepository.saveAll(users)
-        principalRepository.saveAll(principals)
-        scheduleRepository.saveAll(schedules)
-        assignmentRepository.saveAll(assignments)
-        courseRepository.saveAll(courses)
-        institutionRepository.saveAll(institutions)
+        TransactionTemplate(transactionManager).execute {
+            users = userRepository.saveAll(users)
+            principals = principalRepository.saveAll(principals)
+            schedules = scheduleRepository.saveAll(schedules)
+            assignments = assignmentRepository.saveAll(assignments)
+            courses = courseRepository.saveAll(courses)
+            institutions = institutionRepository.saveAll(institutions)
+
+            "status"
+        }
 
         file = MockMultipartFile(
             "filename",
@@ -42,5 +52,26 @@ class BootstrapNBTest : BootstrapBasicTest() {
             "image/jpeg",
             "some content".toByteArray()
         )
+    }
+
+    fun deepEquals(self: Any?, other: Any?): Boolean {
+        if (self === other) return true
+
+        if (other !is Any) return false
+        if (self !is Any) return false
+
+        if (self.javaClass != other.javaClass) return false
+
+        val properties = this.javaClass.declaredFields
+
+        for (property in properties) {
+            property.isAccessible = true
+            val value1 = property.get(this)
+            val value2 = property.get(other)
+
+            if (value1 != value2) return false
+        }
+
+        return true
     }
 }

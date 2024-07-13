@@ -1,7 +1,67 @@
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# server @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+server:
+  error:
+    include-message: always
+    include-stacktrace: always
+    include-binding-errors: always
+    whitelabel.enabled: true
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB
+    enabled: true
+  servlet:
+    session:
+      timeout: 15m
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# profiles test @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 spring:
   config:
     activate:
-      on-profile: test
-
+      on-profile: test # Perfil por defecto
+  application:
+    name: PDS-2024-backend
+  thymeleaf:
+    check-template-location: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: false
+  session:
+    store-type: jdbc
+    jdbc.initialize-schema: always
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:my_db;COLLATION=ENGLISH STRENGTH PRIMARY
+    username: pds
+    password: pds
+  sql:
+    init:
+      mode: always
+  jpa:
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        ddl-auto: create-drop
+        dialect: org.hibernate.dialect.H2Dialect
 email:
   enabled: false  # Desactiva el servicio de correo electrónico en los tests
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

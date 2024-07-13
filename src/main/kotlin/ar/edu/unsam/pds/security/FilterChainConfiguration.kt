@@ -24,12 +24,13 @@ class FilterChainConfiguration {
         // #############################################################################################################
         http.addFilterAfter(MyTempCorsFilter(), DigestAuthenticationFilter::class.java)
 
-//        http.sessionManagement { sm ->
-//            sm.sessionConcurrency { sc ->
-//                sc.maximumSessions(10)
-//                  .expiredUrl("http://localhost:4200/ingresar")
+//        http.sessionManagement { sm -> sm
+//            .sessionConcurrency { sc -> sc
+//                .maximumSessions(10)
+//                .sessionRegistry(sessionRegistry())
+//                .expiredUrl("http://localhost:4200/ingresar")
 //            }
-//               .invalidSessionUrl("http://localhost:4200/ingresar")
+//            .invalidSessionUrl("http://localhost:4200/ingresar")
 //        }
 
         // #############################################################################################################
@@ -111,6 +112,9 @@ class FilterChainConfiguration {
             .anyRequest().authenticated()
         }
 
+        // #############################################################################################################
+        // # remember me implementation                                                                                #
+        // #############################################################################################################
         http.rememberMe { remember -> remember
             .rememberMeServices(rememberMeServices)
         }
