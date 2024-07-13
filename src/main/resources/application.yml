@@ -9,10 +9,6 @@ server:
     include-stacktrace: always
     include-binding-errors: always
     whitelabel.enabled: true
-  multipart:
-    max-file-size: 10MB
-    max-request-size: 10MB
-    enabled: true
   servlet:
     session:
       timeout: 15m
@@ -42,6 +38,10 @@ spring:
   sql:
     init:
       mode: always
+  servlet:
+    multipart:
+      max-file-size: 10MB  # Tamaño máximo de archivo
+      max-request-size: 10MB  # Tamaño máximo de la solicitud (puede incluir varios archivos)
 
 ---
 
