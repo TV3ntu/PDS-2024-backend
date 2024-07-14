@@ -6,7 +6,9 @@ import ar.edu.unsam.pds.dto.request.ScheduleRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
+import ar.edu.unsam.pds.dto.response.UserSubscribedResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
@@ -116,6 +118,19 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test unsubscribe to assignment`() {
+        `when`(emailService.sendSubscriptionConfirmationEmail(
+            to = users[0].email,
+            courseName = assignments[0].course.title,
+            userName = users[0].name
+        )).then {  }
+
+        `when`(emailService.sendPaymentConfirmationEmail(
+            to = users[0].email,
+            amount = assignments[0].price,
+            userName = users[0].name,
+            transactionId = "ID_GENERADO_POR_OTRO_METODO"
+        )).then {  }
+
         assignmentService.subscribe(
             idUser = users[0].id.toString(),
             idAssignment = assignments[0].id.toString()
@@ -144,6 +159,19 @@ class AssignmentServiceTest : BootstrapNBTest() {
         assertEquals(users[0].credits, 100000.0)
 
         // #############################################################################################################
+        `when`(emailService.sendSubscriptionConfirmationEmail(
+            to = users[0].email,
+            courseName = assignments[0].course.title,
+            userName = users[0].name
+        )).then {  }
+
+        `when`(emailService.sendPaymentConfirmationEmail(
+            to = users[0].email,
+            amount = assignments[0].price,
+            userName = users[0].name,
+            transactionId = "ID_GENERADO_POR_OTRO_METODO"
+        )).then {  }
+
         assignmentService.subscribe(userId, assignmentId)
         assertEquals(users[0].credits, 99900.0)
 
@@ -161,6 +189,19 @@ class AssignmentServiceTest : BootstrapNBTest() {
         assertEquals(users[0].credits, 100000.0)
 
         // #############################################################################################################
+        `when`(emailService.sendSubscriptionConfirmationEmail(
+            to = users[0].email,
+            courseName = assignments[0].course.title,
+            userName = users[0].name
+        )).then {  }
+
+        `when`(emailService.sendPaymentConfirmationEmail(
+            to = users[0].email,
+            amount = assignments[0].price,
+            userName = users[0].name,
+            transactionId = "ID_GENERADO_POR_OTRO_METODO"
+        )).then {  }
+
         assignmentService.subscribe(userId, assignmentId)
         assertEquals(users[0].credits, 99900.0)
 
@@ -204,8 +245,8 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test create assignment`() {
-        val startTime = LocalTime.now()
-        val endTime = LocalTime.now().plusHours(5)
+        val startTime = LocalTime.of(19, 0)
+        val endTime = LocalTime.of(21, 0)
         val startDate = LocalDate.now().plusMonths(1)
         val endDate = LocalDate.now().plusMonths(5)
 
@@ -246,8 +287,8 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test create assignment - no exist course`() {
-        val startTime = LocalTime.now()
-        val endTime = LocalTime.now().plusHours(5)
+        val startTime = LocalTime.of(19, 0)
+        val endTime = LocalTime.of(21, 0)
         val startDate = LocalDate.now().plusMonths(1)
         val endDate = LocalDate.now().plusMonths(5)
 
@@ -272,8 +313,8 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test create assignment - startTime is after endTime`() {
-        val endTime = LocalTime.now()
-        val startTime = LocalTime.now().plusHours(5)
+        val endTime = LocalTime.of(19, 0)
+        val startTime = LocalTime.of(21, 0)
         val startDate = LocalDate.now().plusMonths(1)
         val endDate = LocalDate.now().plusMonths(5)
 
@@ -298,8 +339,8 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test create assignment - startDate is before now)`() {
-        val startTime = LocalTime.now()
-        val endTime = LocalTime.now().plusHours(5)
+        val startTime = LocalTime.of(19, 0)
+        val endTime = LocalTime.of(21, 0)
         val startDate = LocalDate.now().minusMonths(1)
         val endDate = LocalDate.now().plusMonths(5)
 
@@ -324,8 +365,8 @@ class AssignmentServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test create assignment - startDate is after endDate)`() {
-        val startTime = LocalTime.now()
-        val endTime = LocalTime.now().plusHours(5)
+        val startTime = LocalTime.of(19, 0)
+        val endTime = LocalTime.of(21, 0)
         val startDate = LocalDate.now().plusMonths(5)
         val endDate = LocalDate.now().plusMonths(1)
 
@@ -367,5 +408,83 @@ class AssignmentServiceTest : BootstrapNBTest() {
         }
 
         assertEquals(obtainedValuePos, expectedValuePos)
+    }
+
+    @Test
+    fun `test delete assignment - in not owner`() {
+        val uuid = assignments[0].id.toString()
+
+        assertThrows<PermissionDeniedException> {
+            assignmentService.deleteAssignment(uuid, principals[1])
+        }
+    }
+
+    @Test
+    fun `test delete assignment - has any subscribed user`() {
+        val uuid = assignments[0].id.toString()
+
+        `when`(emailService.sendSubscriptionConfirmationEmail(
+            to = users[0].email,
+            courseName = assignments[0].course.title,
+            userName = users[0].name
+        )).then {  }
+
+        `when`(emailService.sendPaymentConfirmationEmail(
+            to = users[0].email,
+            amount = assignments[0].price,
+            userName = users[0].name,
+            transactionId = "ID_GENERADO_POR_OTRO_METODO"
+        )).then {  }
+
+        assignmentService.subscribe(
+            idUser = users[0].id.toString(),
+            idAssignment = assignments[0].id.toString()
+        )
+
+        assertThrows<ValidationException> {
+            assignmentService.deleteAssignment(uuid, principals[0])
+        }
+    }
+
+//    Unexpected exception type thrown
+//    @Test
+//    fun `test delete assignment - in exist assignment`() {
+//        val uuid = UUID.randomUUID().toString()
+//
+//        assertThrows<NotFoundException> {
+//            assignmentService.deleteAssignment(uuid, principals[0])
+//        }
+//    }
+
+    @Test
+    fun `test get assignment described users`() {
+        val uuid = assignments[0].id.toString()
+
+        `when`(emailService.sendSubscriptionConfirmationEmail(
+            to = users[0].email,
+            courseName = assignments[0].course.title,
+            userName = users[0].name
+        )).then {  }
+
+        `when`(emailService.sendPaymentConfirmationEmail(
+            to = users[0].email,
+            amount = assignments[0].price,
+            userName = users[0].name,
+            transactionId = "ID_GENERADO_POR_OTRO_METODO"
+        )).then {  }
+
+        assignmentService.subscribe(
+            idUser = users[0].id.toString(),
+            idAssignment = assignments[0].id.toString()
+        )
+
+        val obtainedValue = assignmentService.getAssignmentSuscribedUsers(uuid)
+        val expectedValue = listOf(UserSubscribedResponseDto(
+            name = "Adam",
+            lastName = "AdamAdam",
+            email = "adam@email.com"
+        ))
+
+        assertEquals(obtainedValue, expectedValue)
     }
 }
