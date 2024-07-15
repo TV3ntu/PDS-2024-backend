@@ -88,6 +88,28 @@ class CoursesControllerTest {
     }
 
     @Test
+    fun `test get all courses by principal - not query`() {
+        val courses = listOf(CourseMapper.buildCourseDto(course))
+
+        `when`(courseServices.getAllByPrincipal("", principal)).thenReturn(courses)
+        val responseEntity = coursesController.getAllByPrincipal(null, principal)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == courses)
+    }
+
+    @Test
+    fun `test get all courses by principal  - query`() {
+        val courses = listOf(CourseMapper.buildCourseDto(course))
+
+        `when`(courseServices.getAllByPrincipal("query", principal)).thenReturn(courses)
+        val responseEntity = coursesController.getAllByPrincipal("query", principal)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == courses)
+    }
+
+    @Test
     fun `test get a particular course`() {
         val course = CourseMapper.buildCourseDetailDto(course)
 
@@ -97,6 +119,17 @@ class CoursesControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == course)
+    }
+
+    @Test
+    fun `test delete multiple courses`() {
+        val uuids = listOf(uuid)
+
+        `when`(courseServices.deleteAllById(uuids, principal)).then { }
+
+        val responseEntity = coursesController.deleteMultipleCourses(uuids, principal)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
     }
 
     @Test

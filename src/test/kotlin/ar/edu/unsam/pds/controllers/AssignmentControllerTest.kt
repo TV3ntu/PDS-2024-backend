@@ -6,6 +6,7 @@ import ar.edu.unsam.pds.dto.request.SubscribeRequestDto
 import ar.edu.unsam.pds.dto.response.AssignmentResponseDto
 import ar.edu.unsam.pds.dto.response.ScheduleResponseDto
 import ar.edu.unsam.pds.dto.response.SubscribeResponseDto
+import ar.edu.unsam.pds.dto.response.UserSubscribedResponseDto
 import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.models.enums.RecurrenceWeeks
 import ar.edu.unsam.pds.security.models.Principal
@@ -185,6 +186,24 @@ class AssignmentControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == mapOf("message" to "Assignment eliminado correctamente."))
+    }
+
+    @Test
+    fun `test get assignment subscribed users`() {
+        val uuid = UUID.randomUUID().toString()
+
+        val listOfSubscriptions = listOf(UserSubscribedResponseDto(
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email
+        ))
+
+        `when`(assignmentService.getAssignmentSuscribedUsers(uuid)).thenReturn(listOfSubscriptions)
+
+        val responseEntity = assignmentController.getAssignmentSuscribedUsers(uuid)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == listOfSubscriptions)
     }
 }
 

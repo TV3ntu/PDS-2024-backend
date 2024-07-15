@@ -216,4 +216,16 @@ class UserControllerTest {
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == subscriptions)
     }
+
+    @Test
+    fun `test delete account`() {
+        val request = MockHttpServletRequest()
+        val response = MockHttpServletResponse()
+
+        `when`(userService.deleteAccount(request, response)).then { }
+
+        val responseEntity = userController.deleteAccount(request, response)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+    }
 }
