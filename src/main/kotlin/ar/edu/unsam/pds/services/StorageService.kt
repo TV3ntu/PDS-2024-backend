@@ -2,6 +2,8 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.ValidationException
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
 import org.springframework.core.env.Profiles
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -12,7 +14,7 @@ import java.nio.file.Path
 
 @Service
 class StorageService {
-
+    @Autowired private lateinit var environment: Environment
     private val basePath: Path = Path.of("media").toAbsolutePath()
     private val privatePath: Path = Path.of("media/private").toAbsolutePath()
     private val publicPath: Path = Path.of("media/public").toAbsolutePath()
@@ -29,7 +31,7 @@ class StorageService {
         }
     }
 
-    public fun defaultImage() = "${this.baseUrl()}/private/default.png"
+    fun defaultImage() = "${this.baseUrl()}/private/default.png"
     fun baseUrl() = "http://${this.getDomain()}:8080/media"
     fun getDomain() =
         if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.141.196"
