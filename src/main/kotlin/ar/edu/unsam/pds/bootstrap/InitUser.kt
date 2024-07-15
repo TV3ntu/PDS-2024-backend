@@ -24,7 +24,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Admin",
                     lastName = "Admin",
                     email = "admin@admin.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     isAdmin = true,
                     credits = 1000.0
                 )
@@ -42,7 +42,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Adan",
                     lastName = "AdanAdan",
                     email = "adan@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 1000.0,
                     isAdmin = true
                 )
@@ -61,7 +61,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Eva",
                     lastName = "EvaEva",
                     email = "eva@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
                 )
 
@@ -79,7 +79,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Bonifacio",
                     lastName = "Gomez",
                     email = "bonifacio@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 1000.0
                 )
 
@@ -97,7 +97,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Clemente",
                     lastName = "Lopez",
                     email = "clemente@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
                 )
 
@@ -115,7 +115,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Dalmacio",
                     lastName = "Martinez",
                     email = "dalmacio@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
                 )
 
@@ -133,7 +133,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Emeterio",
                     lastName = "Garcia",
                     email = "emeterio@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
                 )
                 this.initProperties()
@@ -150,7 +150,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Taciana",
                     lastName = "Moyano",
                     email = "taciana@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
 
                 )
@@ -168,7 +168,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Ursula",
                     lastName = "Campos",
                     email = "ursula@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
 
                 )
@@ -186,7 +186,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Valentina",
                     lastName = "Soto",
                     email = "valentina@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
 
                 )
@@ -204,7 +204,7 @@ class InitUser : BootstrapGeneric("users") {
                     name = "Zeferina",
                     lastName = "Chávez",
                     email = "zeferina@email.com",
-                    image = storageService.defaultImage,
+                    image = storageService.defaultImage(),
                     credits = 10000.0
                 )
                 this.initProperties()
