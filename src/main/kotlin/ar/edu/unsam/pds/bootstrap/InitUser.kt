@@ -13,8 +13,9 @@ class InitUser : BootstrapGeneric("users") {
     @Autowired private lateinit var passwordEncoder: PasswordEncoder
     @Autowired private lateinit var principalRepository: PrincipalRepository
     @Autowired private lateinit var storageService: StorageService
+
     override fun doAfterPropertiesSet() {
-        // ADMIN
+        // region user = ADMIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         principalRepository.save(
             Principal().apply {
                 username = "admin@admin.com"
@@ -30,6 +31,7 @@ class InitUser : BootstrapGeneric("users") {
                 this.initProperties()
             }
         )
+        // endregion
 
         // region user = Adan @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         principalRepository.save(
@@ -134,7 +136,6 @@ class InitUser : BootstrapGeneric("users") {
                     image = storageService.defaultImage(),
                     credits = 10000.0
                 )
-
                 this.initProperties()
             }
         )
@@ -153,7 +154,6 @@ class InitUser : BootstrapGeneric("users") {
                     credits = 10000.0
 
                 )
-
                 this.initProperties()
             }
         )
@@ -172,7 +172,6 @@ class InitUser : BootstrapGeneric("users") {
                     credits = 10000.0
 
                 )
-
                 this.initProperties()
             }
         )
@@ -191,7 +190,6 @@ class InitUser : BootstrapGeneric("users") {
                     credits = 10000.0
 
                 )
-
                 this.initProperties()
             }
         )
@@ -208,9 +206,7 @@ class InitUser : BootstrapGeneric("users") {
                     email = "zeferina@email.com",
                     image = storageService.defaultImage(),
                     credits = 10000.0
-
                 )
-
                 this.initProperties()
             }
         )

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component
 
 @Component(value = "InitInstitutions.beanName")
 @DependsOn(value = ["InitUsers.beanName"])
-
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var userRepository: UserRepository

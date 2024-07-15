@@ -1,5 +1,7 @@
 package ar.edu.unsam.pds.controllers
 
+import ar.edu.unsam.pds.dto.request.ReviewRequestDto
+import ar.edu.unsam.pds.dto.response.ReviewResponseDto
 import ar.edu.unsam.pds.mappers.ReviewMapper
 import ar.edu.unsam.pds.models.Course
 import ar.edu.unsam.pds.models.Review
@@ -76,6 +78,49 @@ class ReviewControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == reviews)
+    }
+
+    @Test
+    fun `test get reviews of all courses`() {
+        val id = course.id.toString()
+        val reviews = listOf(ReviewMapper.buildReviewResponseDto(review))
+
+        `when`(reviewService.getReviewsOfAllCourses(id)).thenReturn(reviews)
+
+        val responseEntity = reviewController.getReviewsOfAllCourses(id)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == reviews)
+    }
+
+    @Test
+    fun `test create reviews`() {
+        val reviewRequest = ReviewRequestDto(
+            rating = review.rating,
+            description = review.description
+        )
+
+        val reviewResponse = ReviewResponseDto(
+            userId = principal.getUser().id.toString(),
+            courseId = course.id.toString(),
+            rating = review.rating,
+            description = review.description
+        )
+
+        `when`(reviewService.createReviews(
+            principal = principal,
+            courseId = course.id.toString(),
+            review = reviewRequest
+        )).thenReturn(reviewResponse)
+
+        val responseEntity = reviewController.createReviews(
+            principal = principal,
+            courseId = course.id.toString(),
+            review = reviewRequest
+        )
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == reviewResponse)
     }
 }
 

@@ -7,7 +7,6 @@ import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
@@ -16,7 +15,6 @@ import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -66,7 +64,7 @@ class UserController : UUIDValid() {
         return ResponseEntity.ok(userService.getUserDetail(idUser))
     }
 
-    @PatchMapping(value=["/{idUser}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PatchMapping(value = ["/{idUser}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "Update a user's details")
     fun updateDetail(
         @PathVariable idUser: String,
@@ -98,10 +96,10 @@ class UserController : UUIDValid() {
     @DeleteMapping("")
     @Operation(summary = "Delete account")
     fun deleteAccount(
-        @AuthenticationPrincipal principal : Principal,
-        request: HttpServletRequest
+        request: HttpServletRequest,
+        response: HttpServletResponse
     ): ResponseEntity<Map<String, String>> {
-        userService.deleteAccount(principal,request)
+        userService.deleteAccount(request, response)
         return ResponseEntity.ok(mapOf("message" to "Cuenta eliminada correctamente."))
     }
 

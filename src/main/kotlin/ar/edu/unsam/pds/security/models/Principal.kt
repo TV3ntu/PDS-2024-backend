@@ -51,6 +51,14 @@ class Principal : UserDetails {
     }
     // endregion @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+    fun disable() {
+        this.enabled = false
+    }
+
+    fun enabled() {
+        this.enabled = true
+    }
+
     fun initProperties() {
         this.accountNonExpired = true
         this.accountNonLocked = true
