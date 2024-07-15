@@ -149,7 +149,7 @@ class UserServiceTest : BootstrapNBTest() {
 
     @Test
     fun `test register a user`() {
-        `when`(imageService.defaultImage).thenReturn(defaultImage)
+        `when`(imageService.defaultImage()).thenReturn(defaultImage)
 
         val id = userService.register(
             RegisterFormDto(
