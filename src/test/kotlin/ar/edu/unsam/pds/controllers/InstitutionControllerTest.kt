@@ -95,6 +95,30 @@ class InstitutionControllerTest {
     }
 
     @Test
+    fun `test get all institutions by principal - no query`() {
+        val institutions = listOf(InstitutionMapper.buildInstitutionDto(institution))
+
+        `when`(institutionService.getAllByPrincipal("", principal)).thenReturn(institutions)
+
+        val responseEntity = institutionController.getAllByPrincipal(null, principal)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
+        assert(responseEntity.body == institutions)
+    }
+
+    @Test
+    fun `test get all institutions by principal - query`() {
+        val institutions = listOf(InstitutionMapper.buildInstitutionDto(institution))
+
+        `when`(institutionService.getAllByPrincipal("query", principal)).thenReturn(institutions)
+
+        val responseEntity0 = institutionController.getAllByPrincipal("query", principal)
+
+        assert(responseEntity0.statusCode == HttpStatus.OK)
+        assert(responseEntity0.body == institutions)
+    }
+
+    @Test
     fun `test get a particular institution`() {
         val institution = InstitutionMapper.buildInstitutionDetailDto(institution)
 

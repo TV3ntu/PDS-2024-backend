@@ -2,21 +2,19 @@ package ar.edu.unsam.pds.controllers
 
 import ar.edu.unsam.pds.dto.request.LoginForm
 import ar.edu.unsam.pds.dto.request.RegisterFormDto
-import ar.edu.unsam.pds.dto.request.UserRequestDto
 import ar.edu.unsam.pds.dto.request.UserRequestUpdateDto
 import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.SubscriptionResponseDto
 import ar.edu.unsam.pds.dto.response.UserDetailResponseDto
 import ar.edu.unsam.pds.dto.response.UserResponseDto
-import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -34,9 +32,10 @@ class UserController : UUIDValid() {
     @PostMapping("login")
     fun login(
         @RequestBody @Valid user: LoginForm,
-        request: HttpServletRequest
+        request: HttpServletRequest,
+        response: HttpServletResponse
     ): ResponseEntity<UserDetailResponseDto> {
-        return ResponseEntity.ok(userService.login(user, request))
+        return ResponseEntity.ok(userService.login(user, request, response))
     }
 
     @PostMapping("logout")
@@ -65,7 +64,7 @@ class UserController : UUIDValid() {
         return ResponseEntity.ok(userService.getUserDetail(idUser))
     }
 
-    @PatchMapping(value=["/{idUser}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PatchMapping(value = ["/{idUser}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @Operation(summary = "Update a user's details")
     fun updateDetail(
         @PathVariable idUser: String,
@@ -97,10 +96,10 @@ class UserController : UUIDValid() {
     @DeleteMapping("")
     @Operation(summary = "Delete account")
     fun deleteAccount(
-        @AuthenticationPrincipal principal : Principal,
-        request: HttpServletRequest
+        request: HttpServletRequest,
+        response: HttpServletResponse
     ): ResponseEntity<Map<String, String>> {
-        userService.deleteAccount(principal,request)
+        userService.deleteAccount(request, response)
         return ResponseEntity.ok(mapOf("message" to "Cuenta eliminada correctamente."))
     }
 

@@ -46,7 +46,7 @@ class InitReviews : BootstrapGeneric("Subscriptions and reviews") {
             user = userTemp,
             course = courseTemp,
             rating = 3,
-            description = "desciption of Zeferina"
+            description = "La clase de ballet para principiantes fue desafiante y gratificante. Empezamos con movimientos básicos en la barra y luego en el centro. El instructor fue paciente y la música inspiradora. Terminé cansado pero satisfecho con mi progreso."
         ))
 
         // #############################################################################################################
@@ -71,7 +71,7 @@ class InitReviews : BootstrapGeneric("Subscriptions and reviews") {
             user = userTemp,
             course = courseTemp,
             rating = 4,
-            description = "desciption of Valentina"
+            description = "Asistir a la clase de ballet para principiantes fue una experiencia enriquecedora. Los ejercicios en la barra mejoraron mi postura y flexibilidad. Las secuencias en el centro fueron un buen desafío. Salí cansado pero motivado."
         ))
 
         // #############################################################################################################
@@ -96,7 +96,7 @@ class InitReviews : BootstrapGeneric("Subscriptions and reviews") {
             user = userTemp,
             course = courseTemp,
             rating = 5,
-            description = "desciption of Ursula"
+            description = "La clase de ballet para principiantes fue intensa y divertida. Comenzamos con movimientos en la barra y luego hicimos secuencias en el centro. El instructor fue claro y la música clásica motivadora. Me sentí más ágil y satisfecho."
         ))
     }
 

@@ -18,6 +18,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletRequest
+import org.springframework.mock.web.MockHttpServletResponse
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -95,14 +96,15 @@ class UserControllerTest {
     @Test
     fun `test login user`() {
         val request = MockHttpServletRequest()
+        val response = MockHttpServletResponse()
         val userForm = LoginForm(user.email, "666")
         val nextClass: SubscriptionResponseDto? = null
 
-        `when`(userService.login(userForm, request)).thenReturn(
+        `when`(userService.login(userForm, request, response)).thenReturn(
             UserMapper.buildUserDetailDto(user, nextClass)
         )
 
-        val responseEntity = userController.login(userForm, request)
+        val responseEntity = userController.login(userForm, request, response)
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == UserMapper.buildUserDetailDto(user, nextClass))
@@ -213,5 +215,17 @@ class UserControllerTest {
 
         assert(responseEntity.statusCode == HttpStatus.OK)
         assert(responseEntity.body == subscriptions)
+    }
+
+    @Test
+    fun `test delete account`() {
+        val request = MockHttpServletRequest()
+        val response = MockHttpServletResponse()
+
+        `when`(userService.deleteAccount(request, response)).then { }
+
+        val responseEntity = userController.deleteAccount(request, response)
+
+        assert(responseEntity.statusCode == HttpStatus.OK)
     }
 }

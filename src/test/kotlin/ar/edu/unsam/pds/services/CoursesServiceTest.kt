@@ -2,8 +2,10 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.BootstrapNBTest
 import ar.edu.unsam.pds.dto.request.CourseRequestDto
+import ar.edu.unsam.pds.dto.response.CourseResponseDto
 import ar.edu.unsam.pds.dto.response.CourseStatsResponseDto
 import ar.edu.unsam.pds.exceptions.NotFoundException
+import ar.edu.unsam.pds.exceptions.PermissionDeniedException
 import ar.edu.unsam.pds.exceptions.ValidationException
 import ar.edu.unsam.pds.mappers.AssignmentMapper
 import ar.edu.unsam.pds.mappers.CourseMapper
@@ -12,12 +14,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.`when`
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
-@ActiveProfiles("test")
-@DataJpaTest
 class CoursesServiceTest : BootstrapNBTest() {
     private lateinit var courseServices: CoursesService
     private lateinit var assignmentService: AssignmentService
@@ -84,6 +82,45 @@ class CoursesServiceTest : BootstrapNBTest() {
     }
 
     @Test
+    fun `test get all courses - adam_email_com`() {
+        val obtainedValue = courseServices.getAllByPrincipal("", principals[0]).toList()
+        val expectedValue = listOf(courses[0], courses[1]).map {
+            CourseMapper.buildCourseDto(it)
+        }
+
+        assertEquals(obtainedValue, expectedValue)
+    }
+
+    @Test
+    fun `test get classic dance course - adam_email_com`() {
+        val obtainedValue = courseServices.getAllByPrincipal("classic dance", principals[0]).toList()
+        val expectedValue = listOf(courses[0]).map {
+            CourseMapper.buildCourseDto(it)
+        }
+
+        assertEquals(obtainedValue, expectedValue)
+    }
+
+    @Test
+    fun `test get modern dance course - adam_email_com`() {
+        val obtainedValue = courseServices.getAllByPrincipal("modern", principals[0]).toList()
+
+        val expectedValue = listOf(courses[1]).map {
+            CourseMapper.buildCourseDto(it)
+        }
+
+        assertEquals(obtainedValue, expectedValue)
+    }
+
+    @Test
+    fun `test get yoga course - adam_email_com`() {
+        val obtainedValue = courseServices.getAllByPrincipal("yoga_category", principals[0]).toList()
+        val expectedValue = listOf<CourseResponseDto>()
+
+        assertEquals(obtainedValue, expectedValue)
+    }
+
+    @Test
     fun `test get a particular course`() {
         val uuid = courses[0].id.toString()
         val obtainedValue = courseServices.getCourse(uuid)
@@ -135,6 +172,15 @@ class CoursesServiceTest : BootstrapNBTest() {
     }
 
     @Test
+    fun `test throw delete a particular course - is not owner`() {
+        val uuid = courses[2].id.toString()
+
+        assertThrows<PermissionDeniedException> {
+            courseServices.deleteCourse(uuid, principals[0])
+        }
+    }
+
+    @Test
     fun `test delete a list course`() {
         val uuid = courses[1].id.toString()
 
@@ -161,11 +207,11 @@ class CoursesServiceTest : BootstrapNBTest() {
             title = "new course",
             description = "new course description",
             category = "new category",
-            file = file,
+            file = mockFile,
             institutionId = institutions[0].id.toString()
         )
 
-        `when`(imageService.savePublic(file)).thenReturn(
+        `when`(imageService.savePublic(mockFile)).thenReturn(
             "https://mock.pirulo/media/public/filename.jpg"
         )
 
@@ -182,7 +228,7 @@ class CoursesServiceTest : BootstrapNBTest() {
             title = "new course",
             description = "new course description",
             category = "new category",
-            file = file,
+            file = mockFile,
             institutionId = "029ce681-9f90-45e7-af7f-e74a8cfb4b57"
         )
 

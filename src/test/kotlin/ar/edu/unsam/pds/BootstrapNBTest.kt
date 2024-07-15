@@ -8,9 +8,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.mock.web.MockMultipartFile
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
+import org.springframework.session.FindByIndexNameSessionRepository
+import org.springframework.session.Session
+import org.springframework.test.context.ActiveProfiles
 
-@DataJpaTest
+@DataJpaTest @ActiveProfiles("test")
 class BootstrapNBTest : BootstrapBasicTest() {
     @Autowired lateinit var principalRepository: PrincipalRepository
     @Autowired lateinit var userRepository: UserRepository
@@ -19,11 +24,16 @@ class BootstrapNBTest : BootstrapBasicTest() {
     @Autowired lateinit var courseRepository: CourseRepository
     @Autowired lateinit var institutionRepository: InstitutionRepository
     @Autowired lateinit var paymentRepository: PaymentRepository
+    @Autowired lateinit var reviewRepository: ReviewRepository
 
     @Mock lateinit var imageService: StorageService
     @Mock lateinit var emailService: EmailService
+    @Mock lateinit var rememberMeServices: TokenBasedRememberMeServices
 
-    lateinit var file: MockMultipartFile
+    @MockBean lateinit var sessionRepository: FindByIndexNameSessionRepository<Session>
+
+    lateinit var mockFile: MockMultipartFile
+    lateinit var mockFileName: String
 
     @BeforeEach
     fun setUpBootstrapNBTest() {
@@ -34,7 +44,9 @@ class BootstrapNBTest : BootstrapBasicTest() {
         courseRepository.saveAll(courses)
         institutionRepository.saveAll(institutions)
 
-        file = MockMultipartFile(
+        mockFileName = "https://mock.pirulo/media/private/filename.jpg"
+
+        mockFile = MockMultipartFile(
             "filename",
             "filename.jpg",
             "image/jpeg",

@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource
 import java.util.*
 
 @RepositoryRestResource(exported = false)
-interface PrincipalRepository : JpaRepository<Principal, UUID> {
+interface PrincipalRepository : JpaRepository<Principal, UUID>, PrincipalRepositoryExtra {
     @Query("SELECT p FROM Principal p WHERE p.user.email = :email")
     fun findUserByEmail(@Param("email") userEmail: String): Optional<Principal>
 }

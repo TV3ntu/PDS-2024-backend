@@ -16,13 +16,13 @@ import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.UserRepository
 import ar.edu.unsam.pds.security.models.Principal
 import ar.edu.unsam.pds.security.repository.PrincipalRepository
+import ar.edu.unsam.pds.tools.clearCookies
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -32,48 +32,46 @@ class UserService(
     private val userRepository: UserRepository,
     private val principalRepository: PrincipalRepository,
     private val institutionService: InstitutionService,
+
     private val emailService: EmailService,
-    private val storageService: StorageService
-) : UserDetailsService {
+    private val storageService: StorageService,
+    private val rememberMeServices: TokenBasedRememberMeServices
+) {
 
-    override fun loadUserByUsername(email: String): UserDetails {
-        return principalRepository.findUserByEmail(email).orElseThrow {
-            UsernameNotFoundException("El usuario no existe.")
-        }
-    }
-
-    fun login(user: LoginForm, request: HttpServletRequest): UserDetailResponseDto {
+    fun login(user: LoginForm, request: HttpServletRequest, response: HttpServletResponse): UserDetailResponseDto {
         try {
             request.login(user.email, user.password)
         } catch (e: ServletException) {
             throw NotFoundException("Usuario y/o contraseña invalidos.")
         }
 
-        val principal = (request.userPrincipal as Authentication).principal as Principal
-        val principalUser = principal.getUser()
+        val auth: Authentication = request.userPrincipal as Authentication
+
+        if (user.rememberMe) {
+            rememberMeServices.loginSuccess(request, response, auth)
+        }
+
+        val principalUser = (auth.principal as Principal).getUser()
         val nextClass = getSubscriptions(principalUser.id.toString()).firstOrNull()
 
-        return UserMapper.buildUserDetailDto(principalUser,nextClass)
+        return UserMapper.buildUserDetailDto(principalUser, nextClass)
     }
 
     @Transactional
     fun register(form: RegisterFormDto): UserResponseDto {
-        // Verificar si el correo ya está en uso
         if (principalRepository.findUserByEmail(form.email).isPresent) {
-            throw InternalServerError("El correo ya está en uso.")
+            throw InternalServerError("El correo ya está en uso. Si elimino su cuenta y quiere recuperarla dirijase a @pirulo")
         }
         val encryptedPassword = encryptPassword(form.password)
 
-        // Crear y guardar el nuevo usuario
         val newUser = User(
             name = form.name,
             lastName = form.lastName,
             email = form.email,
-            image = storageService.defaultImage
+            image = storageService.defaultImage()
         )
         userRepository.save(newUser)
 
-        // Crear y guardar el principal asociado
         val principal = Principal().apply {
             username = form.email
             password = encryptedPassword
@@ -81,6 +79,7 @@ class UserService(
             user = newUser
         }
         principalRepository.save(principal)
+
         return UserMapper.buildUserDto(newUser)
     }
 
@@ -90,7 +89,7 @@ class UserService(
     }
 
     fun getUserAll(): List<UserResponseDto> {
-        val user = userRepository.findAll()
+        val user = userRepository.findAllEnabled()
         return user.map { UserMapper.buildUserDto(it) }
     }
 
@@ -105,7 +104,7 @@ class UserService(
         val user = findUserById(idUser)
 
         if (userDetail.file != null) {
-            val imageName = storageService.updatePrivate(user.image,userDetail.file)
+            val imageName = storageService.updatePrivate(user.image, userDetail.file)
 
             user.image = imageName
         }
@@ -148,19 +147,18 @@ class UserService(
     }
 
     @Transactional
-    fun deleteAccount(principal: Principal, request: HttpServletRequest) {
-        if (userRepository.hasInscriptions(principal.getUser().id)) {
-            throw NotFoundException("No se puede eliminar un usuario que esta inscripto a un curso.")
-        }
-        val avatar = principal.getUser().image
+    fun deleteAccount(request: HttpServletRequest, response: HttpServletResponse) {
+        val auth: Authentication = request.userPrincipal as Authentication
+        val id = (auth.principal as Principal).id
 
-        request.logout()
+        principalRepository.findById(id).map { principal ->
 
-        userRepository.delete(principal.user!!)
-        principalRepository.delete(principal)
-
-        if(avatar!=storageService.defaultImage){
+            principalRepository.deleteWithDestructionOfAllSessions(principal)
             storageService.deletePrivate(principal.getUser().image)
+            clearCookies(request, response)
+
+        }.orElseThrow {
+            NotFoundException("Usuario no encontrado para el uuid suministrado")
         }
     }
 }
