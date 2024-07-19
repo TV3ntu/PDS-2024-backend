@@ -67,6 +67,7 @@ spring:
       enabled: true
 email:
   enabled: true
+imageUrl: http://weekbook.site:8080/media/
 
 ---
 
@@ -93,3 +94,4 @@ spring:
       path: /h2
 email:
   enabled: false
+imageUrl: http://localhost:8080/media/

@@ -5,9 +5,8 @@ import ar.edu.unsam.pds.models.Institution
 import ar.edu.unsam.pds.repository.CourseRepository
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.DependsOn
-import org.springframework.core.env.Environment
-import org.springframework.core.env.Profiles
 import org.springframework.stereotype.Component
 
 @Component(value = "InitCourses.beanName")
@@ -15,13 +14,10 @@ import org.springframework.stereotype.Component
 class InitCourses : BootstrapGeneric("Courses") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var courseRepository: CourseRepository
-    @Autowired private lateinit var environment: Environment
+    @Value("\${imageUrl}")
+    private lateinit var baseUrl: String
 
-    fun urlBase() = "http://${this.getDomain()}:8080/media/public"
-
-    fun getDomain() =
-        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.141.196"
-        else "localhost"
+    fun url() = baseUrl + "public"
 
     override fun doAfterPropertiesSet() {
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -34,7 +30,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 incluyendo postura, técnica de pies y brazos, y movimientos básicos como pliés, tendus y rond de jambes.
             """.trimIndent(),
             category = "Ballet",
-            image = "${this.urlBase()}/estrellas_en_movimiento/ballet.jpg"
+            image = "${this.url()}/estrellas_en_movimiento/ballet.jpg"
         )
 
         estrellasEnMovimiento?.addCourse(course11)
@@ -47,7 +43,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 incluyendo movimientos de popping, locking, y breakdance adaptados a su edad y habilidades.
             """.trimIndent(),
             category = "Hip Hop",
-            image = "${this.urlBase()}/estrellas_en_movimiento/hip_hop.jpg"
+            image = "${this.url()}/estrellas_en_movimiento/hip_hop.jpg"
         )
 
         estrellasEnMovimiento?.addCourse(course12)
@@ -60,7 +56,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 enseñando a los estudiantes rutinas coreografiadas con énfasis en la expresión y el estilo personal.
             """.trimIndent(),
             category = "Jazz Dance",
-            image = "${this.urlBase()}/estrellas_en_movimiento/jazz.jpg"
+            image = "${this.url()}/estrellas_en_movimiento/jazz.jpg"
         )
 
         estrellasEnMovimiento?.addCourse(course13)
@@ -77,7 +73,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 de teatro adaptadas a su edad.
             """.trimIndent(),
             category = "Actuación",
-            image = "${this.urlBase()}/el_escenario_encantado/actuacion_ninios.jpg"
+            image = "${this.url()}/el_escenario_encantado/actuacion_ninios.jpg"
         )
 
         elEscenarioEncantado?.addCourse(course21)
@@ -91,7 +87,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 propia rutina mágica.
             """.trimIndent(),
             category = "Magia e Ilusionismo",
-            image = "${this.urlBase()}/el_escenario_encantado/magia.jpg"
+            image = "${this.url()}/el_escenario_encantado/magia.jpg"
         )
 
         elEscenarioEncantado?.addCourse(course22)
@@ -105,7 +101,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 guiones y escenas originales.
             """.trimIndent(),
             category = "Dramaturgia",
-            image = "${this.urlBase()}/el_escenario_encantado/dramaturgia.jpg"
+            image = "${this.url()}/el_escenario_encantado/dramaturgia.jpg"
         )
 
         elEscenarioEncantado?.addCourse(course23)
@@ -122,7 +118,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 acrílico y dibujo a lápiz, mientras desarrollan su estilo artístico único.
             """.trimIndent(),
             category = "Pintura y Dibujo",
-            image = "${this.urlBase()}/el_rincon_creativo/pintura_ninios.jpg"
+            image = "${this.url()}/el_rincon_creativo/pintura_ninios.jpg"
         )
 
         elRinconCreativo?.addCourse(course31)
@@ -136,7 +132,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 la imaginación y la destreza manual de los estudiantes.
             """.trimIndent(),
             category = "Artesanía",
-            image = "${this.urlBase()}/el_rincon_creativo/artesania.jpg"
+            image = "${this.url()}/el_rincon_creativo/artesania.jpg"
         )
 
         elRinconCreativo?.addCourse(course32)
@@ -150,7 +146,7 @@ class InitCourses : BootstrapGeneric("Courses") {
                 necesarias para expresarse artísticamente en el mundo digital.
             """.trimIndent(),
             category = "Arte Digital",
-            image = "${this.urlBase()}/el_rincon_creativo/arte_digital.jpg"
+            image = "${this.url()}/el_rincon_creativo/arte_digital.jpg"
         )
 
         elRinconCreativo?.addCourse(course33)

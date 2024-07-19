@@ -6,9 +6,8 @@ import ar.edu.unsam.pds.models.User
 import ar.edu.unsam.pds.repository.InstitutionRepository
 import ar.edu.unsam.pds.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.DependsOn
-import org.springframework.core.env.Environment
-import org.springframework.core.env.Profiles
 import org.springframework.stereotype.Component
 
 @Component(value = "InitInstitutions.beanName")
@@ -16,13 +15,10 @@ import org.springframework.stereotype.Component
 class InitInstitutions : BootstrapGeneric("Institutions") {
     @Autowired private lateinit var institutionRepository: InstitutionRepository
     @Autowired private lateinit var userRepository: UserRepository
-    @Autowired private lateinit var environment: Environment
 
-    fun urlBase() = "http://${this.getDomain()}:8080/media/public"
+    @Value("\${imageUrl}") private lateinit var baseUrl: String
 
-    fun getDomain() =
-        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.141.196"
-        else "localhost"
+    fun url() = baseUrl + "public"
 
     override fun doAfterPropertiesSet() {
         institutionRepository.save(
@@ -36,7 +32,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                     como estrellas en el firmamento de la danza.
                 """.trimIndent(),
                 category = "Danza",
-                image = "${this.urlBase()}/estrella_en_movimiento.png",
+                image = "${this.url()}/estrella_en_movimiento.png",
             ).apply {
                 addAdmin(userByEmail("admin@admin.com"))
             }
@@ -53,7 +49,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                      de la actuación.
                 """.trimIndent(),
                 category = "Teatro",
-                image = "${this.urlBase()}/escenario_encantado.png",
+                image = "${this.url()}/escenario_encantado.png",
             ).apply {
                 addAdmin(userByEmail("admin@admin.com"))
             }
@@ -70,7 +66,7 @@ class InitInstitutions : BootstrapGeneric("Institutions") {
                     pincelada cuenta una historia única.
                 """.trimIndent(),
                 category = "Artes plasticas",
-                image = "${this.urlBase()}/el_rincon_creativo.png"
+                image = "${this.url()}/el_rincon_creativo.png"
             )
                 .apply {
                 addAdmin(userByEmail("admin@admin.com"))
