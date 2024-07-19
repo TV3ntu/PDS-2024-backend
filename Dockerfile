@@ -9,4 +9,5 @@ RUN gradle bootJar --no-daemon
 FROM openjdk:17-jdk-alpine
 EXPOSE 8080
 COPY --from=build /home/gradle/src/build/libs/PDS-2024-backend-0.0.1-SNAPSHOT.jar /weekbook.jar
+COPY src/main/resources/templates /emailTemplates
 ENTRYPOINT ["java", "-jar", "/weekbook.jar"]

@@ -2,9 +2,7 @@ package ar.edu.unsam.pds.services
 
 import ar.edu.unsam.pds.exceptions.InternalServerError
 import ar.edu.unsam.pds.exceptions.ValidationException
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.env.Environment
-import org.springframework.core.env.Profiles
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -14,10 +12,12 @@ import java.nio.file.Path
 
 @Service
 class StorageService {
-    @Autowired private lateinit var environment: Environment
     private val basePath: Path = Path.of("media").toAbsolutePath()
     private val privatePath: Path = Path.of("media/private").toAbsolutePath()
     private val publicPath: Path = Path.of("media/public").toAbsolutePath()
+
+    @Value("\${imageUrl}")
+    private lateinit var baseUrl: String
 
     init {
         if (!Files.exists(basePath)) {
@@ -31,11 +31,7 @@ class StorageService {
         }
     }
 
-    fun defaultImage() = "${this.baseUrl()}/private/default.png"
-    fun baseUrl() = "http://${this.getDomain()}:8080/media"
-    fun getDomain() =
-        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.141.196"
-        else "localhost"
+    fun defaultImage() = "${this.baseUrl}private/default.png"
 
     fun deletePublic(imageName: String) = deleteImage(publicPath, imageName)
     fun savePublic(file: MultipartFile) = saveImage(publicPath, file)
@@ -66,7 +62,7 @@ class StorageService {
         val destinationFile = directory.resolve(imageName).toFile()
         file.transferTo(destinationFile)
 
-        return "${baseUrl()}/${directory.fileName}/$imageName"
+        return "${baseUrl}${directory.fileName}/$imageName"
     }
 
     private fun updateImage(directory: Path, oldImageName: String, newImageFile: MultipartFile?): String {
