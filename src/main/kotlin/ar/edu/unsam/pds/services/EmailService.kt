@@ -1,5 +1,6 @@
 package ar.edu.unsam.pds.services
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -13,6 +14,8 @@ import java.nio.file.Paths
 class EmailService(
     private val mailSender: JavaMailSender
 ) {
+    @Value("\${pathEmailTemplates}")
+    private lateinit var pathEmailTemplates: String
 
     @Async("taskExecutor")
     fun sendEmail(to: String, subject: String, htmlContent: String) {
@@ -42,7 +45,7 @@ class EmailService(
     @Async("taskExecutor")
     fun sendPaymentConfirmationEmail(to: String, amount: Double, userName : String, transactionId: String) {
         val subject = "Payment Confirmation"
-        val template = loadTemplate("src/main/resources/templates/payment_complete.html")
+        val template = loadTemplate("$pathEmailTemplates/payment_complete.html")
         val placeholders = mapOf(
             "\${amount}" to amount.toString(),
             "\${user}" to userName,
@@ -59,7 +62,7 @@ class EmailService(
             "\${courseName}" to courseName,
             "\${user}" to userName
         )
-        val template = loadTemplate("src/main/resources/templates/subscription_complete.html")
+        val template = loadTemplate("$pathEmailTemplates/subscription_complete.html")
         val htmlContent = replacePlaceholders(template, placeholders)
         sendEmail(to, subject, htmlContent)
     }
@@ -67,7 +70,7 @@ class EmailService(
     @Async("taskExecutor")
     fun sendCreditsLoadedEmail(to: String, credits: Double, userName : String) {
         val subject = "Credits Loaded"
-        val template = loadTemplate("src/main/resources/templates/credits_loaded.html")
+        val template = loadTemplate("$pathEmailTemplates/credits_loaded.html")
         val placeholders = mapOf(
             "\${credits}" to credits.toString(),
             "\${user}" to userName
