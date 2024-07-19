@@ -67,7 +67,7 @@ spring:
       enabled: true
 email:
   enabled: true
-imageUrl: http://localhost:8080/media/
+imageUrl: http://weekbook.site:8080/media/
 pathEmailTemplates: /emailTemplates
 
 ---
