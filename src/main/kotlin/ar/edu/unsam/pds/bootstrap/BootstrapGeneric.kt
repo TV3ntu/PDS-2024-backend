@@ -18,13 +18,13 @@ abstract class BootstrapGeneric(private val message: String) : InitializingBean 
     private lateinit var onProfile: String
 
     override fun afterPropertiesSet() {
-        if (onProfile.equals("dev")) {
-            log.info("#".repeat(110))
-            log.info(String.format("# %-106s #", "Loading $message ..."))
-            log.info("#".repeat(110))
+      
+        log.info("#".repeat(110))
+        log.info(String.format("# %-106s #", "Loading $message ..."))
+        log.info("#".repeat(110))
 
-            transactionTemplate().execute { this.doAfterPropertiesSet(); "status" }
-        }
+        transactionTemplate().execute { this.doAfterPropertiesSet(); "status" }
+      
     }
 
     abstract fun doAfterPropertiesSet()
