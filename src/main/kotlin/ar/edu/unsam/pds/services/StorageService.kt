@@ -34,7 +34,7 @@ class StorageService {
     fun defaultImage() = "${this.baseUrl()}/private/default.png"
     fun baseUrl() = "http://${this.getDomain()}:8080/media"
     fun getDomain() =
-        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.141.196"
+        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.143.203"
         else "localhost"
 
     fun deletePublic(imageName: String) = deleteImage(publicPath, imageName)

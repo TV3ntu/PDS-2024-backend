@@ -20,7 +20,7 @@ class InitCourses : BootstrapGeneric("Courses") {
     fun urlBase() = "http://${this.getDomain()}:8080/media/public"
 
     fun getDomain() =
-        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.141.196"
+        if (environment.acceptsProfiles(Profiles.of("prod"))) "149.50.143.203"
         else "localhost"
 
     override fun doAfterPropertiesSet() {
